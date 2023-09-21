@@ -10,6 +10,7 @@ import {
     CardTitle,
 } from "@/components/ui/card"
 import {Label} from "@/components/ui/label"
+import {ThemeToggle} from "@/components/theme-toggle";
 
 const inter = Inter({subsets: ['latin']})
 
@@ -38,7 +39,10 @@ export default function Home() {
                         <Button variant="outline">Decline</Button>
                     </CardFooter>
                 </Card>
-
+                <div className={"flex items-center"}>
+                    <Label className={"text-xl"}>Light/Dark Toggle</Label>
+                    <ThemeToggle/>
+                </div>
             </div>
 
     )
