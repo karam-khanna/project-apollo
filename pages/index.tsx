@@ -43,7 +43,6 @@ export default function Home() {
                     <Label className={"text-xl"}>Light/Dark Toggle</Label>
                     <ThemeToggle/>
                 </div>
-                <h1>sup</h1>
             </div>
 
     )
