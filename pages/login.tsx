@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import {Label} from "@/components/ui/label"
 import {ThemeToggle} from "@/components/theme-toggle";
-
+import { auth } from "../components/firebase";
+import { signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { useAuthState } from "react-firebase-hooks/auth";
 export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -10,7 +12,13 @@ export default function Login() {
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault(); 
-        setMessage('Successfully logged in!');
+        signInWithEmailAndPassword(auth, email, password).then((userCredential) => {
+            console.log(userCredential.user);
+            setMessage('Successfully logged in!');
+        }).catch((error) => {
+            console.log(error);
+            setMessage('There was an error checking you in. Please check your email and password and try again.')
+        })
     }
 
     return (

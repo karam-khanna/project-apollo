@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import {Label} from "@/components/ui/label"
 import {ThemeToggle} from "@/components/theme-toggle";
+import { auth } from "../components/firebase";
+import { createUserWithEmailAndPassword, signOut } from "firebase/auth";
 
 export default function Signup() {
     const [fname, setFirstName] = useState('');
@@ -9,13 +11,18 @@ export default function Signup() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
-
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();  // prevent default form submission behavior
-
         // Need to connect to database/backend here
-
-        setMessage('Successfully signed up!');
+        createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+            const user = userCredential.user;
+            console.log(user);
+            setMessage('Successfully signed up!');
+        }).catch((error) => {
+            console.log(error);
+            setMessage('An error occurred.')
+        }) 
     }
 
     return (
