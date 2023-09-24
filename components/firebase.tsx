@@ -1,17 +1,20 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
 import { getAuth } from "firebase/auth";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyCjvUPf61bveEkwCZtvvVlXNsh70iv-dp4",
-  authDomain: "project-apollo-82641.firebaseapp.com",
-  projectId: "project-apollo-82641",
-  storageBucket: "project-apollo-82641.appspot.com",
-  messagingSenderId: "1063208965790",
-  appId: "1:1063208965790:web:0c54f9f9a533fc79208d8f"
+  apiKey: "AIzaSyC-5QHy3cJupg8U9p85rKQ5qQsJTbkFMBE",
+  authDomain: "mutuals---devkam.firebaseapp.com",
+  projectId: "mutuals---devkam",
+  storageBucket: "mutuals---devkam.appspot.com",
+  messagingSenderId: "750997161836",
+  appId: "1:750997161836:web:c8cb6506db6aae0e5b5549",
+  measurementId: "G-YZC2Z7VJCT"
 };
 
 // Initialize Firebase
