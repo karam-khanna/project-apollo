@@ -1,6 +1,8 @@
 import Image from 'next/image'
 import {Inter} from 'next/font/google'
 import {Button} from "@/components/ui/button";
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 import {
     Card,
     CardContent,
@@ -19,7 +21,7 @@ export default function Home() {
             <div className={"flex flex-col items-center justify-center pt-16 gap-9"}>
                 <h1 className="text-6xl font-bold">Welcome to Mutuals!</h1>
                 <div className={"flex flex-col items-center justify-center gap-2"}>
-                    <Button onClick={
+                    {/* <Button onClick={
                         () => {
                             console.log("https://www.youtube.com/watch?v=dQw4w9WgXcQ")
                             console.log("https://www.youtube.com/watch?v=dQw4w9WgXcQ")
@@ -27,9 +29,12 @@ export default function Home() {
                             console.log("https://www.youtube.com/watch?v=dQw4w9WgXcQ")
                         }
                     }> Click me</Button>
-                    <h3 className={"text-2xl font-medium"}>Check console for result</h3>
+                    <h3 className={"text-2xl font-medium"}>Check console for result</h3> */}
+
+                <Button onClick={() => window.location.href = '/login'}>Log In</Button>
+                <Button onClick={() => window.location.href = '/signup'}>Sign Up</Button>
                 </div>
-                <Card className="w-[350px]">
+                {/* <Card className="w-[350px]">
                     <CardHeader>
                         <CardTitle>This is a sample card</CardTitle>
                         <CardDescription>See a fun weekend event here</CardDescription>
@@ -38,7 +43,7 @@ export default function Home() {
                         <Button>Accept</Button>
                         <Button variant="outline">Decline</Button>
                     </CardFooter>
-                </Card>
+                </Card> */}
                 <div className={"flex items-center"}>
                     <Label className={"text-xl"}>Light/Dark Toggle</Label>
                     <ThemeToggle/>
@@ -47,3 +52,4 @@ export default function Home() {
 
     )
 }
+
