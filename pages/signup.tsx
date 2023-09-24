@@ -21,7 +21,7 @@ export default function Signup() {
             setMessage('Successfully signed up!');
         }).catch((error) => {
             console.log(error);
-            setMessage('An error occurred.')
+            setMessage(error.code.replace("auth/", "").replace("-"," "))
         }) 
     }
 
