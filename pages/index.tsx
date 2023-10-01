@@ -33,6 +33,7 @@ export default function Home() {
 
                 <Button onClick={() => window.location.href = '/login'}>Log In</Button>
                 <Button onClick={() => window.location.href = '/signup'}>Sign Up</Button>
+                <Button onClick={() => window.location.href = '/calendarpage'}>Calendar Page</Button>
                 </div>
                 {/* <Card className="w-[350px]">
                     <CardHeader>
