@@ -19,7 +19,7 @@ const inter = Inter({subsets: ['latin']})
 export default function Home() {
     return (
             <div className={"flex flex-col items-center justify-center pt-16 gap-9"}>
-                <h1 className="text-6xl font-bold">Welcome to Mutuals!</h1>
+                <h1 className="text-6xl font-bold text-center">Welcome to Mutuals!</h1>
                 <div className={"flex flex-col items-center justify-center gap-2"}>
                     {/* <Button onClick={
                         () => {

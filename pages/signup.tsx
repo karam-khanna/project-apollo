@@ -26,8 +26,11 @@ export default function Signup() {
     }
 
     return (
-        <div className={"flex flex-col items-center justify-center pt-16 gap-9"}>
+        <div className={"flex flex-col items-center justify-center pt-16 gap-4"}>
             <h1 className="text-4xl font-bold">Sign Up for Mutuals!</h1>
+
+            //Tailwind container to auto size depending on screen size.
+            <div className='container mx-auto'/>
             
             <form onSubmit={handleSubmit} className="flex flex-col gap-4">
                 <input 
@@ -35,28 +38,28 @@ export default function Signup() {
                     placeholder="First Name" 
                     value={fname} 
                     onChange={(e) => setFirstName(e.target.value)} 
-                    className="border rounded p-2"
+                    className="bg-black border rounded p-2"
                 />
                 <input 
                     type="lname" 
                     placeholder="Last Name" 
                     value={lname} 
                     onChange={(e) => setLastName(e.target.value)} 
-                    className="border rounded p-2"
+                    className="bg-black border rounded p-2"
                 />
                 <input 
                     type="email" 
                     placeholder="Email" 
                     value={email} 
                     onChange={(e) => setEmail(e.target.value)} 
-                    className="border rounded p-2"
+                    className="bg-black border rounded p-2"
                 />
                 <input 
                     type="password" 
                     placeholder="Password" 
                     value={password} 
                     onChange={(e) => setPassword(e.target.value)} 
-                    className="border rounded p-2"
+                    className="bg-black border rounded p-2"
                 />
                 <Button type="submit">Submit</Button>
             </form>
@@ -64,7 +67,7 @@ export default function Signup() {
             {message && <div className="text-2xl mt-4">{message}</div>}
 
             <p className="mt-4">Already have an account? 
-                <span className="text-pink-500 cursor-pointer ml-2" onClick={() => window.location.href = '/login'}>
+                <span className="text-pink cursor-pointer ml-2" onClick={() => window.location.href = '/login'}>
                     Log In
                 </span>
             </p>
