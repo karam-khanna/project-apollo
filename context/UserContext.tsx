@@ -22,5 +22,4 @@ export const UserContext = createContext<UserContextProps>({
 });
 
 
-export const API_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://eightball.vercel.app/';
 
