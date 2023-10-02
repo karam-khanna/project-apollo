@@ -25,33 +25,41 @@ export default function Settings (){
     };
 
     return (
-        <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded shadow-lg">
-          <h2 className="text-2xl font-semibold mb-4 text-rose-700"> Change Password</h2>
-          <div className="mb-4">
-            <label className="block text-rose-700">Old Password</label>
-            <input
-              type="password"
-              value={oldPassword}
-              onChange={(e) => setOldPassword(e.target.value)}
-              className="border border-gray-300 rounded w-full p-2"
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-rose-700">New Password</label>
-            <input
-              type="password"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-              className="border border-gray-300 rounded w-full p-2"
-            />
-          </div>
-          <button onClick={handleChange}
-          className="bg-rose-600 hover:bg-rose-700 text-white font-semibold py-2 px-4 rounded"
-          >
-              Change Password
-          </button>
-          {message && <p className="mt-2 text-rose-600">{message}</p>}
+        <div className="flex flex-col items-center justify-center pt-16 gap-9">
+            <div className="container mx-auto px-4">
+                <h1 className="text-4xl font-bold text-center mb-4">Change Password</h1>
+                
+                <form className="flex flex-col gap-2 mx-auto w-full md:w-96">
+                    
+                    <div className="mb-4">
+                        <input
+                            type="password"
+                            placeholder="Old Password"
+                            value={oldPassword}
+                            onChange={(e) => setOldPassword(e.target.value)}
+                            className="bg-black border rounded w-full p-2"
+                        />
+                    </div>
+                    <div className="mb-4">
+                        <input
+                            type="password"
+                            placeholder="New Password"
+                            value={newPassword}
+                            onChange={(e) => setNewPassword(e.target.value)}
+                            className="bg-black border rounded w-full p-2"
+                        />
+                    </div>
+                    <button onClick={handleChange}
+                        className="bg-rose-600 hover:bg-rose-700 text-white font-semibold py-2 px-4 rounded w-full"
+                    >
+                        Change Password
+                    </button>
+                </form>
+
+                {/* Message Styling */}
+                {message && <div className="text-lg text-center mt-4 text-white">{message}</div>}
+            </div>
         </div>
-      );
+    );
 
 }
