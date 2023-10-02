@@ -106,7 +106,7 @@ export function OnboardingForm(props: OnboardingFormProps) {
             await updateUserFirstName(user, values.firstName, setUser)
             await updateUserLastName(user, values.lastName, setUser)
             await updateUserOnboarded(user, true, setUser)
-            router.push('/courses').then();
+            router.push('/calendarpage').then();
 
         } else {
             toast({
