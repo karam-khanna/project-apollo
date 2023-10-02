@@ -10,7 +10,6 @@ import {Button} from "@/components/ui/button";
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
 import {Label} from "@/components/ui/label";
 import {
-    updateCanvasDomain,
     updateUserFirstName, updateUserInterest,
     updateUserLastName,
     updateUserOnboarded
@@ -107,34 +106,7 @@ export function OnboardingForm(props: OnboardingFormProps) {
             await updateUserFirstName(user, values.firstName, setUser)
             await updateUserLastName(user, values.lastName, setUser)
             await updateUserOnboarded(user, true, setUser)
-            // const res = await fetch(`/api/users/${user.id}/courses/update`, {
-            //     headers: {
-            //         Authorization: `Bearer ${await getUserAuthToken()}`,
-            //     },
-            //
-            // });
-            // if (res.status === 200) {
-            //     const currentTime = new Date().getTime();
-            //     localStorage.setItem("lastCalled", currentTime.toString());
-            //     console.log("Successfully updated courses")
-            //     props.setIsLoading(false);
-            //     router.push('/courses').then();
-            // } else {
-            //     console.log("reszzzz", res)
-            //     console.log(res.status, 'status')
-            //     return
-            // }
-
-
-            // toast({
-            //     title: "Connected to Canvas",
-            //     description: "Click on any of your courses to get started! 🎉",
-            //     // action: <ToastAction altText="Go to my courses" onClick={
-            //     //     () => {
-            //     //         router.push('/courses').then();
-            //     //     }
-            //     // }>Go to my courses</ToastAction>
-            // })
+            router.push('/courses').then();
 
         } else {
             toast({
