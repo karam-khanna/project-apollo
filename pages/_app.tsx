@@ -11,9 +11,9 @@ import {UserContext} from "@/context/UserContext";
 import {getAuth, onAuthStateChanged, User as FirebaseUser} from "@firebase/auth";
 import {getOrCreateUserFromAuth} from "@/utils/client_side/authInterfaces";
 import {getUserAuthToken} from "@/utils/client_side/clientUserUtils";
+import {auth} from "@/components/firebase";
 
 export default function App({Component, pageProps}: AppProps) {
-    const auth = getAuth();
     const router = useRouter();
     const [loading, setLoading] = useState(true);
     const [userAuth, setUserAuth] = useState<FirebaseUser | null>(null);
@@ -23,6 +23,7 @@ export default function App({Component, pageProps}: AppProps) {
         const unsubscribe = onAuthStateChanged(auth, async (currentAuthUser) => {
             setUserAuth(currentAuthUser);
             setLoading(false);
+            console.log(currentAuthUser)
             if (currentAuthUser) {
                 setUser(await getOrCreateUserFromAuth(currentAuthUser));
             }
@@ -30,7 +31,7 @@ export default function App({Component, pageProps}: AppProps) {
         return () => unsubscribe();
     }, []);
 
-
+    
     return (
             <UserContext.Provider value={{userAuth: userAuth, setUserAuth: setUserAuth, user: user, setUser: setUser}}>
                 <ThemeProvider attribute="class" defaultTheme="dark">
