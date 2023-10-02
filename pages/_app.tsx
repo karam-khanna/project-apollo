@@ -31,7 +31,11 @@ export default function App({Component, pageProps}: AppProps) {
         return () => unsubscribe();
     }, []);
 
-    
+    useEffect(() => {
+        if (userAuth && user && !user?.onboarded && router.isReady && router.pathname !== '/onboarding') {
+            router.push('/onboarding').then();
+        }
+    })
     return (
             <UserContext.Provider value={{userAuth: userAuth, setUserAuth: setUserAuth, user: user, setUser: setUser}}>
                 <ThemeProvider attribute="class" defaultTheme="dark">
