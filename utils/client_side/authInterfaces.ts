@@ -11,7 +11,12 @@ export async function getOrCreateUserFromAuth(authUser: FirebaseUser): Promise<U
     }
     // create user
     const docRef = doc(db, 'Users', authUser.uid);
-    await setDoc(docRef, {name: authUser.displayName, email: authUser.email}, {merge: true});
+    await setDoc(docRef, {
+        emailVerified: authUser.emailVerified,
+        email: authUser.email,
+    }, {
+        merge: true
+    });
     const newSnap = await getDoc(docRef);
 
     // check if snap there
