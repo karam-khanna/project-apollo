@@ -6,6 +6,7 @@ import { auth } from "../components/firebase";
 import { signInWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
 
+
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -73,6 +74,17 @@ export default function Login() {
             onClick={() => window.location.href = '/signup'}
           >
             Sign Up
+          </span>
+        </p>
+
+        <p className="mt-4 text-center">
+          Forgot Your Password?
+          {/* Sign Up Link Styling */}
+          <span
+            className="text-pink cursor-pointer ml-2"
+            onClick={() => window.location.href = '/verify'}
+          >
+            Reset Password
           </span>
         </p>
 
