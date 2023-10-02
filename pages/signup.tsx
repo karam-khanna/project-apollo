@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import {Label} from "@/components/ui/label"
 import {ThemeToggle} from "@/components/theme-toggle";
 import { auth } from "../components/firebase";
-import { createUserWithEmailAndPassword, signOut } from "firebase/auth";
+import { createUserWithEmailAndPassword, sendEmailVerification, signOut } from "firebase/auth";
 
 export default function Signup() {
     const [fname, setFirstName] = useState('');
@@ -18,7 +18,12 @@ export default function Signup() {
         .then((userCredential) => {
             const user = userCredential.user;
             console.log(user);
-            setMessage('Successfully signed up!');
+            sendEmailVerification(user).then(()=>{
+                setMessage('Successfully signed up! Verification email sent.')
+            }).catch((error)=>{
+                setMessage("Successfully signed up, but the email verification couldn't be sent.")
+                console.log(error)
+            })
         }).catch((error) => {
             console.log(error);
             setMessage(error.code.replace("auth/", "").replace("-"," "))
