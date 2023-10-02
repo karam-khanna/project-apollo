@@ -19,7 +19,18 @@ export default function App({Component, pageProps}: AppProps) {
     const [userAuth, setUserAuth] = useState<FirebaseUser | null>(null);
     const [user, setUser] = useState<User | null>(null);
 
-    
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, async (currentAuthUser) => {
+            setUserAuth(currentAuthUser);
+            setLoading(false);
+            if (currentAuthUser) {
+                setUser(await getOrCreateUserFromAuth(currentAuthUser));
+            }
+        });
+        return () => unsubscribe();
+    }, []);
+
+
     return (
             <UserContext.Provider value={{userAuth: userAuth, setUserAuth: setUserAuth, user: user, setUser: setUser}}>
                 <ThemeProvider attribute="class" defaultTheme="dark">
