@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { auth } from "../components/firebase";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
 
 export default function Login() {
@@ -16,7 +16,16 @@ export default function Login() {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         console.log(userCredential.user);
-        setMessage('Successfully logged in!');
+        if(userCredential.user.emailVerified)
+          setMessage('Successfully logged in!');
+        else {
+          sendEmailVerification(userCredential.user).then(()=>{
+          setMessage('You need to verify your email to login. Please check your email to verify.')
+        }).catch((error)=>{
+            setMessage("Your email isn't verified, and there seems to be an error with the verification process.")
+            console.log(error)
+        })
+        }
       })
       .catch((error) => {
         console.log(error);
