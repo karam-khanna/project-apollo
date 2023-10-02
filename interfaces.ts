@@ -1,8 +1,18 @@
 export interface User {
     id: string;
     email: string;
-    name: string;
+    firstName: string;
+    lastName: string;
     onboarded: boolean;
-    basketball: boolean;
     poker: boolean;
+    basketball: boolean;
+
 }
+
+// set up interests enum
+export enum Interest {
+    basketball = 'basketball',
+    poker = 'poker',
+}
+
+
