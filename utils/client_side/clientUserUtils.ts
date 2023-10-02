@@ -1,17 +1,21 @@
 import {DocumentData} from '@firebase/firestore';
-import {User} from '@/interfaces';
+import {Interest, User} from '@/interfaces';
 import {Auth, getAuth} from '@firebase/auth';
 
 export function userFromDbData(data: DocumentData, userId: string): User {
+    const interests: Interest[] = data.interests || [];
+
     return {
         id: userId || '',
         email: data.email || '',
-        name: data.name || '',
+        firstName: data.firstName || '',
+        lastName: data.lastName || '',
+        interests: data.interests || [],
         onboarded: data.onboarded || false,
-        basketball: data.basketball || false,
-        poker: data.poker || false,
+
     };
 }
+
 
 export async function getUserAuthToken(): Promise<string> {
     const auth: Auth = getAuth();
