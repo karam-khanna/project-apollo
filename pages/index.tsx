@@ -15,19 +15,40 @@ import {Label} from "@/components/ui/label"
 import {ThemeToggle} from "@/components/theme-toggle";
 import {useContext} from "react";
 import {UserContext} from "@/context/UserContext";
+import {firebase_auth} from "@/components/firebase";
 
 const inter = Inter({subsets: ['latin']})
 
 export default function Home() {
     const {user, setUser} = useContext(UserContext);
+    const {userAuth, setUserAuth} = useContext(UserContext);
     const router = useRouter();
     return (
             <div className={"flex flex-col items-center justify-center pt-16 gap-9"}>
                 <h1 className="text-6xl font-bold text-center">Welcome to Mutuals!</h1>
+                {user
+                        ?
+                        <div className={"flex flex-col gap-2"}>
+                            <Button onClick={() => router.push('/calendarpage').then()}>Calendar Page</Button>
+                            <Button onClick={
+                                () => {
+                                    firebase_auth.signOut().then((r) => {
+                                        setUserAuth(null);
+                                        setUser(null);
+                                    });
+                                }
+                            }
+                            >Logout</Button>
+                        </div>
+                        :
+                        <>
+                            <Button onClick={() => router.push('/login').then()}>Log In</Button>
+                            <Button onClick={() => router.push('/signup').then()}>Sign Up</Button>
+                        </>
+                }
                 <div className={"flex flex-col items-center justify-center gap-2"}>
-                    <Button onClick={() => router.push('/login').then()}>Log In</Button>
-                    <Button onClick={() => router.push('/signup').then()}>Sign Up</Button>
-                    <Button onClick={() => router.push('/calendarpage').then()}>Calendar Page</Button>
+
+
                 </div>
                 {/* <Card className="w-[350px]">
                     <CardHeader>
