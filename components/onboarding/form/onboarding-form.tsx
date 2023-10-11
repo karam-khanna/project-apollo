@@ -160,7 +160,7 @@ export function OnboardingForm(props: OnboardingFormProps) {
                                             <div className="mb-4">
                                                 <FormLabel className="text-base">Interests</FormLabel>
                                                 <FormDescription>
-                                                    Select the activities you're interested in
+                                                    {"Select the activities you're interested in"}
                                                 </FormDescription>
                                             </div>
                                             {interests.map((interest) => (
