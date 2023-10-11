@@ -4,21 +4,24 @@ import {Label} from "@/components/ui/label";
 import {ThemeToggle} from "@/components/theme-toggle";
 import {auth} from "@/components/firebase";
 import {signInWithEmailAndPassword, sendEmailVerification} from "firebase/auth";
+import {useRouter} from "next/router";
 
 
 export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
+    const router = useRouter();
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         signInWithEmailAndPassword(auth, email, password)
                 .then((userCredential) => {
                     console.log(userCredential.user);
-                    if (userCredential.user.emailVerified)
+                    if (userCredential.user.emailVerified) {
                         setMessage('Successfully logged in!');
-                    else {
+                        router.push('/').then();
+                    } else {
                         sendEmailVerification(userCredential.user).then(() => {
                             setMessage('You need to verify your email to login. Please check your email to verify.')
                         }).catch((error) => {
