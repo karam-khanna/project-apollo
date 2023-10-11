@@ -1,6 +1,5 @@
 import '@/styles/globals.css'
 import type {AppProps} from 'next/app'
-import {Head} from "next/document";
 import {ThemeProvider} from "@/components/theme-provider";
 import {SiteHeader} from "@/components/site-header";
 import {Toaster} from "@/components/ui/toaster";

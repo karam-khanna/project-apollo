@@ -34,7 +34,6 @@ export default function Signup() {
             <div className={"flex flex-col items-center justify-center pt-16 gap-4"}>
                 <h1 className="text-4xl font-bold">Sign Up for Mutuals!</h1>
 
-                //Tailwind container to auto size depending on screen size.
                 <div className='container mx-auto'/>
 
                 <form onSubmit={handleSubmit} className="flex flex-col gap-4">
