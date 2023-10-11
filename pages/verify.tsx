@@ -1,5 +1,5 @@
 import {useState} from 'react';
-import {auth} from "../components/firebase";
+import {firebase_auth} from "../components/firebase";
 import {ThemeToggle} from "@/components/theme-toggle";
 
 export default function Settings() {
@@ -11,7 +11,7 @@ export default function Settings() {
     const handleChange = async () => {
         //use a try/catch in case of password change error
         try {
-            const user = auth.currentUser;
+            const user = firebase_auth.currentUser;
 
             if (!user) {
                 setMessage('Please log in first');

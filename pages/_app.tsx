@@ -10,7 +10,7 @@ import {UserContext} from "@/context/UserContext";
 import {getAuth, onAuthStateChanged, User as FirebaseUser} from "@firebase/auth";
 import {getOrCreateUserFromAuth} from "@/utils/client_side/authInterfaces";
 import {getUserAuthToken} from "@/utils/client_side/clientUserUtils";
-import {auth} from "@/components/firebase";
+import {firebase_auth} from "@/components/firebase";
 
 export default function App({Component, pageProps}: AppProps) {
     const router = useRouter();
@@ -19,7 +19,7 @@ export default function App({Component, pageProps}: AppProps) {
     const [user, setUser] = useState<User | null>(null);
 
     useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, async (currentAuthUser) => {
+        const unsubscribe = onAuthStateChanged(firebase_auth, async (currentAuthUser) => {
             setUserAuth(currentAuthUser);
             setLoading(false);
             console.log(currentAuthUser)
@@ -37,7 +37,7 @@ export default function App({Component, pageProps}: AppProps) {
     })
 
     useEffect(() => {
-        if (!userAuth && router.isReady && router.pathname !== '/login') {
+        if (!userAuth && router.isReady && router.pathname !== '/login' && router.pathname !== '/signup') {
             router.push('/login').then();
         }
     }, [userAuth, router]);

@@ -2,7 +2,7 @@ import {useState} from 'react';
 import {Button} from "@/components/ui/button";
 import {Label} from "@/components/ui/label"
 import {ThemeToggle} from "@/components/theme-toggle";
-import {auth} from "@/components/firebase";
+import {firebase_auth} from "@/components/firebase";
 import {createUserWithEmailAndPassword, sendEmailVerification, signOut} from "firebase/auth";
 
 export default function Signup() {
@@ -14,7 +14,7 @@ export default function Signup() {
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();  // prevent default form submission behavior
         // Need to connect to database/backend here
-        createUserWithEmailAndPassword(auth, email, password)
+        createUserWithEmailAndPassword(firebase_auth, email, password)
                 .then((userCredential) => {
                     const user = userCredential.user;
                     console.log(user);
