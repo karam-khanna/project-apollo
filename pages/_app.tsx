@@ -36,6 +36,12 @@ export default function App({Component, pageProps}: AppProps) {
             router.push('/onboarding').then();
         }
     })
+
+    useEffect(() => {
+        if (!userAuth && router.isReady && router.pathname !== '/login') {
+            router.push('/login').then();
+        }
+    }, [userAuth, router]);
     return (
             <UserContext.Provider value={{userAuth: userAuth, setUserAuth: setUserAuth, user: user, setUser: setUser}}>
                 <ThemeProvider attribute="class" defaultTheme="dark">
