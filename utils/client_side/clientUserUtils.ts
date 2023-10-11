@@ -3,16 +3,15 @@ import {Interest, User} from '@/interfaces';
 import {Auth, getAuth} from '@firebase/auth';
 
 export function userFromDbData(data: DocumentData, userId: string): User {
-    const interests: Interest[] = data.interests || [];
 
     return {
         id: userId || '',
         email: data.email || '',
         firstName: data.firstName || '',
         lastName: data.lastName || '',
-        interests: data.interests || [],
+        poker: data.poker || false,
+        basketball: data.basketball || false,
         onboarded: data.onboarded || false,
-
     };
 }
 
