@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {Button} from "@/components/ui/button";
 import {Label} from "@/components/ui/label";
 import {ThemeToggle} from "@/components/theme-toggle";
-import {auth} from "@/components/firebase";
+import {firebase_auth} from "@/components/firebase";
 import {signInWithEmailAndPassword, sendEmailVerification} from "firebase/auth";
 import {useRouter} from "next/router";
 
@@ -15,7 +15,7 @@ export default function Login() {
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        signInWithEmailAndPassword(auth, email, password)
+        signInWithEmailAndPassword(firebase_auth, email, password)
                 .then((userCredential) => {
                     console.log(userCredential.user);
                     if (userCredential.user.emailVerified) {
