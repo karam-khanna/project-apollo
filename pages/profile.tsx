@@ -15,10 +15,11 @@ interface ProfileData {
 }
 
 const ProfilePage: React.FC = () => {
-  const {user, setUser} = useContext(UserContext); 
+  const { user, setUser } = useContext(UserContext);
+  // Ensure that user exists before accessing its properties
   const [profile, setProfile] = useState<ProfileData>({
-    name: user?.firstName.concat(" ",user?.lastName),
-    email: user?.email,
+    name: user ? `${user.firstName} ${user.lastName}` : '', // Check for user and concatenate names
+    email: user ? user.email : '', // Check for user and get email
     interests: ['Poker', 'Basketball'],
   });
 
