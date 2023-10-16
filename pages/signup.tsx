@@ -13,6 +13,14 @@ export default function Signup() {
     const [message, setMessage] = useState('');
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();  // prevent default form submission behavior
+
+        //check if email is an @emory.edu email
+         // Check if the email ends with @emory.edu
+         if (!email.endsWith('@emory.edu')) {
+            setMessage('Please enter a valid Emory University email address ending with @emory.edu');
+            return;
+        }
+
         // Need to connect to database/backend here
         createUserWithEmailAndPassword(firebase_auth, email, password)
                 .then((userCredential) => {
