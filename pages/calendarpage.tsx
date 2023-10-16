@@ -1,11 +1,16 @@
-"use client"
-
+import React, { useState } from 'react';
+import { Button } from "@/components/ui/button";
+import {Label} from "@/components/ui/label"
+import {ThemeToggle} from "@/components/theme-toggle";
 import { zodResolver } from "@hookform/resolvers/zod"
+import { CalendarIcon } from "@radix-ui/react-icons"
+import { format } from "date-fns"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
+import { cn } from "@/lib/utils"
+import { Calendar } from "@/components/ui/calendar"
+import { toast } from "@/components/ui/use-toast"
 
-import { Button } from "@/components/ui/button"
-import { Checkbox } from "@/components/ui/checkbox"
 import {
   Form,
   FormControl,
@@ -15,225 +20,114 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
-import { toast } from "@/components/ui/use-toast"
 
-const items = [
-  {
-    id: "Fmorning",
-    label: "Morning",
-  },
-  {
-    id: "Fafternoon",
-    label: "Afternoon",
-  },
-  {
-    id: "Fevening",
-    label: "Evening",
-  },
-  {
-    id: "FNight",
-    label: "Night",
-  },
-  {
-    id: "Smorning",
-    label: "Morning",
-  },
-  {
-    id: "Safternoon",
-    label: "Afternoon",
-  },
-  {
-    id: "Sevening",
-    label: "Evening",
-  },
-  {
-    id: "Snight",
-    label: "Night",
-  },
-  {
-    id: "FNight",
-    label: "Night",
-  },
-  {
-    id: "Sumorning",
-    label: "Morning",
-  },
-  {
-    id: "Suafternoon",
-    label: "Afternoon",
-  },
-  {
-    id: "Suevening",
-    label: "Evening",
-  },
-  {
-    id: "Sunight",
-    label: "Night",
-  },
-] as const
+
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
 
 const FormSchema = z.object({
-  items: z.array(z.string()).refine((value) => value.some((item) => item), {
-    message: "You have to select at least one item.",
+  freeDate: z.date({
+    required_error: "Please select a date when you're free.",
   }),
 })
 
-export default function CheckboxReactHookFormMultiple() {
+
+// helping us figure out the next weekend dates
+function getNextFriday(){
+  const today = new Date();
+  return new Date (today.setDate(today.getDate()+(4-today.getDay()+7)%7));
+}
+
+function isWithinThursdayToMonday(){
+  const now = new Date();
+  const day = now.getDay(); //0= Sunday
+  const hour = now.getHours(); //0-23
+
+  if((day==4 && hour >= 12) || (day>4 && day <=6) || day==0 ) {
+    return true;
+  }
+  return false;
+}
+
+export default function CalendarPage() {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
-    defaultValues: {
-      items: []
-    },
   })
-
+ 
   function onSubmit(data: z.infer<typeof FormSchema>) {
     toast({
-      title: "You submitted the following values:",
+      title: "You have chosen: ",
       description: (
         <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
+          <code className="text-white">{JSON.stringify(data.freeDate, null, 2)}</code>
         </pre>
       ),
     })
   }
-
+ const withinThursdayToMonday = isWithinThursdayToMonday();
   return (
-    <div className = "flex justify-center items-center space-y-5">
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="items-center space-y-8">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        {withinThursdayToMonday ? (
+          <Label> Come back next week to set availability</Label>
+        ): (
+          <>
         <FormField
           control={form.control}
-          name="items"
-          render={() => (
-            <FormItem>
-              <div className="mb-4">
-                <FormLabel className="text-2xl sm:text-5xl font-semibold pt-7 sm:pt-16 text-white">For this weekend...</FormLabel>
-                <FormDescription className="">
-                <div> Select the times this weekend that you're available. </div>
-                    Reference:
-                    <ul className = "list-disc p1-4">
-                    <li>Morning: 8 AM -  12 PM</li>
-                    <li>Afternoon: 12 PM -  5 PM</li>
-                    <li>Evening: 5 PM -  8 PM</li>
-                    <li>Night: 8 PM -  12 AM</li>
-                    </ul>
-                </FormDescription>
-              </div>
-
-              <div className="flex flex-row items-center space-x-10 space-y-0">
-                {/* First set of items */}
-                <div className="flex flex-col items-left space-y-3">
-                    <div className = "bg-pink p-2 rounded-md">
-                        <h1 className = 'text-white font-bold'>FRIDAY</h1>
-                    </div>
-                  {items.slice(0, 4).map((item) => (
-                    <FormField
-                      key={item.id}
-                      control={form.control}
-                      name="items"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormControl>
-                            <Checkbox
-                              checked={field.value?.includes(item.id)}
-                              onCheckedChange={(checked) => {
-                                return checked
-                                  ? field.onChange([...field.value, item.id])
-                                  : field.onChange(
-                                      field.value?.filter(
-                                        (value) => value !== item.id
-                                      )
-                                    );
-                              }}
-                            />
-                          </FormControl>
-                          <FormLabel className="text-sm font-normal ml-2">
-                            {item.label}
-                          </FormLabel>
-                        </FormItem>
+          name="freeDate"
+          render={({ field }) => (
+            <FormItem className="flex flex-col">
+              <FormLabel>Choose available dates for this weekend!</FormLabel>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <FormControl>
+                    <Button
+                      variant={"outline"}
+                      className={cn(
+                        "w-[240px] pl-3 text-left font-normal",
+                        !field.value && "text-muted-foreground"
                       )}
-                    />
-                  ))}
-                </div>
-
-                {/* Second set of items */}
-                <div className="flex flex-col items-start space-y-3">
-                <div className = "bg-pink p-2 rounded-md">
-                        <h1 className = 'text-white font-bold'>SATURDAY</h1>
-                    </div>
-                  {items.slice(4, 8).map((item) => (
-                    <FormField
-                      key={item.id}
-                      control={form.control}
-                      name="items"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormControl>
-                            <Checkbox
-                              checked={field.value?.includes(item.id)}
-                              onCheckedChange={(checked) => {
-                                return checked
-                                  ? field.onChange([...field.value, item.id])
-                                  : field.onChange(
-                                      field.value?.filter(
-                                        (value) => value !== item.id
-                                      )
-                                    );
-                              }}
-                            />
-                          </FormControl>
-                          <FormLabel className="text-sm font-normal ml-2">
-                            {item.label}
-                          </FormLabel>
-                        </FormItem>
+                    >
+                    {field.value ? (
+                        format(field.value, "PPP")
+                      ) : (
+                        <span>Pick a date</span>
                       )}
-                    />
-                  ))}
-                </div>
-
-                {/* Third set of items */}
-                <div className="flex flex-col items-start space-y-3">
-                <div className = "bg-pink p-2 rounded-md">
-                        <h1 className = 'text-white font-bold'>SUNDAY</h1>
-                    </div>
-                  {items.slice(9, 13).map((item) => (
-                    <FormField
-                      key={item.id}
-                      control={form.control}
-                      name="items"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormControl>
-                            <Checkbox
-                              checked={field.value?.includes(item.id)}
-                              onCheckedChange={(checked) => {
-                                return checked
-                                  ? field.onChange([...field.value, item.id])
-                                  : field.onChange(
-                                      field.value?.filter(
-                                        (value) => value !== item.id
-                                      )
-                                    );
-                              }}
-                            />
-                          </FormControl>
-                          <FormLabel className="text-sm font-normal ml-2">
-                            {item.label}
-                          </FormLabel>
-                        </FormItem>
-                      )}
-                    />
-                  ))}
-                </div>
-              </div>
-
+                      <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                    </Button>
+                  </FormControl>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    mode="single"
+                    selected={field.value}
+                    onSelect={field.onChange}
+                    disabled={(date) => {
+                      const nextThursday = getNextFriday();
+                      return (
+                        date.getTime() > nextThursday.getTime() + 3 * 24 * 60 * 60 * 1000 || 
+                        date.getTime() < nextThursday.getTime()
+                      );
+                    }}                    
+                    initialFocus
+                  />
+                </PopoverContent>
+              </Popover>
+              <FormDescription>
+                Please choose the dates that work for you this weekend.
+              </FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button type="submit" className = "flex justify-center items-center">Submit</Button>
+        <Button type="submit">Submit</Button>
+        </>
+        )}
       </form>
     </Form>
-    </div>
-  );
+  )
 }
+
