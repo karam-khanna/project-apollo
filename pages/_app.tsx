@@ -17,6 +17,7 @@ export default function App({Component, pageProps}: AppProps) {
     const [loading, setLoading] = useState(true);
     const [userAuth, setUserAuth] = useState<FirebaseUser | null>(null);
     const [user, setUser] = useState<User | null>(null);
+    const [chats, setChats] = useState<string[]>([]);
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(firebase_auth, async (currentAuthUser) => {
@@ -42,7 +43,7 @@ export default function App({Component, pageProps}: AppProps) {
         }
     }, [userAuth, router]);
     return (
-            <UserContext.Provider value={{userAuth: userAuth, setUserAuth: setUserAuth, user: user, setUser: setUser}}>
+        <UserContext.Provider value={{userAuth: userAuth, setUserAuth: setUserAuth, user: user, setUser: setUser, chats: chats, setChats: setChats}}>
                 <ThemeProvider attribute="class" defaultTheme="dark">
                     <div className="relative flex min-h-screen flex-col">
                         <SiteHeader/>

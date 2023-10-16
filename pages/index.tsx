@@ -39,6 +39,7 @@ export default function Home() {
                                 }
                             }
                             >Logout</Button>
+                            <Button onClick={() => router.push('/chatpage').then()}>Chat Page</Button>
                         </div>
                         :
                         <>
