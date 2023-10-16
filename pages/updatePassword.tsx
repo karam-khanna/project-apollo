@@ -54,4 +54,7 @@ import {useState} from 'react';
 //
 // }
 
-export default {};
+// add default export
+export default function UpdatePassword() {
+    return (<h2>in prog</h2>)
+}
