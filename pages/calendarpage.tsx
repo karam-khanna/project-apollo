@@ -3,7 +3,8 @@
 import {zodResolver} from "@hookform/resolvers/zod"
 import {useForm} from "react-hook-form"
 import * as z from "zod"
-
+import {Label} from "@/components/ui/label"
+import {ThemeToggle} from "@/components/theme-toggle";
 import {Button} from "@/components/ui/button"
 import {Checkbox} from "@/components/ui/checkbox"
 import {
@@ -19,55 +20,51 @@ import {toast} from "@/components/ui/use-toast"
 
 const items = [
     {
-        id: "Fmorning",
+        id: "FridayMorning",
         label: "Morning",
     },
     {
-        id: "Fafternoon",
+        id: "FridayAfternoon",
         label: "Afternoon",
     },
     {
-        id: "Fevening",
+        id: "FridayEvening",
         label: "Evening",
     },
     {
-        id: "FNight",
+        id: "FridayNight",
         label: "Night",
     },
     {
-        id: "Smorning",
+        id: "SaturdayMorning",
         label: "Morning",
     },
     {
-        id: "Safternoon",
+        id: "SaturdayAfternoon",
         label: "Afternoon",
     },
     {
-        id: "Sevening",
+        id: "SaturdayEvening",
         label: "Evening",
     },
     {
-        id: "Snight",
+        id: "SaturdayNight",
         label: "Night",
     },
     {
-        id: "FNight",
-        label: "Night",
-    },
-    {
-        id: "Sumorning",
+        id: "SundayMorning",
         label: "Morning",
     },
     {
-        id: "Suafternoon",
+        id: "SundayAfternoon",
         label: "Afternoon",
     },
     {
-        id: "Suevening",
+        id: "SundayEvening",
         label: "Evening",
     },
     {
-        id: "Sunight",
+        id: "SundayNight",
         label: "Night",
     },
 ] as const
@@ -88,7 +85,7 @@ export default function CheckboxReactHookFormMultiple() {
 
     function onSubmit(data: z.infer<typeof FormSchema>) {
         toast({
-            title: "You submitted the following values:",
+            title: "You submitted the following dates:",
             description: (
                     <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
           <code className="text-white">{JSON.stringify(data, null, 2)}</code>
@@ -98,7 +95,7 @@ export default function CheckboxReactHookFormMultiple() {
     }
 
     return (
-            <div className="flex justify-center items-center space-y-5">
+            <div className="flex flex-col items-center justify-center pt-16 gap-9">
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="items-center space-y-8">
                         <FormField
@@ -108,7 +105,7 @@ export default function CheckboxReactHookFormMultiple() {
                                         <FormItem>
                                             <div className="mb-4">
                                                 <FormLabel
-                                                        className="text-2xl sm:text-5xl font-semibold pt-7 sm:pt-16 text-white">For
+                                                        className="text-2xl sm:text-5xl font-semibold pt-7 sm:pt-16 ">For
                                                     this weekend...</FormLabel>
                                                 <FormDescription className="">
                                                     <div> {"Select the times this weekend that you're available."} </div>
@@ -200,7 +197,7 @@ export default function CheckboxReactHookFormMultiple() {
                                                     <div className="bg-pink p-2 rounded-md">
                                                         <h1 className='text-white font-bold'>SUNDAY</h1>
                                                     </div>
-                                                    {items.slice(9, 13).map((item) => (
+                                                    {items.slice(8, 12).map((item) => (
                                                             <FormField
                                                                     key={item.id}
                                                                     control={form.control}
@@ -238,7 +235,12 @@ export default function CheckboxReactHookFormMultiple() {
                         />
                         <Button type="submit" className="flex justify-center items-center">Submit</Button>
                     </form>
+                    <div className={"flex items-center"}>
+                    <Label className={"text-xl"}>Light/Dark Toggle</Label>
+                    <ThemeToggle/>
+                </div>
                 </Form>
             </div>
     );
 }
+
