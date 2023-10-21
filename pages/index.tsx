@@ -29,7 +29,7 @@ export default function Home() {
                 {user
                         ?
                         <div className={"flex flex-col gap-2"}>
-                            <Button onClick={() => router.push('/calendarpage').then()}>Calendar Page</Button>
+                            <Button><Link href={"/calendarpage"}>Calendar Page</Link></Button>
                             <Button onClick={() => router.push('/profile').then()}>Profile</Button>
                             <Button onClick={
                                 () => {
