@@ -94,6 +94,9 @@ export default function CheckboxReactHookFormMultiple() {
             if (availability) {
                 const res = await fetch(`/api/users/${user.id}/availability/update`, {
                     method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
                     body: JSON.stringify(availability),
                 })
                 console.log("res", await res.json())
