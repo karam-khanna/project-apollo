@@ -1,5 +1,5 @@
 import {useState} from 'react';
-import {firebase_auth} from "../components/firebase";
+import {firebase_auth} from "../firebase/client_side/firebase";
 import {ThemeToggle} from "@/components/theme-toggle";
 
 export default function Settings() {
