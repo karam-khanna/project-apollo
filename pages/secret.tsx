@@ -9,8 +9,8 @@ const inter = Inter({subsets: ['latin']})
 export default function Home() {
     const {user, setUser} = useContext(UserContext);
     const [destination, setDestination] = useState("");
-    //const [message, setMessage] = useState("")
-    //const [subject, setSubject] = useState("")
+    const [phoneNumber, setPhoneNumber] = useState("")
+    const [text, setText] = useState("")
 
     //if user is logged in, set firebase email as the user's email
     useEffect(() => {
@@ -70,10 +70,12 @@ Devkam
 
 
 //send email to user
-    const sendEmail = (sendto: string, message: string, subject: string) => {
-        fetch('/api/sendEmail', {
+    
+
+    const sendText = (sendto: string, message: string) => {
+        fetch('/api/sendText', {
             method: 'POST',
-            body: JSON.stringify({to: sendto, subject, message})
+            body: JSON.stringify({to: sendto, message})
         })
                 .then((response) => response.json())
                 .then((data) => {
@@ -98,24 +100,23 @@ Devkam
                     </div>
                 </div>
 
+
                 <div className="flex flex-col items-center justify-center pt-16 gap-1">
-                    <h1 className="text-2xl font-semibold mb-2">Email Notification Testing</h1> {/* Header */}
+                    <h1 className="text-2xl font-semibold mb-2">Phone Notification Testing</h1> {/* Header */}
                     <form className="flex flex-col mx-auto w-full max-w-screen-md md:w-96"></form>
-                    <input type="text" placeholder="email" value={destination}
-                           onChange={(e) => (setDestination(e.target.value))} className="bg-black border rounded p-2"/>
+                    <input type="text" placeholder="phone" value={phoneNumber}
+                           onChange={(e) => (setPhoneNumber(e.target.value))} className="bg-black border rounded p-2"/>
                     <br/>
-                    <input type="text" placeholder="subject" value={subject}
-                           onChange={(e) => (setSubject(e.target.value))} className="bg-black border rounded p-2"/>
-                    <br/>
-                    <input type="text" placeholder="text" value={message} onChange={(e) => (setMessage(e.target.value))}
-                           className="bg-black border rounded p-2"/>
+                    <input type="text" placeholder="text" value={text}
+                           onChange={(e) => (setText(e.target.value))} className="bg-black border rounded p-2"/>
                     <br/>
 
-                    <button onClick={() => sendEmail(destination, message, subject)}
+                    <button onClick={() => sendText(phoneNumber, text)}
                             className="bg-rose-600 hover:bg-rose-700 text-white font-semibold py-2 px-4 rounded">Send
-                        Email
+                        Text
                     </button>
                 </div>
+
             </div>
 
     )
