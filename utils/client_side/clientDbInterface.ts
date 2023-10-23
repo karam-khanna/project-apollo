@@ -2,7 +2,7 @@ import {Interest, User} from '@/interfaces';
 import React from 'react';
 import {doc, getDoc, setDoc} from 'firebase/firestore';
 import {userFromDbData} from './clientUserUtils';
-import {db} from "@/firebase/client_side/firebase";
+import {db} from "@/firebase/client_side/firebase_init";
 
 export async function clientSideGetUser(userId: string): Promise<User | null> {
     const docRef = doc(db, 'Users', userId);
