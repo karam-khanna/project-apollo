@@ -16,3 +16,21 @@ export enum Interest {
 }
 
 
+export interface UserAvailability {
+    id: string;
+    userId: string;
+    weekStart: string;
+    fridayMorning: boolean;
+    fridayAfternoon: boolean;
+    fridayEvening: boolean;
+    fridayLateNight: boolean;
+    saturdayMorning: boolean;
+    saturdayAfternoon: boolean;
+    saturdayEvening: boolean;
+    saturdayLateNight: boolean;
+    sundayMorning: boolean;
+    sundayAfternoon: boolean;
+    sundayEvening: boolean;
+    sundayLateNight: boolean;
+}
+
