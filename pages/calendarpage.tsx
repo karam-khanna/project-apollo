@@ -122,7 +122,7 @@ export default function CheckboxReactHookFormMultiple() {
     }
 
     return (
-            <div className="flex justify-center items-center space-y-5">
+        <div className="flex flex-col items-center justify-center pt-16 gap-9">
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="items-center space-y-8">
                         <FormField
@@ -131,7 +131,7 @@ export default function CheckboxReactHookFormMultiple() {
                                 render={() => (
                                         <FormItem>
                                             <FormLabel
-                                                    className="text-2xl sm:text-5xl font-semibold pt-7 sm:pt-16 text-white">For
+                                                    className="text-2xl sm:text-5xl font-semibold pt-7 sm:pt-16">For
                                                 this weekend...</FormLabel>
                                             <FormDescription className="">
                                                 {"Select the times this weekend that you're available."}
