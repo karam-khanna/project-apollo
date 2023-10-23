@@ -11,9 +11,10 @@ import {admin_db} from "@/firebase/server_side/firebase_admin_init";
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 
     // let action: string = "create"
-    let action: string = "match"
+    // let action: string = "match"
     // let action: string = "cleanup"
 
+    const action = req.body // can only be create, match, or cleanup
 
     const userIds = ["22xY4MdKc4Mje4RLAeBAnEwV21N2", "3DeCsKZMNAMXgA4qEFhUYDCfGJu2", "7bPrtZdXVvN4DNL9Z3xI1GWuOaM2", "8bZndHi5wUV6dqWPuHE8O8HMeT42"]
     if (action === "create") {
@@ -63,7 +64,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             const docRef = admin_db.doc(`UserAvailability/${docId}`);
             await docRef.delete();
         }
+        res.status(200).json({message: 'done'});
     } else {
-        res.status(4 = 500).json({error: 'oops'});
+        res.status(500).json({error: 'body must be create, match, or cleanup'});
     }
 }
