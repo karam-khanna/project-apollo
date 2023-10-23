@@ -3,6 +3,8 @@ export interface User {
     email: string;
     firstName: string;
     lastName: string;
+    age: string;
+    picture: string;
     onboarded: boolean;
     poker: boolean;
     basketball: boolean;
