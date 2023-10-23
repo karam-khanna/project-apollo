@@ -108,9 +108,9 @@ export default function CheckboxReactHookFormMultiple() {
                             <FormItem>
                                 <div className="mb-4">
                                     <FormLabel
-                                        className="text-2xl sm:text-5xl font-semibold pt-7 sm:pt-16 text-white">For
+                                        className="text-2xl sm:text-5xl font-semibold pt-7 sm:pt-16">For
                                         this weekend...</FormLabel>
-                                    <div className="text-gray-50">
+                                    <div>
                                         Select the times this weekend that you&apos;re available. <br />
                                         Reference:
                                         <ul className="list-disc p1-4">
