@@ -7,7 +7,7 @@ import { useRouter } from "next/router";
 
 export default function Chat() {
 
-  const projectId = 'a67e33b5-9517-4b4a-8721-e7ea39d9090d';
+  const projectId = 'XXXXXXXXXXXXXXXXXXX';
   const router = useRouter();
   const { user, setUser } = useContext(UserContext);
   const chatProps = useMultiChatLogic(projectId, user?.id || '', user?.email || '');
