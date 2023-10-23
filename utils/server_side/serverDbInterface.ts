@@ -20,6 +20,13 @@ export async function updateUserAvailability(
 ): Promise<boolean> {
     const docId = availability.id;
     const docRef = admin_db.doc(`UserAvailability/${docId}`);
-    await docRef.set(availability, {merge: true});
+    try {
+        await docRef.set(availability);
+    } catch (e) {
+        console.log('error updating availability', e);
+        console.log('got here 44')
+        return false;
+    }
+
     return true;
 }
