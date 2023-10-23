@@ -16,13 +16,13 @@ export default function Signup() {
         event.preventDefault();  // prevent default form submission behavior
 
         //check if email is an @emory.edu email
-         // Check if the email ends with @emory.edu
-         if (!email.endsWith('@emory.edu')) {
+        // Check if the email ends with @emory.edu
+        if (!email.endsWith('@emory.edu')) {
             setMessage('Please enter a valid Emory University email address ending with @emory.edu');
             return;
         }
 
-        if (!phone.match(/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im)){
+        if (!phone.match(/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im)) {
             setMessage('Please enter a valid phone number');
             return;
         }
@@ -42,6 +42,7 @@ export default function Signup() {
             setMessage(error.code.replace("auth/", "").replace("-", " "))
         })
     }
+
 
     return (
             <div className={"flex flex-col items-center justify-center pt-16 gap-4"}>
