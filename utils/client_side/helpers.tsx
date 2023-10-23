@@ -1,6 +1,6 @@
-import {UserAvailability} from "@/interfaces";
+import {Interest, User, UserAvailability} from "@/interfaces";
 
-function getWeekStartingDate(date: Date): string {
+export function getWeekStartingDate(date: Date, underscores: boolean): string {
     // Example usage
     // const date: Date = new Date('2023-10-26'); // Assuming this is a Thursday
     // console.log(getWeekStartingDate(date)); // Should return '2023-10-23' (which is the Monday of that week)
@@ -13,26 +13,29 @@ function getWeekStartingDate(date: Date): string {
     const day = date.getDay()
     const diff = date.getDate() - day + (day == 0 ? -6 : 1); // adjust when day is sunday
     const monday = new Date(date.setDate(diff));
-    return `${monday.getFullYear()}_${String(monday.getMonth() + 1).padStart(2, '0')}_${String(monday.getDate()).padStart(2, '0')}`;
+    if (underscores) {
+        return `${monday.getFullYear()}_${String(monday.getMonth() + 1).padStart(2, '0')}_${String(monday.getDate()).padStart(2, '0')}`;
+    } else {
+        return `${monday.getFullYear()}-${String(monday.getMonth() + 1).padStart(2, '0')}-${String(monday.getDate()).padStart(2, '0')}`;
+    }
+
 
 }
 
 
 export function parseAvailabilityDocId(userId: string, date: Date): string {
-    const weekStart = getWeekStartingDate(date);
+    const weekStart = getWeekStartingDate(date, true);
     return `${userId}_${weekStart}`;
 }
 
-export function parseAvailability(userId: string, formData: string[]): UserAvailability {
-    if (!userId) throw new Error('User ID is required');
-
-
-    const weekStart = getWeekStartingDate(new Date());
-    const docId = parseAvailabilityDocId(userId, new Date());
+export function parseAvailability(user: User, formData: string[]): UserAvailability {
+    if (!user || !user.id) throw new Error('User is required');
+    const docId = parseAvailabilityDocId(user.id, new Date());
+    const weekStart = getWeekStartingDate(new Date(), false);
 
     return {
-        id: docId,  // You can set this after pushing to Firebase (or however you choose to generate an ID)
-        userId: userId,
+        id: docId,
+        userId: user.id,
         weekStart: weekStart,
         fridayMorning: formData.includes("fridayMorning") || false,
         fridayAfternoon: formData.includes("fridayAfternoon") || false,
@@ -46,6 +49,13 @@ export function parseAvailability(userId: string, formData: string[]): UserAvail
         sundayAfternoon: formData.includes("sundayAfternoon") || false,
         sundayEvening: formData.includes("sundayEvening") || false,
         sundayLateNight: formData.includes("sundayLateNight") || false,
+        interests: getUsersInterestsAsArray(user),
     };
 }
 
+export function getUsersInterestsAsArray(user: User): Interest[] {
+    const interests: Interest[] = [];
+    if (user.basketball) interests.push(Interest.basketball);
+    if (user.poker) interests.push(Interest.poker);
+    return interests;
+}
