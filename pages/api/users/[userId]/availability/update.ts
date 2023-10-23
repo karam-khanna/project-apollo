@@ -9,7 +9,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         const userId = req.query.userId
         let availability;
         try {
-            availability = JSON.parse(req.body);
+            availability = req.body;
         } catch (e) {
             res.status(400).json({error: 'Invalid JSON'});
             return;
