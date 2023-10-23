@@ -3,11 +3,15 @@ import { useMultiChatLogic, MultiChatSocket, MultiChatWindow } from "react-chat-
 import React, { useEffect, useState, useContext } from 'react'
 import { UserContext } from "@/context/UserContext";
 import { useRouter } from "next/router";
+import axios from 'axios';
 
 
 export default function Chat() {
+  const projectId = process.env.CHAT_PROJECT
 
-  const projectId = 'XXXXXXXXXXXXXXXXXXX';
+  if (!projectId) {
+    throw new Error("no project id!")
+  }
   const router = useRouter();
   const { user, setUser } = useContext(UserContext);
   const chatProps = useMultiChatLogic(projectId, user?.id || '', user?.email || '');
@@ -15,6 +19,22 @@ export default function Chat() {
   useEffect(() => {
     setReady(true)
   }, [])
+  axios.put(
+    'https://api.chatengine.io/users/',
+    {
+      'username': user?.id,
+      'secret': user?.email
+    },
+    {
+      headers: {
+        'PRIVATE-KEY': process.env.CHAT_PRIVATE
+      }
+    }
+  ).then((response) => {
+    console.log(response.data)
+  }
+  ).catch(() => console.log("error")
+  );
   const customRenderChatHeader = (props: { title?: React.ReactNode }) => {
     return <div style={{
       textAlign: 'center',
