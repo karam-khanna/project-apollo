@@ -42,7 +42,7 @@ export default function Signup() {
             setMessage(error.code.replace("auth/", "").replace("-", " "))
         })
     }
-    
+
 
     return (
             <div className={"flex flex-col items-center justify-center pt-16 gap-4"}>
