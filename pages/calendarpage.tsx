@@ -123,15 +123,16 @@ export default function CheckboxReactHookFormMultiple() {
                                                     className="text-2xl sm:text-5xl font-semibold pt-7 sm:pt-16 text-white">For
                                                 this weekend...</FormLabel>
                                             <FormDescription className="">
-                                                <div> {"Select the times this weekend that you're available."} </div>
-                                                Reference:
+                                                {"Select the times this weekend that you're available."}
+                                            </FormDescription>
+                                            <div>
                                                 <ul className="list-disc p1-4">
                                                     <li>Morning: 8 AM - 12 PM</li>
                                                     <li>Afternoon: 12 PM - 5 PM</li>
                                                     <li>Evening: 5 PM - 8 PM</li>
                                                     <li>Night: 8 PM - 12 AM</li>
                                                 </ul>
-                                            </FormDescription>
+                                            </div>
 
                                             <div className="flex flex-row items-center space-x-10 space-y-0">
                                                 {/* First set of items */}
