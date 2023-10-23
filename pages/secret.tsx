@@ -2,7 +2,7 @@ import {Inter} from 'next/font/google'
 import {useContext, useState} from "react";
 import {UserContext} from "@/context/UserContext";
 import {useEffect} from 'react';
-import {firebase_auth} from "../firebase/client_side/firebase";
+import {firebase_auth} from "@/firebase/client_side/firebase_init";
 
 const inter = Inter({subsets: ['latin']})
 
@@ -70,7 +70,7 @@ Devkam
 
 
 //send email to user
-    
+
 
     const sendText = (sendto: string, message: string) => {
         fetch('/api/sendText', {
