@@ -91,8 +91,9 @@ export default function CheckboxReactHookFormMultiple() {
 
         if (user) {
             let availability = parseAvailability(user.id, data.items)
-            console.log("availability", availability)
 
+
+            console.log("availability", availability)
 
             toast({
                 title: "You submitted the following values:",
