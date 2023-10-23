@@ -1,4 +1,4 @@
-import {Interest, timeSlots, User, UserAvailability} from "@/interfaces";
+import {Interest, timeslots, User, UserAvailability} from "@/interfaces";
 import React from "react";
 import {doc, setDoc} from "firebase/firestore";
 import {admin_db} from "@/firebase/server_side/firebase_admin_init";
@@ -33,7 +33,7 @@ export async function updateUserAvailability(
 }
 
 export async function findAvailableForTimeAndInterest(
-        timeslot: timeSlots,
+        timeslot: timeslots,
         date: Date,
         interest: Interest,
 ): Promise<User[]> {

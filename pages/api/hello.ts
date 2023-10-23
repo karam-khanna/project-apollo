@@ -1,5 +1,5 @@
 import {NextApiRequest, NextApiResponse} from "next";
-import {Interest, timeSlots, UserAvailability} from "@/interfaces";
+import {Interest, timeslots, UserAvailability} from "@/interfaces";
 import {
     findAvailableForTimeAndInterest,
     getUserFromDb,
@@ -9,6 +9,7 @@ import {getUsersInterestsAsArray, getWeekStartingDate, parseAvailabilityDocId} f
 import {admin_db} from "@/firebase/server_side/firebase_admin_init";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+
     // let action: string = "create"
     let action: string = "match"
     // let action: string = "cleanup"
@@ -50,6 +51,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
         res.status(200).json({message: 'done'});
 
+    } else if (action === "match") {
+        const matches = await findAvailableForTimeAndInterest(timeslots.fridayMorning, new Date(), Interest.basketball);
+        console.log(matches);
+        res.status(200).json({matches: matches});
     } else if (action === "cleanup") {
         for (const userId of userIds) {
             // parse the doc id
@@ -58,9 +63,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             const docRef = admin_db.doc(`UserAvailability/${docId}`);
             await docRef.delete();
         }
-    } else if (action === "match") {
-        const matches = await findAvailableForTimeAndInterest(timeSlots.fridayMorning, new Date(), Interest.basketball);
-        console.log(matches);
-        res.status(200).json({matches: matches});
+    } else {
+        res.status(4 = 500).json({error: 'oops'});
     }
 }

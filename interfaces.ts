@@ -15,7 +15,7 @@ export enum Interest {
     poker = 'poker',
 }
 
-export enum timeSlots {
+export enum timeslots {
     fridayMorning = 'fridayMorning',
     fridayAfternoon = 'fridayAfternoon',
     fridayEvening = 'fridayEvening',
