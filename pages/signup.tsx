@@ -11,6 +11,7 @@ export default function Signup() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
+    const [phone, setPhone] = useState('');
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();  // prevent default form submission behavior
 
@@ -21,6 +22,10 @@ export default function Signup() {
             return;
         }
 
+        if (!phone.match(/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im)){
+            setMessage('Please enter a valid phone number');
+            return;
+        }
         // Need to connect to database/backend here
         createUserWithEmailAndPassword(firebase_auth, email, password)
                 .then((userCredential) => {
@@ -71,6 +76,13 @@ export default function Signup() {
                             placeholder="Password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
+                            className="bg-black border rounded p-2"
+                    />
+                    <input
+                            type="tel"
+                            placeholder="Phone Number"
+                            value={phone}
+                            onChange={(e) => setPhone(e.target.value)}
                             className="bg-black border rounded p-2"
                     />
                     <Button type="submit">Submit</Button>
