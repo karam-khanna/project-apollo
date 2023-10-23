@@ -87,10 +87,17 @@ export default function CheckboxReactHookFormMultiple() {
         },
     })
 
-    function onSubmit(data: z.infer<typeof FormSchema>) {
+    async function onSubmit(data: z.infer<typeof FormSchema>) {
 
         if (user) {
             let availability = parseAvailability(user.id, data.items)
+            if (availability) {
+                const res = await fetch(`/api/users/${user.id}/availability/update`, {
+                    method: "POST",
+                    body: JSON.stringify(availability),
+                })
+                console.log("res", await res.json())
+            }
 
 
             console.log("availability", availability)
