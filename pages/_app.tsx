@@ -9,8 +9,7 @@ import {User} from "@/interfaces";
 import {UserContext} from "@/context/UserContext";
 import {getAuth, onAuthStateChanged, User as FirebaseUser} from "@firebase/auth";
 import {getOrCreateUserFromAuth} from "@/utils/client_side/authInterfaces";
-import {getUserAuthToken} from "@/utils/client_side/clientUserUtils";
-import {firebase_auth} from "@/components/firebase";
+import {firebase_auth} from "@/firebase/client_side/firebase_init";
 
 export default function App({Component, pageProps}: AppProps) {
     const router = useRouter();
@@ -37,7 +36,7 @@ export default function App({Component, pageProps}: AppProps) {
     })
 
     useEffect(() => {
-        if (!userAuth && router.isReady && router.pathname !== '/login' && router.pathname !== '/signup') {
+        if (!userAuth && router.isReady && !loading && router.pathname !== '/login') {
             router.push('/login').then();
         }
     }, [userAuth, router]);

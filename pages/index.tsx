@@ -15,7 +15,7 @@ import {Label} from "@/components/ui/label"
 import {ThemeToggle} from "@/components/theme-toggle";
 import {useContext} from "react";
 import {UserContext} from "@/context/UserContext";
-import {firebase_auth} from "@/components/firebase";
+import {firebase_auth} from "@/firebase/client_side/firebase_init";
 
 const inter = Inter({subsets: ['latin']})
 

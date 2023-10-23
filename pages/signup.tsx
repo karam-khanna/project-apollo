@@ -2,8 +2,8 @@ import {useState} from 'react';
 import {Button} from "@/components/ui/button";
 import {Label} from "@/components/ui/label"
 import {ThemeToggle} from "@/components/theme-toggle";
-import {firebase_auth} from "@/components/firebase";
 import {createUserWithEmailAndPassword, sendEmailVerification, signOut} from "firebase/auth";
+import {firebase_auth} from "@/firebase/client_side/firebase_init";
 
 export default function Signup() {
     const [fname, setFirstName] = useState('');

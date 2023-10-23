@@ -2,7 +2,7 @@ import {User as FirebaseUser} from "@firebase/auth";
 import {User} from "@/interfaces";
 import {doc, getDoc, setDoc} from "firebase/firestore";
 import {clientSideGetUser} from "./clientDbInterface";
-import {db} from "@/components/firebase";
+import {db} from "@/firebase/client_side/firebase_init";
 
 export async function getOrCreateUserFromAuth(authUser: FirebaseUser): Promise<User> {
     let user: User | null = await clientSideGetUser(authUser.uid);
