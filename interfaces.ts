@@ -15,6 +15,21 @@ export enum Interest {
     poker = 'poker',
 }
 
+export enum timeSlots {
+    fridayMorning = 'fridayMorning',
+    fridayAfternoon = 'fridayAfternoon',
+    fridayEvening = 'fridayEvening',
+    fridayLateNight = 'fridayLateNight',
+    saturdayMorning = 'saturdayMorning',
+    saturdayAfternoon = 'saturdayAfternoon',
+    saturdayEvening = 'saturdayEvening',
+    saturdayLateNight = 'saturdayLateNight',
+    sundayMorning = 'sundayMorning',
+    sundayAfternoon = 'sundayAfternoon',
+    sundayEvening = 'sundayEvening',
+    sundayLateNight = 'sundayLateNight',
+}
+
 
 export interface UserAvailability {
     id: string;
@@ -32,5 +47,6 @@ export interface UserAvailability {
     sundayAfternoon: boolean;
     sundayEvening: boolean;
     sundayLateNight: boolean;
+    interests: Interest[];
 }
 
