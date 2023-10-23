@@ -2,8 +2,8 @@ import {useState} from 'react';
 import {Button} from "@/components/ui/button";
 import {Label} from "@/components/ui/label"
 import {ThemeToggle} from "@/components/theme-toggle";
-import {firebase_auth} from "@/firebase/client_side/firebase";
 import {createUserWithEmailAndPassword, sendEmailVerification, signOut} from "firebase/auth";
+import {firebase_auth} from "@/firebase/client_side/firebase_init";
 
 export default function Signup() {
     const [fname, setFirstName] = useState('');
@@ -22,7 +22,7 @@ export default function Signup() {
             return;
         }
 
-        if (!phone.match(/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im)){
+        if (!phone.match(/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im)) {
             setMessage('Please enter a valid phone number');
             return;
         }
