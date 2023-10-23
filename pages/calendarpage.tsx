@@ -16,59 +16,58 @@ import {
     FormMessage,
 } from "@/components/ui/form"
 import {toast} from "@/components/ui/use-toast"
+import {parseAvailability} from "@/utils/client_side/helpers";
+import {useContext} from "react";
+import {UserContext} from "@/context/UserContext";
 
 const items = [
     {
-        id: "Fmorning",
+        id: "fridayMorning",
         label: "Morning",
     },
     {
-        id: "Fafternoon",
+        id: "fridayAfternoon",
         label: "Afternoon",
     },
     {
-        id: "Fevening",
+        id: "fridayEvening",
         label: "Evening",
     },
     {
-        id: "FNight",
-        label: "Night",
+        id: "fridayLateNight",
+        label: "Late Night",
     },
     {
-        id: "Smorning",
+        id: "saturdayMorning",
         label: "Morning",
     },
     {
-        id: "Safternoon",
+        id: "saturdayAfternoon",
         label: "Afternoon",
     },
     {
-        id: "Sevening",
+        id: "saturdayEvening",
         label: "Evening",
     },
     {
-        id: "Snight",
-        label: "Night",
+        id: "saturdayLateNight",
+        label: "Late Night",
     },
     {
-        id: "FNight",
-        label: "Night",
-    },
-    {
-        id: "Sumorning",
+        id: "sundayMorning",
         label: "Morning",
     },
     {
-        id: "Suafternoon",
+        id: "sundayAfternoon",
         label: "Afternoon",
     },
     {
-        id: "Suevening",
+        id: "sundayEvening",
         label: "Evening",
     },
     {
-        id: "Sunight",
-        label: "Night",
+        id: "sundayLateNight",
+        label: "Late Night",
     },
 ] as const
 
@@ -79,6 +78,8 @@ const FormSchema = z.object({
 })
 
 export default function CheckboxReactHookFormMultiple() {
+
+    const {user} = useContext(UserContext);
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
         defaultValues: {
@@ -87,14 +88,26 @@ export default function CheckboxReactHookFormMultiple() {
     })
 
     function onSubmit(data: z.infer<typeof FormSchema>) {
-        toast({
-            title: "You submitted the following values:",
-            description: (
-                    <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-            ),
-        })
+
+        if (user) {
+            let availability = parseAvailability(user.id, data.items)
+            console.log("availability", availability)
+
+
+            toast({
+                title: "You submitted the following values:",
+                description: (
+                        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+                        <code className="text-white">{JSON.stringify(availability, null, 2)}</code>
+                        </pre>
+                ),
+            })
+        } else {
+            toast({
+                title: "Not logged in!",
+            })
+        }
+
     }
 
     return (
@@ -106,21 +119,19 @@ export default function CheckboxReactHookFormMultiple() {
                                 name="items"
                                 render={() => (
                                         <FormItem>
-                                            <div className="mb-4">
-                                                <FormLabel
-                                                        className="text-2xl sm:text-5xl font-semibold pt-7 sm:pt-16 text-white">For
-                                                    this weekend...</FormLabel>
-                                                <FormDescription className="">
-                                                    <div> {"Select the times this weekend that you're available."} </div>
-                                                    Reference:
-                                                    <ul className="list-disc p1-4">
-                                                        <li>Morning: 8 AM - 12 PM</li>
-                                                        <li>Afternoon: 12 PM - 5 PM</li>
-                                                        <li>Evening: 5 PM - 8 PM</li>
-                                                        <li>Night: 8 PM - 12 AM</li>
-                                                    </ul>
-                                                </FormDescription>
-                                            </div>
+                                            <FormLabel
+                                                    className="text-2xl sm:text-5xl font-semibold pt-7 sm:pt-16 text-white">For
+                                                this weekend...</FormLabel>
+                                            <FormDescription className="">
+                                                <div> {"Select the times this weekend that you're available."} </div>
+                                                Reference:
+                                                <ul className="list-disc p1-4">
+                                                    <li>Morning: 8 AM - 12 PM</li>
+                                                    <li>Afternoon: 12 PM - 5 PM</li>
+                                                    <li>Evening: 5 PM - 8 PM</li>
+                                                    <li>Night: 8 PM - 12 AM</li>
+                                                </ul>
+                                            </FormDescription>
 
                                             <div className="flex flex-row items-center space-x-10 space-y-0">
                                                 {/* First set of items */}
@@ -200,7 +211,7 @@ export default function CheckboxReactHookFormMultiple() {
                                                     <div className="bg-pink p-2 rounded-md">
                                                         <h1 className='text-white font-bold'>SUNDAY</h1>
                                                     </div>
-                                                    {items.slice(9, 13).map((item) => (
+                                                    {items.slice(8, 12).map((item) => (
                                                             <FormField
                                                                     key={item.id}
                                                                     control={form.control}
