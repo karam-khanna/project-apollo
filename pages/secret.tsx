@@ -2,7 +2,7 @@ import {Inter} from 'next/font/google'
 import {useContext, useState} from "react";
 import {UserContext} from "@/context/UserContext";
 import {useEffect} from 'react';
-import {firebase_auth} from "../components/firebase";
+import {firebase_auth} from "../firebase/client_side/firebase";
 
 const inter = Inter({subsets: ['latin']})
 

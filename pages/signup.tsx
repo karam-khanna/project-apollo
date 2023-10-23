@@ -2,7 +2,7 @@ import {useState} from 'react';
 import {Button} from "@/components/ui/button";
 import {Label} from "@/components/ui/label"
 import {ThemeToggle} from "@/components/theme-toggle";
-import {firebase_auth} from "@/components/firebase";
+import {firebase_auth} from "@/firebase/client_side/firebase";
 import {createUserWithEmailAndPassword, sendEmailVerification, signOut} from "firebase/auth";
 
 export default function Signup() {
@@ -15,8 +15,8 @@ export default function Signup() {
         event.preventDefault();  // prevent default form submission behavior
 
         //check if email is an @emory.edu email
-         // Check if the email ends with @emory.edu
-         if (!email.endsWith('@emory.edu')) {
+        // Check if the email ends with @emory.edu
+        if (!email.endsWith('@emory.edu')) {
             setMessage('Please enter a valid Emory University email address ending with @emory.edu');
             return;
         }
