@@ -2,11 +2,26 @@ import {NextApiRequest, NextApiResponse} from "next";
 import {UserAvailability} from "@/interfaces";
 import {getUserFromDb, updateUserAvailability} from "@/utils/server_side/serverDbInterface";
 
-export default async function updateAvailability(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (req.method === 'POST') {
         // TODO: verify user id matches with auth tokens
+        console.log('update availability')
         const userId = req.query.userId
-        const {availability} = req.body;
+        let availability;
+        try {
+            availability = JSON.parse(req.body);
+        } catch (e) {
+            res.status(400).json({error: 'Invalid JSON'});
+            return;
+        }
+
+
+        // make sure is type of UserAvailability
+        if (!availability) {
+            res.status(400).json({error: 'Invalid availability'});
+            return;
+        }
+
         const user = await getUserFromDb(userId as string)
 
         if (!user) {
