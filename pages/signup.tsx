@@ -2,8 +2,8 @@ import {useState} from 'react';
 import {Button} from "@/components/ui/button";
 import {Label} from "@/components/ui/label"
 import {ThemeToggle} from "@/components/theme-toggle";
-import {firebase_auth} from "@/components/firebase";
 import {createUserWithEmailAndPassword, sendEmailVerification, signOut} from "firebase/auth";
+import {firebase_auth} from "@/firebase/client_side/firebase_init";
 
 export default function Signup() {
     const [fname, setFirstName] = useState('');
@@ -16,13 +16,13 @@ export default function Signup() {
         event.preventDefault();  // prevent default form submission behavior
 
         //check if email is an @emory.edu email
-         // Check if the email ends with @emory.edu
-         if (!email.endsWith('@emory.edu')) {
+        // Check if the email ends with @emory.edu
+        if (!email.endsWith('@emory.edu')) {
             setMessage('Please enter a valid Emory University email address ending with @emory.edu');
             return;
         }
 
-        if (!phone.match(/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im)){
+        if (!phone.match(/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im)) {
             setMessage('Please enter a valid phone number');
             return;
         }

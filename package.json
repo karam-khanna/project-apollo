@@ -28,6 +28,7 @@
     "eslint": "8.49.0",
     "eslint-config-next": "13.5.2",
     "firebase": "^10.4.0",
+    "firebase-admin": "^11.11.0",
     "firebase-hooks": "^0.0.1",
     "lib-utils-ts": "^2.0.4-stable",
     "lucide-react": "^0.279.0",
