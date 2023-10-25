@@ -5,7 +5,7 @@ export interface User {
     lastName: string;
     onboarded: boolean;
     poker: boolean;
-    basketball: boolean;
+    basketball: boolean; //nono
 
 }
 
