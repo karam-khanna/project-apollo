@@ -15,7 +15,7 @@ export enum Interest {
     poker = 'poker',
 }
 
-export enum timeslots {
+export enum Timeslots {
     fridayMorning = 'fridayMorning',
     fridayAfternoon = 'fridayAfternoon',
     fridayEvening = 'fridayEvening',
@@ -50,3 +50,9 @@ export interface UserAvailability {
     interests: Interest[];
 }
 
+interface AlgoMatchReturn {
+    date: string;
+    timeslot: Timeslots;
+    interest: Interest;
+    matches: User[];
+}
