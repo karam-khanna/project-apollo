@@ -22,6 +22,7 @@ import {getUserAuthToken} from "@/utils/client_side/clientUserUtils";
 import {useToast} from "@/components/ui/use-toast";
 import {Interest} from "@/interfaces";
 import {Checkbox} from "@/components/ui/checkbox";
+import axios from 'axios';
 
 const interestEnum = z.enum(["poker", "basketball"])
 type interestEnum = z.infer<typeof interestEnum>;
@@ -106,6 +107,27 @@ export function OnboardingForm(props: OnboardingFormProps) {
             await updateUserFirstName(user, values.firstName, setUser)
             await updateUserLastName(user, values.lastName, setUser)
             await updateUserOnboarded(user, true, setUser)
+            if (!process.env.NEXT_PUBLIC_CHAT_PRIVATE){
+                throw new Error('No private key!')
+            }
+            axios.post(
+                'https://api.chatengine.io/users/',
+                {
+                    'username': user.id,
+                    'secret': user.email,
+                    'first-name': values.firstName,
+                    'last-name': values.lastName
+                },
+                {
+                    headers: {
+                        'PRIVATE-KEY': process.env.NEXT_PUBLIC_CHAT_PRIVATE
+                    }
+                }
+            ).then((response) => {
+                console.log(response.data)
+            }
+            ).catch(() => console.log("error")
+            );
             router.push('/calendarpage').then();
 
         } else {
