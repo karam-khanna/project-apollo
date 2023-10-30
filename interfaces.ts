@@ -50,7 +50,7 @@ export interface UserAvailability {
     interests: Interest[];
 }
 
-interface AlgoMatchReturn {
+export interface AlgoMatchReturn {
     date: string;
     timeslot: Timeslots;
     interest: Interest;
