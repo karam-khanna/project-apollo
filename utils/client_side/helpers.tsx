@@ -1,6 +1,6 @@
 import {Interest, User, UserAvailability} from "@/interfaces";
 
-export function getWeekStartingDate(date: Date, underscores: boolean): string {
+export function getWeekStartingDateAsString(date: Date, underscores: boolean): string {
     // Example usage
     // const date: Date = new Date('2023-10-26'); // Assuming this is a Thursday
     // console.log(getWeekStartingDate(date)); // Should return '2023-10-23' (which is the Monday of that week)
@@ -12,26 +12,34 @@ export function getWeekStartingDate(date: Date, underscores: boolean): string {
 
     const day = date.getDay()
     const diff = date.getDate() - day + (day == 0 ? -6 : 1); // adjust when day is sunday
-    const monday = new Date(date.setDate(diff));
+    const monday = getWeekStartingDate(date);
+    return dateToString(monday, underscores);
+}
+
+export function getWeekStartingDate(date: Date): Date {
+    const day = date.getDay()
+    const diff = date.getDate() - day + (day == 0 ? -6 : 1); // adjust when day is sunday
+    return new Date(date.setDate(diff));
+}
+
+export function dateToString(date: Date, underscores: boolean): string {
     if (underscores) {
-        return `${monday.getFullYear()}_${String(monday.getMonth() + 1).padStart(2, '0')}_${String(monday.getDate()).padStart(2, '0')}`;
+        return `${date.getFullYear()}_${String(date.getMonth() + 1).padStart(2, '0')}_${String(date.getDate()).padStart(2, '0')}`;
     } else {
-        return `${monday.getFullYear()}-${String(monday.getMonth() + 1).padStart(2, '0')}-${String(monday.getDate()).padStart(2, '0')}`;
+        return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
     }
-
-
 }
 
 
 export function parseAvailabilityDocId(userId: string, date: Date): string {
-    const weekStart = getWeekStartingDate(date, true);
+    const weekStart = getWeekStartingDateAsString(date, true);
     return `${userId}_${weekStart}`;
 }
 
 export function parseAvailability(user: User, formData: string[]): UserAvailability {
     if (!user || !user.id) throw new Error('User is required');
     const docId = parseAvailabilityDocId(user.id, new Date());
-    const weekStart = getWeekStartingDate(new Date(), false);
+    const weekStart = getWeekStartingDateAsString(new Date(), false);
 
     return {
         id: docId,

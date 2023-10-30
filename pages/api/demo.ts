@@ -1,11 +1,15 @@
 import {NextApiRequest, NextApiResponse} from "next";
-import {Interest, timeslots, UserAvailability} from "@/interfaces";
+import {Interest, Timeslots, UserAvailability} from "@/interfaces";
 import {
     findAvailableForTimeAndInterest,
     getUserFromDb,
     updateUserAvailability
 } from "@/utils/server_side/serverDbInterface";
-import {getUsersInterestsAsArray, getWeekStartingDate, parseAvailabilityDocId} from "@/utils/client_side/helpers";
+import {
+    getUsersInterestsAsArray,
+    getWeekStartingDateAsString,
+    parseAvailabilityDocId
+} from "@/utils/client_side/helpers";
 import {admin_db} from "@/firebase/server_side/firebase_admin_init";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -24,7 +28,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             if (!user) {
                 continue;
             }
-            const weekStart = getWeekStartingDate(new Date(), false);
+            const weekStart = getWeekStartingDateAsString(new Date(), false);
             const docId = parseAvailabilityDocId(userId, new Date());
             const availability: UserAvailability = {
                 id: docId,
@@ -53,7 +57,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         res.status(200).json({message: 'done'});
 
     } else if (action === "match") {
-        const matches = await findAvailableForTimeAndInterest(timeslots.fridayMorning, new Date(), Interest.basketball);
+        const matches = await findAvailableForTimeAndInterest(Timeslots.fridayMorning, new Date(), Interest.basketball);
         console.log(matches);
         res.status(200).json({matches: matches});
     } else if (action === "cleanup") {
