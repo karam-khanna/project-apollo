@@ -13,6 +13,13 @@ export default async function matchSlot(req: NextApiRequest, res: NextApiRespons
             date = getWeekStartingDate(new Date());
         }
 
+        let limit = 0;
+        if (reqBody && reqBody.limit) {
+            limit = reqBody.limit;
+        } else {
+            limit = 0
+        }
+
         if (date.getDay() !== 1) {
             return res.status(400).json({error: 'Invalid date: not a Monday'});
         }
@@ -33,7 +40,7 @@ export default async function matchSlot(req: NextApiRequest, res: NextApiRespons
                 const matches = await findAvailableForTimeAndInterest(timeslot as Timeslots, currentDate, interest as Interest);
 
                 // if we have matches for this timeslot and interest, add it to the results
-                if (matches.length > 0) {
+                if (matches.length > limit) {
                     results.push({
                         date: dateString,
                         timeslot: timeslot as Timeslots,
