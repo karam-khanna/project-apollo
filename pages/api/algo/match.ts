@@ -40,7 +40,7 @@ export default async function matchSlot(req: NextApiRequest, res: NextApiRespons
                 const matches = await findAvailableForTimeAndInterest(timeslot as Timeslots, currentDate, interest as Interest);
 
                 // if we have matches for this timeslot and interest, add it to the results
-                if (matches.length > limit) {
+                if (matches.length >= limit) {
                     results.push({
                         date: dateString,
                         timeslot: timeslot as Timeslots,
