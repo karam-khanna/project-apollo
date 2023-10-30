@@ -17,7 +17,7 @@ export default function Loading() {
           });
         }, 1);
         
-    return () => clearTimeout(timer)
+    return () => clearTimeout(timer);
   }, [])
   return (
     <div>
