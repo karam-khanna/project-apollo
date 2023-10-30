@@ -7,7 +7,6 @@ export default async function matchSlot(req: NextApiRequest, res: NextApiRespons
     if (req.method === 'GET') {
         const reqBody = req.body;
         let date = new Date();
-
         if (reqBody && reqBody.date) {
             date = new Date(reqBody.date);
         } else {
@@ -21,7 +20,6 @@ export default async function matchSlot(req: NextApiRequest, res: NextApiRespons
         const results: AlgoMatchReturn[] = [];
         const currentDate = new Date(date); // Create a new Date object for each iteration
         const dateString = currentDate.toDateString();
-        console.log(dateString);
 
         for (const timeslot in Timeslots) {
             if (!Object.values(Timeslots).includes(timeslot as any)) {
