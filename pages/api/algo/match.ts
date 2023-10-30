@@ -18,9 +18,7 @@ export default async function matchSlot(req: NextApiRequest, res: NextApiRespons
             return res.status(400).json({error: 'Invalid date: not a Monday'});
         }
 
-
         const results: AlgoMatchReturn[] = [];
-
         const currentDate = new Date(date); // Create a new Date object for each iteration
         const dateString = currentDate.toDateString();
         console.log(dateString);
@@ -34,7 +32,6 @@ export default async function matchSlot(req: NextApiRequest, res: NextApiRespons
                 if (!Object.values(Interest).includes(interest as any)) {
                     continue;
                 }
-
                 const matches = await findAvailableForTimeAndInterest(timeslot as Timeslots, currentDate, interest as Interest);
 
                 // if we have matches for this timeslot and interest, add it to the results
