@@ -36,7 +36,6 @@ export default function Home() {
                 <div className={"flex flex-col gap-2"}>
                     {isCalendarButtonVisible && <Button onClick={() => router.push('/calendarpage').then()}>Calendar Page</Button>}
                     <Button onClick={() => router.push('/profile').then()}>Profile</Button>
-                    <Button onClick={() => router.push('/loading').then()}>Loading</Button>
                     <Button onClick={() => router.push('/myevents').then()}>My Events</Button>
                     <Button onClick={
                         () => {
