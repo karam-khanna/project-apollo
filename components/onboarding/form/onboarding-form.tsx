@@ -12,7 +12,8 @@ import {Label} from "@/components/ui/label";
 import {
     updateUserFirstName, updateUserInterest,
     updateUserLastName,
-    updateUserOnboarded
+    updateUserOnboarded,
+    updateUserPhone
 } from "@/utils/client_side/clientDbInterface";
 import {UserContext} from "@/context/UserContext";
 import {router} from "next/client";
@@ -46,6 +47,9 @@ const formSchema = z.object({
     lastName: z.string().min(2, {
         message: "Last name",
     }),
+    phone: z.string().min(2, {
+        message: "Phone Number",
+    }),
     interests: z.array(z.string()).refine((value) => value.some((interest) => interest), {
         message: "You have to select at least one item.",
     }),
@@ -67,6 +71,7 @@ export function OnboardingForm(props: OnboardingFormProps) {
         defaultValues: {
             firstName: "",
             lastName: "",
+            phone: "",
             interests: []
         },
     })
@@ -78,10 +83,18 @@ export function OnboardingForm(props: OnboardingFormProps) {
             props.setIsLoading(true);
             let firstName = values.firstName
             let lastName = values.lastName
+            let phone = values.phone
             const userInterests = values.interests
             if (firstName === "" || lastName === "") {
                 toast({
                     title: "Oops! You forgot to enter your name",
+                    description: "Try submitting again",
+                })
+                return
+            }
+            if (!phone.match(/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im)) {
+                toast({
+                    title: "Please enter a valid phone number",
                     description: "Try submitting again",
                 })
                 return
@@ -105,6 +118,7 @@ export function OnboardingForm(props: OnboardingFormProps) {
 
             await updateUserFirstName(user, values.firstName, setUser)
             await updateUserLastName(user, values.lastName, setUser)
+            await updateUserPhone(user, values.phone, setUser)
             await updateUserOnboarded(user, true, setUser)
             router.push('/calendarpage').then();
 
@@ -147,6 +161,26 @@ export function OnboardingForm(props: OnboardingFormProps) {
                                             </FormLabel>
                                             <FormControl>
                                                 <Input placeholder="Doe" {...field} />
+                                            </FormControl>
+                                            <FormMessage/>
+                                        </FormItem>
+                                )}
+                        />
+                        <FormField
+                                control={form.control}
+                                name="phone"
+                                render={({field}) => (
+                                        <FormItem>
+                                            <FormLabel>
+                                                <div className={"container pl-0 gap "}>
+                                                    <h2>Phone Number</h2>
+                                                </div>
+                                            </FormLabel>
+                                            <FormDescription>
+                                                    {"Enter your phone number without dashes or spaces"}
+                                                </FormDescription>
+                                            <FormControl>
+                                                <Input placeholder="XXXXXXXXXX" {...field} />
                                             </FormControl>
                                             <FormMessage/>
                                         </FormItem>

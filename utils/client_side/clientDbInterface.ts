@@ -29,6 +29,14 @@ export async function updateUserLastName(
     return updateUserField(user, 'lastName', lastName, setUser);
 }
 
+export async function updateUserPhone(
+    user: User,
+    phone: string,
+    setUser: React.Dispatch<React.SetStateAction<User | null>>
+): Promise<boolean> {
+return updateUserField(user, 'phone', phone, setUser);
+}
+
 
 export async function updateUserOnboarded(
         user: User,
