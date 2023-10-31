@@ -1,9 +1,10 @@
+import Image from 'next/image';
 import React, { Dispatch, SetStateAction, useContext } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";  
 import { updateUserFirstName, updateUserInterest, updateUserLastName, updateUserOnboarded, updateUserPicture, updateUserAge } from "@/utils/client_side/clientDbInterface";
 import { UserContext } from "@/context/UserContext";
 import { useRouter } from "next/router";
@@ -40,9 +41,17 @@ const formSchema = z.object({
   interests: z.array(z.string()).refine((value) => value.some((interest) => interest), {
     message: "You have to select at least one item.",
   }),
-  picture: z.string().optional(),
-  age: ageSchema, // Add the age field
+  age: ageSchema,
+  selectedAvatar: z.string().optional(), // Add the selectedAvatar field
 });
+
+const avatarOptions = [
+  "/avatars/bowlerhat.png",
+  "/avatars/darth.png",
+  "/avatars/defaultgirl.png",
+  "/avatars/glassesgirl.png",
+  "/avatars/hoodiemale.png",
+];
 
 export interface OnboardingFormProps {
   setIsLoading: Dispatch<SetStateAction<boolean>>;
@@ -58,11 +67,16 @@ export function OnboardingForm(props: OnboardingFormProps) {
       firstName: "",
       lastName: "",
       interests: [],
-      picture: "",
-      age: "", // Initialize the age field
+      age: "",
+      selectedAvatar: "", // Initialize the selectedAvatar field
     },
   });
   const { user, setUser } = useContext(UserContext);
+
+  const handleAvatarChange = (event) => {
+    const selectedAvatar = event.target.value;
+    form.setValue("selectedAvatar", selectedAvatar);
+  };
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     if (user) {
@@ -70,37 +84,27 @@ export function OnboardingForm(props: OnboardingFormProps) {
       let firstName = values.firstName;
       let lastName = values.lastName;
       const userInterests = values.interests;
-      const age = values.age; // Get the age from form values
+      const age = values.age;
+      const selectedAvatar = values.selectedAvatar;
 
-      if (firstName === "" || lastName === "") {
+      if (firstName === "" || lastName === "" || selectedAvatar === "") {
         toast({
-          title: "Oops! You forgot to enter your name",
+          title: "Oops! You forgot to enter your name or select an avatar",
           description: "Try submitting again",
         });
         return;
       }
 
-      // Check if a picture was uploaded
-      if (values.picture) {
-        // Assuming the updateUserPicture function takes the user, picture URL, and setUser as parameters.
-        await updateUserPicture(user, values.picture, setUser);
-      }
+      // Save the selected avatar in the database
+      await updateUserPicture(user, selectedAvatar, setUser);
 
-      if (userInterests.includes("poker")) {
-        await updateUserInterest(user, "poker" as Interest, true, setUser);
-      } else {
-        await updateUserInterest(user, "poker" as Interest, false, setUser);
-      }
-
-      if (userInterests.includes("basketball")) {
-        await updateUserInterest(user, "basketball" as Interest, true, setUser);
-      } else {
-        await updateUserInterest(user, "basketball" as Interest, false, setUser);
-      }
+      userInterests.forEach(async (interest) => {
+        await updateUserInterest(user, interest as Interest, true, setUser);
+      });
 
       await updateUserFirstName(user, values.firstName, setUser);
       await updateUserLastName(user, values.lastName, setUser);
-      await updateUserAge(user, age, setUser); // Update user age
+      await updateUserAge(user, age, setUser);
       await updateUserOnboarded(user, true, setUser);
       router.push("/calendarpage").then();
     } else {
@@ -182,16 +186,31 @@ export function OnboardingForm(props: OnboardingFormProps) {
               </FormItem>
             )}
           />
-          {/* Add the input field for uploading a picture */}
           <FormField
             control={form.control}
-            name="picture"
+            name="selectedAvatar"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Profile Picture</FormLabel>
+                <FormLabel>Profile Avatar</FormLabel>
                 <FormControl>
-                  <Input type="file" accept="image/*" {...field} />
+                  <select {...field} onChange={handleAvatarChange}>
+                    <option value="">Select an Avatar</option>
+                    {avatarOptions.map((avatar, index) => (
+                      <option key={index} value={avatar}>
+                        Avatar {index + 1}
+                      </option>
+                    ))}
+                  </select>
                 </FormControl>
+                <div className="text-center">
+                <Image
+                  src={field.value}
+                  alt="Selected Avatar"
+                  width={100}
+                  height={100}
+                />
+                {/* Display the selected avatar */}
+                  </div>
                 <FormMessage />
               </FormItem>
             )}
@@ -215,3 +234,4 @@ export function OnboardingForm(props: OnboardingFormProps) {
     </div>
   );
 }
+
