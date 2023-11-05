@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {Button} from "@/components/ui/button";
 import {Label} from "@/components/ui/label";
 import {ThemeToggle} from "@/components/theme-toggle";
-import {signInWithEmailAndPassword, sendEmailVerification} from "firebase/auth";
+import {signInWithEmailAndPassword, sendEmailVerification, signOut} from "firebase/auth";
 import {useRouter} from "next/router";
 import {firebase_auth} from "@/firebase/client_side/firebase_init";
 
@@ -28,6 +28,7 @@ export default function Login() {
                             setMessage("Your email isn't verified, and there seems to be an error with the verification process.")
                             console.log(error)
                         })
+                        signOut(firebase_auth);
                     }
                 })
                 .catch((error) => {
