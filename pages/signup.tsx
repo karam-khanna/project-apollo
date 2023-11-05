@@ -6,8 +6,6 @@ import {createUserWithEmailAndPassword, sendEmailVerification, signOut} from "fi
 import {firebase_auth} from "@/firebase/client_side/firebase_init";
 
 export default function Signup() {
-    const [fname, setFirstName] = useState('');
-    const [lname, setLastName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
@@ -15,7 +13,6 @@ export default function Signup() {
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();  // prevent default form submission behavior
 
-        //check if email is an @emory.edu email
         // Check if the email ends with @emory.edu
         if (!email.endsWith('@emory.edu')) {
             setMessage('Please enter a valid Emory University email address ending with @emory.edu');
@@ -33,6 +30,7 @@ export default function Signup() {
                     console.log(user);
                     sendEmailVerification(user).then(() => {
                         setMessage('Successfully signed up! Verification email sent.')
+                        signOut(firebase_auth)
                     }).catch((error) => {
                         setMessage("Successfully signed up, but the email verification couldn't be sent.")
                         console.log(error)
@@ -51,20 +49,6 @@ export default function Signup() {
                 <div className='container mx-auto'/>
 
                 <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-                    <input
-                            type="fname"
-                            placeholder="First Name"
-                            value={fname}
-                            onChange={(e) => setFirstName(e.target.value)}
-                            className="bg-black border rounded p-2"
-                    />
-                    <input
-                            type="lname"
-                            placeholder="Last Name"
-                            value={lname}
-                            onChange={(e) => setLastName(e.target.value)}
-                            className="bg-black border rounded p-2"
-                    />
                     <input
                             type="email"
                             placeholder="Email"
