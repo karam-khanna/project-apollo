@@ -23,20 +23,6 @@ import {
         NumberOfPeople: "8/8",
         GroupChat:  <a href="https://www.emory.edu/home/index.html">Join GroupChat</a>,
     },
-    {
-        Day: "Saturday",
-        Time: "Morning",
-        Activity: "Basketball",
-        NumberOfPeople: "6/10",
-        GroupChat:  <a href="https://www.emory.edu/home/index.html">Join GroupChat</a>,
-    },
-    {
-        Day: "Sunday",
-        Time: "Afternoon",
-        Activity: "Basketball",
-        NumberOfPeople: "9/10",
-        GroupChat:  <a href="https://www.emory.edu/home/index.html">Join GroupChat</a>,
-    },
   ]
   
   export default function TableDemo() {
@@ -44,7 +30,7 @@ import {
         <div className="flex flex-col items-center justify-center pt-16 gap-9">
         <h1 className="text-6xl font-bold text-center"> My Events </h1>
       <Table>
-        <TableCaption>A list of your upcomming events.</TableCaption>
+        <TableCaption>A list of your upcoming events.</TableCaption>
         <TableHeader>
           <TableRow className="justify-center">
             <TableHead className="text-pink cursor-pointer ml-2 font-bold ">Day</TableHead>
