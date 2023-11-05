@@ -110,24 +110,6 @@ export function OnboardingForm(props: OnboardingFormProps) {
             if (!process.env.NEXT_PUBLIC_CHAT_PRIVATE){
                 throw new Error('No private key!')
             }
-            axios.post(
-                'https://api.chatengine.io/users/',
-                {
-                    'username': user.id,
-                    'secret': user.email,
-                    'first-name': values.firstName,
-                    'last-name': values.lastName
-                },
-                {
-                    headers: {
-                        'PRIVATE-KEY': process.env.NEXT_PUBLIC_CHAT_PRIVATE
-                    }
-                }
-            ).then((response) => {
-                console.log(response.data)
-            }
-            ).catch(() => console.log("error")
-            );
             router.push('/calendarpage').then();
 
         } else {

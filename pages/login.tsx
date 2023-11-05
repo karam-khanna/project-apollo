@@ -23,23 +23,16 @@ export default function Login() {
                     throw new Error('No private key!')
                 }
                 if (userCredential.user.emailVerified) {
-                    axios.put(
-                        'https://api.chatengine.io/users/',
-                        {
-                            'username': userCredential.user.uid,
-                            'secret': userCredential.user.email
-                        },
-                        {
-                            headers: {
-                                'PRIVATE-KEY': process.env.NEXT_PUBLIC_CHAT_PRIVATE
-                            }
-                        }
-                    ).then((response) => {
-                        console.log(response.data)
-                    }
-                    ).catch(() => console.log("error")
-                    );
                     setMessage('Successfully logged in!');
+                    var res: any = null;
+                    axios({
+                        method: 'post',
+                        url: '/api/chat/update',
+                        data: {
+                          userid: userCredential.user.uid
+                        }
+                      }).then((response) => {res = response; console.log(res);}).catch((error) => {throw new Error(error)});
+                    
                     router.push('/').then();
                 } else {
                     sendEmailVerification(userCredential.user).then(() => {
