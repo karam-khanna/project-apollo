@@ -27,18 +27,26 @@ const ProfileModificationPage: React.FC = () => {
     };
 
     const handlePictureChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files[0];
-        if (file) {
+        const files = e.target.files;
+        if (files && files.length > 0) {
+            const file = files[0];
             const reader = new FileReader();
+    
             reader.onload = (e) => {
-                setFormData({
-                    ...formData,
-                    picture: e.target.result as string,
-                });
+                const result = e.target?.result as string | null;
+                if (result) {
+                    setFormData({
+                        ...formData,
+                        picture: result,
+                    });
+                }
             };
+    
             reader.readAsDataURL(file);
         }
     };
+    
+    
 
     const saveChanges = async () => {
         if (user) {

@@ -42,7 +42,7 @@ const formSchema = z.object({
     message: "You have to select at least one item.",
   }),
   age: ageSchema,
-  selectedAvatar: z.string().optional(), // Add the selectedAvatar field
+  selectedAvatar: z.string().optional(),
 });
 
 const avatarOptions = [
@@ -73,47 +73,47 @@ export function OnboardingForm(props: OnboardingFormProps) {
   });
   const { user, setUser } = useContext(UserContext);
 
-  const handleAvatarChange = (event) => {
+  const handleAvatarChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedAvatar = event.target.value;
     form.setValue("selectedAvatar", selectedAvatar);
   };
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    if (user) {
-      props.setIsLoading(true);
-      let firstName = values.firstName;
-      let lastName = values.lastName;
-      const userInterests = values.interests;
-      const age = values.age;
-      const selectedAvatar = values.selectedAvatar;
+async function onSubmit(values: z.infer<typeof formSchema>) {
+  if (user) {
+    props.setIsLoading(true);
+    let firstName = values.firstName;
+    let lastName = values.lastName;
+    const userInterests = values.interests;
+    const age = parseInt(values.age, 10); // Convert age to a number
+    const selectedAvatar = values.selectedAvatar;
 
-      if (firstName === "" || lastName === "" || selectedAvatar === "") {
-        toast({
-          title: "Oops! You forgot to enter your name or select an avatar",
-          description: "Try submitting again",
-        });
-        return;
-      }
-
-      // Save the selected avatar in the database
-      await updateUserPicture(user, selectedAvatar, setUser);
-
-      userInterests.forEach(async (interest) => {
-        await updateUserInterest(user, interest as Interest, true, setUser);
-      });
-
-      await updateUserFirstName(user, values.firstName, setUser);
-      await updateUserLastName(user, values.lastName, setUser);
-      await updateUserAge(user, age, setUser);
-      await updateUserOnboarded(user, true, setUser);
-      router.push("/calendarpage").then();
-    } else {
+    if (firstName === "" || lastName === "" || !selectedAvatar || isNaN(age)) {
       toast({
-        title: "Oops! Something went wrong",
-        description: "Try submitting again, or reloading the page",
+        title: "Oops! You forgot to enter your name, select an avatar, or provide a valid age",
+        description: "Try submitting again",
       });
+      return;
     }
+
+    // Save the selected avatar in the database
+    await updateUserPicture(user, selectedAvatar, setUser);
+
+    userInterests.forEach(async (interest) => {
+      await updateUserInterest(user, interest as Interest, true, setUser);
+    });
+
+    await updateUserFirstName(user, values.firstName, setUser);
+    await updateUserLastName(user, values.lastName, setUser);
+    await updateUserAge(user, age, setUser); // Now passing a number
+    await updateUserOnboarded(user, true, setUser);
+    router.push("/calendarpage").then();
+  } else {
+    toast({
+      title: "Oops! Something went wrong",
+      description: "Try submitting again, or reloading the page",
+    });
   }
+}
 
   return (
     <div>
@@ -186,35 +186,38 @@ export function OnboardingForm(props: OnboardingFormProps) {
               </FormItem>
             )}
           />
-          <FormField
-            control={form.control}
-            name="selectedAvatar"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Profile Avatar</FormLabel>
-                <FormControl>
-                  <select {...field} onChange={handleAvatarChange}>
-                    <option value="">Select an Avatar</option>
-                    {avatarOptions.map((avatar, index) => (
-                      <option key={index} value={avatar}>
-                        Avatar {index + 1}
-                      </option>
-                    ))}
-                  </select>
-                </FormControl>
-                <div className="text-center">
-                <Image
-                  src={field.value}
-                  alt="Selected Avatar"
-                  width={100}
-                  height={100}
-                />
-                {/* Display the selected avatar */}
-                  </div>
-                <FormMessage />
-              </FormItem>
-            )}
+         <FormField
+  control={form.control}
+  name="selectedAvatar"
+  render={({ field }) => (
+    <FormItem>
+      <FormLabel>Profile Avatar</FormLabel>
+      <FormControl>
+        <select {...field} onChange={handleAvatarChange}>
+          <option value="">Select an Avatar</option>
+          {avatarOptions.map((avatar, index) => (
+            <option key={index} value={avatar}>
+              Avatar {index + 1}
+            </option>
+          ))}
+        </select>
+      </FormControl>
+      <div className="text-center">
+        {field.value ? (
+          <Image
+            src={field.value}
+            alt="Selected Avatar"
+            width={100}
+            height={100}
           />
+        ) : null}
+        {/* Display the selected avatar */}
+      </div>
+      <FormMessage />
+    </FormItem>
+  )}
+/>
+
           <FormField
             control={form.control}
             name="age"
