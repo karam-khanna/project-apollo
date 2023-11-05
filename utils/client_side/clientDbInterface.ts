@@ -60,6 +60,22 @@ export async function updateUserInterest(
     }
 }
 
+export async function updateUserPicture(
+    user: User,
+    pictureUrl: string,
+    setUser: React.Dispatch<React.SetStateAction<User | null>>
+  ): Promise<boolean> {
+    return updateUserField(user, 'picture', pictureUrl, setUser);
+  }  
+
+export async function updateUserAge(
+    user: User,
+    age: number, // Assuming age is a number
+    setUser: React.Dispatch<React.SetStateAction<User | null>>
+  ): Promise<boolean> {
+    return updateUserField(user, 'age', age, setUser);
+  }
+
 
 async function updateUserField(
         user: User,
