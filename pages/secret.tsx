@@ -10,7 +10,7 @@ const inter = Inter({subsets: ['latin']})
 export default function Home() {
     const {user, setUser} = useContext(UserContext);
     const [destination, setDestination] = useState("");
-    const [phoneNumber, setPhoneNumber] = useState(user?.phone); //set phone number to current user
+    const [phoneNumber, setPhoneNumber] = useState(""); //set phone number to current user
     const [text, setText] = useState("");
 
     const router = useRouter();
@@ -112,6 +112,9 @@ Head to the app to accept your event or reply 1 to accept or 2 to decline!
                 <div className="flex flex-col items-center justify-center pt-16 gap-1">
                     <h1 className="text-2xl font-semibold mb-2">Phone Notification Testing (user must be signed-in)</h1> {/* Header */}
                     <form className="flex flex-col mx-auto w-full max-w-screen-md md:w-96"></form>
+                    <input type="text" placeholder="phone" value={phoneNumber}
+                           onChange={(e) => (setPhoneNumber(e.target.value))} className="bg-black border rounded p-2"/>
+                    <br/>
 
                     <button onClick={() => sendText(phoneNumber, eventReminder)}
                             className="bg-rose-600 hover:bg-rose-700 text-white font-semibold py-2 px-4 rounded">Send Event Reminder
