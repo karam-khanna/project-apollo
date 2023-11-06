@@ -8,9 +8,9 @@ const sms = async (req: NextApiRequest, res: NextApiResponse) => {
         const twilioMessage = await req.body.Body;
         const senderPhoneNumber = await req.body.From;
 
-        const responseMessage = "Message received: " + twilioMessage;
+        const responseMessage = "Our demo to receiving the text: " + twilioMessage;
         
-        await sendText (senderPhoneNumber, responseMessage+"...");
+        await sendText (senderPhoneNumber, responseMessage);
 
         res.setHeader('Content-Type', 'application/xml');
         res.status(200).end('')
