@@ -5,11 +5,16 @@ import {useEffect} from 'react';
 import {firebase_auth} from "@/firebase/client_side/firebase_init";
 import { useRouter } from 'next/router';
 import {admin_db} from "@/firebase/server_side/firebase_admin_init";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm, SubmitHandler } from "react-hook-form";
+import * as z from "zod";
+
 
 const inter = Inter({subsets: ['latin']})
 
 export default function Home() {
     /*
+    //admin database:
     var db = admin_db; //need the .env to run with no errors
     // Access a specific collection in the database
     const userCollection = db.collection('Users');
@@ -28,8 +33,8 @@ export default function Home() {
     .catch((error) => {
     console.error('Error getting documents:', error);
     });
-*/
 
+*/
 
     const {user, setUser} = useContext(UserContext);
     const [destination, setDestination] = useState("");
