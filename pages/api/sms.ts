@@ -10,7 +10,7 @@ const sms = async (req: NextApiRequest, res: NextApiResponse) => {
 
         const responseMessage = "Message received: " + twilioMessage;
         
-        sendText (senderPhoneNumber, responseMessage);
+        await sendText (senderPhoneNumber, responseMessage+"...");
 
         const twilioResponse = ``;
 
