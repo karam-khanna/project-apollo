@@ -34,7 +34,7 @@ export default function Home() {
             {user
                 ?
                 <div className={"flex flex-col gap-2"}>
-                    {isCalendarButtonVisible && <Button onClick={() => router.push('/calendarpage').then()}>Calendar Paging</Button>}
+                    {isCalendarButtonVisible && <Button onClick={() => router.push('/calendarpage').then()}>Calendar Page</Button>}
                     <Button onClick={() => router.push('/profile').then()}>Profile</Button>
                     <Button onClick={() => router.push('/invitations').then()}>Invitations</Button>
                     <Button onClick={() => router.push('/myevents').then()}>My Events</Button>
