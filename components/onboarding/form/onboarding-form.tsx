@@ -147,6 +147,7 @@ async function onSubmit(values: z.infer<typeof formSchema>) {
     await updateUserFirstName(user, values.firstName, setUser);
     await updateUserLastName(user, values.lastName, setUser);
     await updateUserAge(user, age, setUser); // Now passing a number
+    await updateUserPhone(user, values.phone, setUser);
     await updateUserOnboarded(user, true, setUser);
     router.push("/calendarpage").then();
   } else {
