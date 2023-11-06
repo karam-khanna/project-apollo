@@ -16,15 +16,16 @@ export default function Chat() {
     }
     const router = useRouter();
     const {user, setUser} = useContext(UserContext);
+    if(!user){
+        router.push("/login").then()
+    }
     const chatProps = useMultiChatLogic(projectId, user?.email || '', user?.id || '');
     const [isReady, setReady] = useState(false);
     useEffect(() => {
         setReady(true)
     }, [])
 
-    if(!user){
-        throw new Error("No user inside!")
-    }
+    
 
     const customRenderChatHeader = (props: { title?: React.ReactNode }) => {
         return <div style={{
