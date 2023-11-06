@@ -129,13 +129,6 @@ Head to the app to accept your event or reply 1 to accept or 2 to decline!
                         <p>Last Name: {user?.lastName}</p>
                         <p>Phone Number: {user?.phone}</p>
                     </div>
-
-                    <p className="mt-4">Test Push Notification
-                    <span className="text-pink cursor-pointer ml-2" onClick={() => window.location.href = '/message'}>
-                    Test It
-                    </span>
-                    </p>
-
                 
                 </div>
 
