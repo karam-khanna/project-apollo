@@ -1,32 +1,8 @@
 import axios from 'axios'
 import { NextApiRequest, NextApiResponse } from "next";
-import { Interest, timeslots, User, UserAvailability } from "@/interfaces";
 import { getUserFromDb } from "@/utils/server_side/serverDbInterface";
-import React from "react";
-import { doc, setDoc } from "firebase/firestore";
-import { admin_db } from "@/firebase/server_side/firebase_admin_init";
 
-function getChatProfile(email: string, id: string, privateID: string | undefined): Promise<string> {
-    if (!privateID) {
-        return Promise.reject("NOPRIVATEKEY");
-    }
-    return axios.put(
-        'https://api.chatengine.io/users/',
-        {
-            'username': email,
-            'secret': id
-        },
-        {
-            headers: {
-                'PRIVATE-KEY': privateID
-            }
-        }
-    ).then((response) => {
-        return response.data.id;
-    }).catch((error) => {
-        return "brudda";
-    });
-}
+
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (req.method === 'POST') {
         var reqBody = req.body;
