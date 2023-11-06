@@ -1,41 +1,24 @@
-import { NextApiRequest, NextApiResponse } from "next";
 import twilio from 'twilio';
 
 const client = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
 
+const sendText = async (req:any, res:any) => {
 
-const baseUrl = process.env.VERCEL_URL ? 'https://' + process.env.VERCEL_URL : 'http://localhost:3000'
+    const {to, message} = JSON.parse(req.body);
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
-if(req.method == 'POST'){
-const twilioMessage = await req.body.Body;
-const senderPhoneNumber = await req.body.From;
+    try {
+        await client.messages.create({
+            body: message,
+            to, // The recipient's phone number
+            from: '+18559620462', // Your Twilio phone number
+          })
+          res.status(200).json({message: 'Text sent'});
 
-const responseMessage = "Message received: " + twilioMessage;
-sendText (senderPhoneNumber, responseMessage);
+    } catch (error){
+        console.log('Error sending text:', error);
+        res.status(500).json({error: 'Text not sent'});
+    }
 
-const twilioResponse = `
-<?xml version="1.0" encoding="UTF-8"?>
-<Response>
-<Message>${responseMessage}</Message>
-/Response>
-`;
-
-res.setHeader('Content-Type', 'application/xml');
-res.status(200).end(twilioResponse)
-}
 }
 
-const sendText = async (to: string, message: string) => {
-try {
-await client.messages.create({
-body: message,
-to, // The recipient's phone number
-from: '+18559620462', // Your Twilio phone number
-})
-
-
-} catch (error){
-console.log('Error sending text:', error);
-}
-};
+export default sendText;
