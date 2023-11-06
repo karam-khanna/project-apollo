@@ -3,6 +3,8 @@ export interface User {
     email: string;
     firstName: string;
     lastName: string;
+    age: string;
+    picture: string;
     onboarded: boolean;
     poker: boolean;
     basketball: boolean;
@@ -15,7 +17,7 @@ export enum Interest {
     poker = 'poker',
 }
 
-export enum timeslots {
+export enum Timeslots {
     fridayMorning = 'fridayMorning',
     fridayAfternoon = 'fridayAfternoon',
     fridayEvening = 'fridayEvening',
@@ -50,3 +52,9 @@ export interface UserAvailability {
     interests: Interest[];
 }
 
+export interface AlgoMatchReturn {
+    date: string;
+    timeslot: Timeslots;
+    interest: Interest;
+    matches: User[];
+}

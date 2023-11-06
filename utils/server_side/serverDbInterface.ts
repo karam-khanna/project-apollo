@@ -1,8 +1,8 @@
-import {Interest, timeslots, User, UserAvailability} from "@/interfaces";
+import {Interest, Timeslots, User, UserAvailability} from "@/interfaces";
 import React from "react";
 import {doc, setDoc} from "firebase/firestore";
 import {admin_db} from "@/firebase/server_side/firebase_admin_init";
-import {getWeekStartingDate} from "@/utils/client_side/helpers";
+import {getWeekStartingDateAsString} from "@/utils/client_side/helpers";
 
 export async function getUserFromDb(userId: string): Promise<User | null> {
     const docRef = admin_db.doc(`Users/${userId}`);
@@ -33,11 +33,11 @@ export async function updateUserAvailability(
 }
 
 export async function findAvailableForTimeAndInterest(
-        timeslot: timeslots,
+        timeslot: Timeslots,
         date: Date,
         interest: Interest,
 ): Promise<User[]> {
-    const weekStart = getWeekStartingDate(date, false);
+    const weekStart = getWeekStartingDateAsString(date, false);
     const query = admin_db.collection('UserAvailability')
             .where('weekStart', '==', weekStart)
             .where(timeslot, '==', true)

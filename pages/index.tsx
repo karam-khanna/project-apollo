@@ -37,6 +37,8 @@ export default function Home() {
                     {isCalendarButtonVisible && <Button onClick={() => router.push('/calendarpage').then()}>Calendar Page</Button>}
                     <Button onClick={() => router.push('/profile').then()}>Profile</Button>
                     <Button onClick={() => router.push('/chat').then()}>Chat</Button>
+                    <Button onClick={() => router.push('/invitations').then()}>Invitations</Button>
+                    <Button onClick={() => router.push('/myevents').then()}>My Events</Button>
                     <Button onClick={
                         () => {
                             firebase_auth.signOut().then((r) => {

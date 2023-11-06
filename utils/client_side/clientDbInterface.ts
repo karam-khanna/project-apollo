@@ -29,6 +29,14 @@ export async function updateUserLastName(
     return updateUserField(user, 'lastName', lastName, setUser);
 }
 
+export async function updateUserPhone(
+    user: User,
+    phone: string,
+    setUser: React.Dispatch<React.SetStateAction<User | null>>
+): Promise<boolean> {
+return updateUserField(user, 'phone', phone, setUser);
+}
+
 
 export async function updateUserOnboarded(
         user: User,
@@ -51,6 +59,22 @@ export async function updateUserInterest(
         return false;
     }
 }
+
+export async function updateUserPicture(
+    user: User,
+    pictureUrl: string,
+    setUser: React.Dispatch<React.SetStateAction<User | null>>
+  ): Promise<boolean> {
+    return updateUserField(user, 'picture', pictureUrl, setUser);
+  }  
+
+export async function updateUserAge(
+    user: User,
+    age: number, // Assuming age is a number
+    setUser: React.Dispatch<React.SetStateAction<User | null>>
+  ): Promise<boolean> {
+    return updateUserField(user, 'age', age, setUser);
+  }
 
 
 async function updateUserField(
