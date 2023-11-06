@@ -5,6 +5,7 @@ import { UserContext } from "@/context/UserContext"
 import { useRouter } from "next/router";
 import { User } from '@/interfaces'
 import axios from 'axios';
+import { custom } from "zod";
 
 
 export default function Chat() {
@@ -25,18 +26,22 @@ export default function Chat() {
         throw new Error("No user inside!")
     }
 
-    
-    // const customRenderChatHeader = (props: { title?: React.ReactNode }) => {
-    //     return <div style={{
-    //         textAlign: 'center',
-    //         fontSize: 'larger',
-    //         fontWeight: 'bold'
-    //     }}>{props.title}</div>;
-    // };
+    const customRenderChatHeader = (props: { title?: React.ReactNode }) => {
+        return <div style={{
+            textAlign: 'center',
+            fontSize: 'larger',
+            fontWeight: 'bold'
+        }}>{props.title}</div>;
+    };
+
+    const customNoSettings = () => {
+        //reporting system goes here
+        return <div></div>
+    }
     return isReady ? (
             <div>
                 <MultiChatSocket {...chatProps} />
-                <MultiChatWindow {...chatProps} style={{height: '100vh'}}/>
+                <MultiChatWindow {...chatProps} renderChatHeader={customRenderChatHeader} renderChatSettings={customNoSettings} style={{height: '100vh'}}/>
             </div>
     ) : <div>errors...</div>
 };

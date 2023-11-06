@@ -2,6 +2,7 @@ import React from "react";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "@/firebase/client_side/firebase_init";
 import { getUserFromDb } from "@/utils/server_side/serverDbInterface"
+import { makeChatUser } from "@/utils/client_side/chatUtils";
 import axios from 'axios'
 import { NextApiRequest, NextApiResponse } from "next";
 
@@ -38,7 +39,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             res.status(400).json("no project ID")
             return;
         }
-        try{
+        try {
             const response = await axios.put(
                 "https://api.chatengine.io/chats/",
                 {
@@ -57,7 +58,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             res.status(200).json(response.data)
             return;
         }
-        catch (error){
+        catch (error) {
             res.status(400).json(error)
             return;
         }
@@ -65,5 +66,5 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         res.status(400).json("Method unsupported");
         return;
     }
-    
+
 }

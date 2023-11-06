@@ -4,6 +4,7 @@ import { Label } from "@/components/ui/label";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { signInWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
 import { useRouter } from "next/router";
+import { makeChatUser } from "@/utils/client_side/chatUtils"
 import { firebase_auth } from "@/firebase/client_side/firebase_init";
 import axios from "axios";
 
@@ -19,20 +20,9 @@ export default function Login() {
         signInWithEmailAndPassword(firebase_auth, email, password)
             .then((userCredential) => {
                 console.log(userCredential.user);
-                if (!process.env.NEXT_PUBLIC_CHAT_PRIVATE){
-                    throw new Error('No private key!')
-                }
                 if (userCredential.user.emailVerified) {
                     setMessage('Successfully logged in!');
-                    var res: any = null;
-                    axios({
-                        method: 'post',
-                        url: '/api/chat/update',
-                        data: {
-                          userid: userCredential.user.uid
-                        }
-                      }).then((response) => {res = response; console.log(res);}).catch((error) => {throw new Error(error)});
-                    
+                    makeChatUser(userCredential.user.uid)
                     router.push('/').then();
                 } else {
                     sendEmailVerification(userCredential.user).then(() => {
