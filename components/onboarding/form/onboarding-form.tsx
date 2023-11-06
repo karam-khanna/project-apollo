@@ -1,19 +1,33 @@
+"use client"
 import Image from 'next/image';
-import React, { Dispatch, SetStateAction, useContext } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";  
-import { updateUserFirstName, updateUserInterest, updateUserLastName, updateUserOnboarded, updateUserPicture, updateUserAge } from "@/utils/client_side/clientDbInterface";
-import { UserContext } from "@/context/UserContext";
-import { useRouter } from "next/router";
-import { useToast } from "@/components/ui/use-toast";
-import { Interest } from "@/interfaces";
-import { Checkbox } from "@/components/ui/checkbox";
-import * as z from "zod";
+import {zodResolver} from "@hookform/resolvers/zod"
+import * as z from "zod"
+import {useForm} from "react-hook-form";
+import {Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
+import React, {Dispatch, SetStateAction, useContext, useEffect, useState} from "react";
+import {Input} from "@/components/ui/input";
+import {Button} from "@/components/ui/button";
+import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
+import {Label} from "@/components/ui/label";
+import {
+    updateUserFirstName, updateUserInterest,
+    updateUserLastName,
+    updateUserOnboarded,
+    updateUserPicture, 
+    updateUserAge,
+    updateUserPhone
+} from "@/utils/client_side/clientDbInterface";
+import {UserContext} from "@/context/UserContext";
+import {router} from "next/client";
+import {useRouter} from "next/router";
+import {CardContent, CardDescription} from "@/components/ui/card";
+import {getUserAuthToken} from "@/utils/client_side/clientUserUtils";
+import {useToast} from "@/components/ui/use-toast";
+import {Interest} from "@/interfaces";
+import {Checkbox} from "@/components/ui/checkbox";
 
-const interestEnum = z.enum(["poker", "basketball"]);
+const interestEnum = z.enum(["poker", "basketball"])
+
 type interestEnum = z.infer<typeof interestEnum>;
 
 const interests = [
@@ -38,6 +52,9 @@ const formSchema = z.object({
   lastName: z.string().min(2, {
     message: "Last name",
   }),
+  phone: z.string().min(2, {
+        message: "Phone Number",
+    }),
   interests: z.array(z.string()).refine((value) => value.some((interest) => interest), {
     message: "You have to select at least one item.",
   }),
@@ -53,11 +70,13 @@ const avatarOptions = [
   "/avatars/hoodiemale.png",
 ];
 
+
 export interface OnboardingFormProps {
   setIsLoading: Dispatch<SetStateAction<boolean>>;
 }
 
 export function OnboardingForm(props: OnboardingFormProps) {
+
   const { toast } = useToast();
   const router = useRouter();
 
@@ -66,6 +85,7 @@ export function OnboardingForm(props: OnboardingFormProps) {
     defaultValues: {
       firstName: "",
       lastName: "",
+      phone: "",
       interests: [],
       age: "",
       selectedAvatar: "", // Initialize the selectedAvatar field
@@ -83,6 +103,7 @@ async function onSubmit(values: z.infer<typeof formSchema>) {
     props.setIsLoading(true);
     let firstName = values.firstName;
     let lastName = values.lastName;
+    let phone = values.phone;
     const userInterests = values.interests;
     const age = parseInt(values.age, 10); // Convert age to a number
     const selectedAvatar = values.selectedAvatar;
@@ -94,6 +115,27 @@ async function onSubmit(values: z.infer<typeof formSchema>) {
       });
       return;
     }
+    if (!phone.match(/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im)) {
+                toast({
+                    title: "Please enter a valid phone number",
+                    description: "Try submitting again",
+                })
+                return
+    }
+    
+    // check if interests contains poker
+            if (userInterests.includes("poker")) {
+                await updateUserInterest(user, "poker" as Interest, true, setUser)
+            } else {
+                await updateUserInterest(user, "poker" as Interest, false, setUser)
+            }
+
+            // check if interests contains basketball
+            if (userInterests.includes("basketball")) {
+                await updateUserInterest(user, "basketball" as Interest, true, setUser)
+            } else {
+                await updateUserInterest(user, "basketball" as Interest, false, setUser)
+            }
 
     // Save the selected avatar in the database
     await updateUserPicture(user, selectedAvatar, setUser);
@@ -115,6 +157,7 @@ async function onSubmit(values: z.infer<typeof formSchema>) {
   }
 }
 
+  
   return (
     <div>
       <Form {...form}>
@@ -149,6 +192,26 @@ async function onSubmit(values: z.infer<typeof formSchema>) {
               </FormItem>
             )}
           />
+          <FormField
+                                control={form.control}
+                                name="phone"
+                                render={({field}) => (
+                                        <FormItem>
+                                            <FormLabel>
+                                                <div className={"container pl-0 gap "}>
+                                                    <h2>Phone Number</h2>
+                                                </div>
+                                            </FormLabel>
+                                            <FormDescription>
+                                                    {"Enter your phone number without dashes or spaces"}
+                                                </FormDescription>
+                                            <FormControl>
+                                                <Input placeholder="XXXXXXXXXX" {...field} />
+                                            </FormControl>
+                                            <FormMessage/>
+                                        </FormItem>
+                                )}
+                        />
           <FormField
             control={form.control}
             name="interests"
@@ -236,5 +299,6 @@ async function onSubmit(values: z.infer<typeof formSchema>) {
       </Form>
     </div>
   );
+
 }
 

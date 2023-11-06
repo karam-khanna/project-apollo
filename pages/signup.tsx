@@ -6,12 +6,9 @@ import {createUserWithEmailAndPassword, sendEmailVerification, signOut} from "fi
 import {firebase_auth} from "@/firebase/client_side/firebase_init";
 
 export default function Signup() {
-    const [fname, setFirstName] = useState('');
-    const [lname, setLastName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
-    const [phone, setPhone] = useState('');
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();  // prevent default form submission behavior
 
@@ -19,11 +16,6 @@ export default function Signup() {
         // Check if the email ends with @emory.edu
         if (!email.endsWith('@emory.edu')) {
             setMessage('Please enter a valid Emory University email address ending with @emory.edu');
-            return;
-        }
-
-        if (!phone.match(/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im)) {
-            setMessage('Please enter a valid phone number');
             return;
         }
         // Need to connect to database/backend here
@@ -52,20 +44,6 @@ export default function Signup() {
 
                 <form onSubmit={handleSubmit} className="flex flex-col gap-4">
                     <input
-                            type="fname"
-                            placeholder="First Name"
-                            value={fname}
-                            onChange={(e) => setFirstName(e.target.value)}
-                            className="bg-black border rounded p-2"
-                    />
-                    <input
-                            type="lname"
-                            placeholder="Last Name"
-                            value={lname}
-                            onChange={(e) => setLastName(e.target.value)}
-                            className="bg-black border rounded p-2"
-                    />
-                    <input
                             type="email"
                             placeholder="Email"
                             value={email}
@@ -77,13 +55,6 @@ export default function Signup() {
                             placeholder="Password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            className="bg-black border rounded p-2"
-                    />
-                    <input
-                            type="tel"
-                            placeholder="Phone Number"
-                            value={phone}
-                            onChange={(e) => setPhone(e.target.value)}
                             className="bg-black border rounded p-2"
                     />
                     <Button type="submit">Submit</Button>
