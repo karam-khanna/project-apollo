@@ -19,6 +19,7 @@ export default function App({Component, pageProps}: AppProps) {
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(firebase_auth, async (currentAuthUser) => {
+            if(currentAuthUser&&!currentAuthUser.emailVerified) return;
             setUserAuth(currentAuthUser);
             setLoading(false);
             console.log(currentAuthUser)
@@ -30,7 +31,7 @@ export default function App({Component, pageProps}: AppProps) {
     }, []);
 
     useEffect(() => {
-        if (userAuth && user && !user?.onboarded && router.isReady && router.pathname !== '/onboarding') {
+        if (userAuth && userAuth.emailVerified && user && !user?.onboarded && router.isReady && router.pathname !== '/onboarding') {
             router.push('/onboarding').then();
         }
     })

@@ -12,7 +12,6 @@ export default function Signup() {
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();  // prevent default form submission behavior
 
-        //check if email is an @emory.edu email
         // Check if the email ends with @emory.edu
         if (!email.endsWith('@emory.edu')) {
             setMessage('Please enter a valid Emory University email address ending with @emory.edu');
@@ -25,6 +24,7 @@ export default function Signup() {
                     console.log(user);
                     sendEmailVerification(user).then(() => {
                         setMessage('Successfully signed up! Verification email sent.')
+                        signOut(firebase_auth)
                     }).catch((error) => {
                         setMessage("Successfully signed up, but the email verification couldn't be sent.")
                         console.log(error)
