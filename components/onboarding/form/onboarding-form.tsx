@@ -25,6 +25,7 @@ import {getUserAuthToken} from "@/utils/client_side/clientUserUtils";
 import {useToast} from "@/components/ui/use-toast";
 import {Interest} from "@/interfaces";
 import {Checkbox} from "@/components/ui/checkbox";
+import axios from 'axios';
 
 const interestEnum = z.enum(["poker", "basketball"])
 
@@ -139,6 +140,7 @@ async function onSubmit(values: z.infer<typeof formSchema>) {
 
     // Save the selected avatar in the database
     await updateUserPicture(user, selectedAvatar, setUser);
+
 
     userInterests.forEach(async (interest) => {
       await updateUserInterest(user, interest as Interest, true, setUser);

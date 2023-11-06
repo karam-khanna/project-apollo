@@ -4,10 +4,32 @@ import {UserContext} from "@/context/UserContext";
 import {useEffect} from 'react';
 import {firebase_auth} from "@/firebase/client_side/firebase_init";
 import { useRouter } from 'next/router';
+import {admin_db} from "@/firebase/server_side/firebase_admin_init";
 
 const inter = Inter({subsets: ['latin']})
 
 export default function Home() {
+    var db = admin_db; //need the .env to run with no errors
+    // Access a specific collection in the database
+    const userCollection = db.collection('Users');
+
+    // Retrieve user phone number from the user collection where the field 'phone' exists
+    userCollection
+    .where('phone', '!=', null) // Filters documents where 'phone' field is not null
+    .get()
+    .then((querySnapshot) => {
+    querySnapshot.forEach((doc) => {
+        const userData = doc.data();
+        const phoneNumber = userData.phone;
+        console.log('User Phone Number:', phoneNumber);
+    });
+    })
+    .catch((error) => {
+    console.error('Error getting documents:', error);
+    });
+
+
+
     const {user, setUser} = useContext(UserContext);
     const [destination, setDestination] = useState("");
     const [phoneNumber, setPhoneNumber] = useState(""); //set phone number to current user
@@ -57,7 +79,7 @@ Our calendar is LIVE. Head over to the app to mark your availability for this we
     const acceptEvent = `
     Hello ${user?.firstName || ''},
 
-You've been added to an event for this weekend. 
+You've been added to an event for this weekend.
 
     Event Details:
         Date: [Event Date]
@@ -74,9 +96,9 @@ Head to the app to accept your event or reply 1 to accept or 2 to decline!
     const messageOptions = [eventReminder, calendarLive, acceptEvent];
     const subjectOptions = ['Upcoming Events', 'Calendar now Live', 'Event Posted'];
 
+    //For Event Posted, save response (1 or 2)
 
 
-//send email to user
 
 
     const sendText = (sendto: string, message: string) => {
@@ -110,7 +132,7 @@ Head to the app to accept your event or reply 1 to accept or 2 to decline!
 
 
                 <div className="flex flex-col items-center justify-center pt-16 gap-1">
-                    <h1 className="text-2xl font-semibold mb-2">Phone Notification Testing (user must be signed-in)</h1> {/* Header */}
+                    <h1 className="text-2xl font-semibold mb-2">Phone Notification Testing</h1> {/* Header */}
                     <form className="flex flex-col mx-auto w-full max-w-screen-md md:w-96"></form>
                     <input type="text" placeholder="phone" value={phoneNumber}
                            onChange={(e) => (setPhoneNumber(e.target.value))} className="bg-black border rounded p-2"/>
