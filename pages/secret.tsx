@@ -3,14 +3,17 @@ import {useContext, useState} from "react";
 import {UserContext} from "@/context/UserContext";
 import {useEffect} from 'react';
 import {firebase_auth} from "@/firebase/client_side/firebase_init";
+import { useRouter } from 'next/router';
 
 const inter = Inter({subsets: ['latin']})
 
 export default function Home() {
     const {user, setUser} = useContext(UserContext);
     const [destination, setDestination] = useState("");
-    const [phoneNumber, setPhoneNumber] = useState("")
-    const [text, setText] = useState("")
+    const [phoneNumber, setPhoneNumber] = useState(user?.phone); //set phone number to current user
+    const [text, setText] = useState("");
+
+    const router = useRouter();
 
     //if user is logged in, set firebase email as the user's email
     useEffect(() => {
@@ -27,46 +30,50 @@ export default function Home() {
 
     //Sample messages for notifications
     const eventReminder = `
-    Hello ${user?.firstName || ''} ${user?.lastName || ''},
+    Hello ${user?.firstName || ''},
 
-    Get hyped for BASKETBALL. We wanted to remind you that your basketball event is coming up in the next few days:
+Get hyped for BASKETBALL. We wanted to remind you that your basketball event is coming up in the next few days:
 
     Event Details:
     Date: [Event Date]
     Time: [Event Time]
     Location: [Event Location]
 
-    Have fun balling! If you want to connect with your group head to the app:)
+Have fun balling! If you want to connect with your group head to the app:)
 
     Your Mutual,
     Devkam
     `;
 
     const calendarLive = `
-Hello ${user?.firstName || ''} ${user?.lastName || ''},
+    Hello ${user?.firstName || ''},
 
 Our calendar is LIVE. Head over to the app to mark your availability for this weekend!
 
-Your Mutual,
-Devkam
+    Your Mutual,
+    Devkam
     `;
 
     const acceptEvent = `
-Hello ${user?.firstName || ''} ${user?.lastName || ''},
+    Hello ${user?.firstName || ''},
 
-You've been added to an event for this weekend. Head to the app to accept your event!
+You've been added to an event for this weekend. 
 
-Your Mutual,
-Devkam
-`;
+    Event Details:
+        Date: [Event Date]
+        Time: [Event Time]
+        Location: [Event Location]
+
+Head to the app to accept your event or reply 1 to accept or 2 to decline!
+
+    Your Mutual,
+    Devkam
+    `;
 
 //set message and subject to random option for testing purposes
     const messageOptions = [eventReminder, calendarLive, acceptEvent];
     const subjectOptions = ['Upcoming Events', 'Calendar now Live', 'Event Posted'];
 
-    const randomIndex = Math.floor(Math.random() * messageOptions.length);
-    const [message, setMessage] = useState(messageOptions[randomIndex]);
-    const [subject, setSubject] = useState(subjectOptions[randomIndex]);
 
 
 //send email to user
@@ -97,22 +104,25 @@ Devkam
                         <h1 className="text-6xl font-bold text-center">User Info</h1>
                         <p>First Name: {user?.firstName}</p>
                         <p>Last Name: {user?.lastName}</p>
+                        <p>Phone Number: {user?.phone}</p>
                     </div>
                 </div>
 
 
                 <div className="flex flex-col items-center justify-center pt-16 gap-1">
-                    <h1 className="text-2xl font-semibold mb-2">Phone Notification Testing</h1> {/* Header */}
+                    <h1 className="text-2xl font-semibold mb-2">Phone Notification Testing (user must be signed-in)</h1> {/* Header */}
                     <form className="flex flex-col mx-auto w-full max-w-screen-md md:w-96"></form>
-                    <input type="text" placeholder="phone" value={phoneNumber}
-                           onChange={(e) => (setPhoneNumber(e.target.value))} className="bg-black border rounded p-2"/>
-                    <br/>
-                    <input type="text" placeholder="text" value={text}
-                           onChange={(e) => (setText(e.target.value))} className="bg-black border rounded p-2"/>
-                    <br/>
 
-                    <button onClick={() => sendText(phoneNumber, text)}
-                            className="bg-rose-600 hover:bg-rose-700 text-white font-semibold py-2 px-4 rounded">Send
+                    <button onClick={() => sendText(phoneNumber, eventReminder)}
+                            className="bg-rose-600 hover:bg-rose-700 text-white font-semibold py-2 px-4 rounded">Send Event Reminder
+                        Text
+                    </button>
+                    <button onClick={() => sendText(phoneNumber, calendarLive)}
+                            className="bg-rose-600 hover:bg-rose-700 text-white font-semibold py-2 px-4 rounded">Send Calendar Live
+                        Text
+                    </button>
+                    <button onClick={() => sendText(phoneNumber, acceptEvent)}
+                            className="bg-rose-600 hover:bg-rose-700 text-white font-semibold py-2 px-4 rounded">Send Accept Event
                         Text
                     </button>
                 </div>
