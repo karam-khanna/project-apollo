@@ -9,6 +9,7 @@ import {admin_db} from "@/firebase/server_side/firebase_admin_init";
 const inter = Inter({subsets: ['latin']})
 
 export default function Home() {
+    /*
     var db = admin_db; //need the .env to run with no errors
     // Access a specific collection in the database
     const userCollection = db.collection('Users');
@@ -27,7 +28,7 @@ export default function Home() {
     .catch((error) => {
     console.error('Error getting documents:', error);
     });
-
+*/
 
 
     const {user, setUser} = useContext(UserContext);
