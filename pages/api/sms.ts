@@ -9,7 +9,7 @@ const sms = async (req: NextApiRequest, res: NextApiResponse) => {
         const senderPhoneNumber = await req.body.From;
 
         const responseMessage = "Our demo to receiving the text: " + twilioMessage;
-
+        
         await sendText (senderPhoneNumber, responseMessage);
 
         res.setHeader('Content-Type', 'application/xml');
@@ -24,11 +24,11 @@ const sendText = async (to: string, message: string) => {
             to, // The recipient's phone number
             from: '+18559620462', // Your Twilio phone number
           })
-
+         
 
     } catch (error){
         console.log('Error sending text:', error);
-
+      
     }
 };
 
