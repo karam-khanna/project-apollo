@@ -7,7 +7,7 @@ import { db } from "@/firebase/client_side/firebase_init";
 const client = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
 
 //function to search all phone numbers in firestore and return the matching userId
-const findUserIdByPhone = async (searchPhone) => {
+const findUserIdByPhone = async (searchPhone: any) => {
     const userCollection = collection(db, 'Users');
     try {
           const querySnapshot = await getDocs(userCollection);
