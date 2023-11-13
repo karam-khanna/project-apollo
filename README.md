@@ -1,7 +1,49 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped
-with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## Mutuals 
+Mutals - CS 370 Group Project - Team Devkam
+
+## Team Members
+#### Karam Khanna
+- Year: Junior
+- Interests: 
+#### Vidhi Mittal
+- Year: Junior
+- Interests: 
+#### Aarush Bedi
+- Year: Junior
+- Interests: 
+#### Avarna Swaika
+- Year: Junior
+- Interests: 
+#### Macarah Morgan
+- Year: Junior
+- Interests: 
+#### El Yirdaw
+- Year: Junior
+- Interests: 
+#### Dani Roytburg
+- Year: Junior
+- Interests:
+
+## Sprint Review
+
+| Sprint | Date | Topics |
+| ---------| ---------| ---------|
+| 0| 18th Sept | [Project Proposal](https://www.canva.com/design/DAF0EYjYqKc/NSQ6O1Wz6NqNV3yKJzamJA/edit) |
+| 1 | 25th Sept | [Set up Project and Database](https://www.canva.com/design/DAF0ETZh2xE/4ChpatVqS1xqg1dHr2JLAQ/edit) |
+| 2 | 2nd Oct | [Login and Onboarding Process](https://www.canva.com/design/DAF0Eaj5sMU/g_3RRIFAzGWGjTb57ZWMFw/edit) |
+| 3 | 9th Oct | Fall Break|
+| 4 | 16th Oct |[Calendar Page and Email Notifications](https://www.canva.com/design/DAF0EUq5jlM/33H9NA4bs8Nt_M_zyrnpNQ/edit) |
+| 5 | 23rd Oct |[Profile Page and SMS Notifications](https://www.canva.com/design/DAF0EfT68P4/sWcNyTQGT37DC4vwbPP_VQ/edit) |
+| 6 | 30th Oct | [Chat and Matching Algorithm](https://www.canva.com/design/DAF0ETByDd0/OZm4cD3JHL29_IBIbMxemA/edit) |
+| 7 | 6th Nov | [Invitations Page and Chat System](https://www.canva.com/design/DAF0ET55YBk/a4SM-vEAoFR-qY8Hu5TP2Q/edit) |
+| 8 | 13th Nov | [Matching Algorithm linked to Datbase]() |
+| 9 | 20th Nov | Project Display |
+| 10 | 27th Nov |  |
+
 
 ## Getting Started
+This is a [Next.js](https://nextjs.org/) project bootstrapped
+with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 First, run the development server:
 

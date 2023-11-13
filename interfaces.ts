@@ -60,3 +60,12 @@ export interface AlgoMatchReturn {
     interest: Interest;
     matches: User[];
 }
+
+export interface Invitation {
+    id: string;
+    userId: string;
+    date: string;
+    timeslot: Timeslots;
+    interest: Interest;
+    status: "notSent" | "sent" | "accept" | "decline";
+}

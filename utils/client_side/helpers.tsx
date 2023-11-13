@@ -1,4 +1,4 @@
-import {Interest, User, UserAvailability} from "@/interfaces";
+import {Interest, Timeslots, User, UserAvailability} from "@/interfaces";
 
 export function getWeekStartingDateAsString(date: Date, underscores: boolean): string {
     // Example usage
@@ -36,6 +36,11 @@ export function parseAvailabilityDocId(userId: string, date: Date): string {
     return `${userId}_${weekStart}`;
 }
 
+export function parseInviteDocId(userId: string, timeslot: Timeslots, date: string): string {
+    const formatted = new Date(date);
+    return `${userId}_${timeslot}_${formatted.getFullYear()}_${String(formatted.getMonth() + 1).padStart(2, '0')}_${String(formatted.getDate()).padStart(2, '0')}`
+}
+
 export function parseAvailability(user: User, formData: string[]): UserAvailability {
     if (!user || !user.id) throw new Error('User is required');
     const docId = parseAvailabilityDocId(user.id, new Date());
@@ -66,4 +71,9 @@ export function getUsersInterestsAsArray(user: User): Interest[] {
     if (user.basketball) interests.push(Interest.basketball);
     if (user.poker) interests.push(Interest.poker);
     return interests;
+}
+
+export const fetcherWithNoAuthToken = async (url: string) => {
+    const res = await fetch(url);
+    return res.json();
 }

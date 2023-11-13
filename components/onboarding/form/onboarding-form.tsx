@@ -7,6 +7,7 @@ import {Form, FormControl, FormDescription, FormField, FormItem, FormLabel, Form
 import React, {Dispatch, SetStateAction, useContext, useEffect, useState} from "react";
 import {Input} from "@/components/ui/input";
 import {Button} from "@/components/ui/button";
+import { makeChatUser } from '@/utils/client_side/chatUtils';
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
 import {Label} from "@/components/ui/label";
 import {
@@ -151,6 +152,7 @@ async function onSubmit(values: z.infer<typeof formSchema>) {
     await updateUserAge(user, age, setUser); // Now passing a number
     await updateUserPhone(user, values.phone, setUser);
     await updateUserOnboarded(user, true, setUser);
+    await makeChatUser(user.id)
     router.push("/calendarpage").then();
   } else {
     toast({
