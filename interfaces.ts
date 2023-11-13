@@ -5,10 +5,11 @@ export interface User {
     lastName: string;
     age: string;
     picture: string;
+    phone: string;
     onboarded: boolean;
     poker: boolean;
     basketball: boolean;
-    phone?: string;
+    response: boolean;
 
 }
 
