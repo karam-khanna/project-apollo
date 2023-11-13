@@ -72,3 +72,8 @@ export function getUsersInterestsAsArray(user: User): Interest[] {
     if (user.poker) interests.push(Interest.poker);
     return interests;
 }
+
+export const fetcherWithNoAuthToken = async (url: string) => {
+    const res = await fetch(url);
+    return res.json();
+}
