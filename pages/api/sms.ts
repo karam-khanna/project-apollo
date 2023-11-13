@@ -32,29 +32,29 @@ const sms = async (req: NextApiRequest, res: NextApiResponse) => {
     if(req.method == 'POST'){
         const twilioMessage = await req.body.Body;
         const senderPhoneNumber = await req.body.From;
-        findUserIdByPhone(senderPhoneNumber)
-            .then((userId) => {
-                let responseMessage = "User not found for phone: " + senderPhoneNumber;
-                if (userId) {
+        try {
+            const userId = await findUserIdByPhone(senderPhoneNumber);
+
+            let responseMessage = "User not found for phone: " + senderPhoneNumber;
+
+            if (userId) {
                 console.log("User id:", userId);
                 responseMessage = "Our demo to receiving the text: " + twilioMessage + ", User ID: " + userId;
-                }
-                // Send the response message
-                sendText(senderPhoneNumber, responseMessage)
-                .then(() => {
-                    console.log("Response message sent successfully.");
-                })
-                .catch((error) => {
-                    console.error('Error sending response message:', error);
-                });
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
+            }
 
-    res.setHeader('Content-Type', 'application/xml');
-    res.status(200).end('');
-  }
+            // Send the response message
+            await sendText(senderPhoneNumber, responseMessage);
+            console.log("Response message sent successfully.");
+
+            res.setHeader('Content-Type', 'application/xml');
+            res.status(200).end('');
+        } catch (error) {
+            console.error('Error:', error);
+            res.status(500).send('Internal Server Error');
+        }
+    } else {
+        res.status(405).end('Method Not Allowed');
+    }
 }
 
 const sendText = async (to: string, message: string) => {
