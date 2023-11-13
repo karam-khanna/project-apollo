@@ -1,4 +1,4 @@
-import {Interest, User, UserAvailability} from "@/interfaces";
+import {Interest, Timeslots, User, UserAvailability} from "@/interfaces";
 
 export function getWeekStartingDateAsString(date: Date, underscores: boolean): string {
     // Example usage
@@ -34,6 +34,11 @@ export function dateToString(date: Date, underscores: boolean): string {
 export function parseAvailabilityDocId(userId: string, date: Date): string {
     const weekStart = getWeekStartingDateAsString(date, true);
     return `${userId}_${weekStart}`;
+}
+
+export function parseInviteDocId(userId: string, timeslot: Timeslots, date: string): string {
+    const formatted = new Date(date);
+    return `${userId}_${timeslot}_${formatted.getFullYear()}_${String(formatted.getMonth() + 1).padStart(2, '0')}_${String(formatted.getDate()).padStart(2, '0')}`
 }
 
 export function parseAvailability(user: User, formData: string[]): UserAvailability {
