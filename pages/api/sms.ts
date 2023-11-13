@@ -1,7 +1,17 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import twilio from 'twilio';
-import { collection, getDocs } from "firebase/firestore";
-import { db } from "@/firebase/client_side/firebase_init";
+import {Inter} from 'next/font/google'
+import {useContext, useState} from "react";
+import {UserContext} from "@/context/UserContext";
+import {useEffect} from 'react';
+import {firebase_auth} from "@/firebase/client_side/firebase_init";
+import { useRouter } from 'next/router';
+import {admin_db} from "@/firebase/server_side/firebase_admin_init";
+import {db} from "@/firebase/client_side/firebase_init";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm, SubmitHandler } from "react-hook-form";
+import * as z from "zod";
+import { collection, getDocs, doc, query} from "firebase/firestore";
 
 
 const client = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
@@ -28,29 +38,14 @@ const sms = async (req: NextApiRequest, res: NextApiResponse) => {
     if(req.method == 'POST'){
         const twilioMessage = await req.body.Body;
         const senderPhoneNumber = await req.body.From;
-        findUserIdByPhone(senderPhoneNumber)
-            .then((userId) => {
-                let responseMessage = "User not found for phone: " + senderPhoneNumber;
-                if (userId) {
-                console.log("User id:", userId);
-                responseMessage = "Our demo to receiving the text: " + twilioMessage + ", User ID: " + userId;
-                }
-                // Send the response message
-                sendText(senderPhoneNumber, responseMessage)
-                .then(() => {
-                    console.log("Response message sent successfully.");
-                })
-                .catch((error) => {
-                    console.error('Error sending response message:', error);
-                });
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
 
-    res.setHeader('Content-Type', 'application/xml');
-    res.status(200).end('');
-  }
+        const responseMessage = "Our demo to receiving the text: " + twilioMessage + ", " + senderPhoneNumber;
+        
+        await sendText (senderPhoneNumber, responseMessage);
+
+        res.setHeader('Content-Type', 'application/xml');
+        res.status(200).end('')
+    }
 }
 
 const sendText = async (to: string, message: string) => {
