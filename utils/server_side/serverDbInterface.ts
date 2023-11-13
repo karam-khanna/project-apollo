@@ -81,9 +81,8 @@ export async function addInviteToDb(invite: Invitation): Promise<Invitation | nu
     }
 }
 
-export async function updateInviteStatus(invite: Invitation, status: string): Promise<boolean> {
-    const docId = invite.id;
-    const docRef = admin_db.doc(`Invitations/${docId}`);
+export async function updateInviteStatus(inviteId: string, status: string): Promise<boolean> {
+    const docRef = admin_db.doc(`Invitations/${inviteId}`);
     try {
         await docRef.update({status: status});
     } catch (e) {
@@ -92,4 +91,17 @@ export async function updateInviteStatus(invite: Invitation, status: string): Pr
     }
 
     return true;
+}
+
+export async function getInvitesForUser(userId: string, date: Date): Promise<Invitation[]> {
+    const weekStart = getWeekStartingDateAsString(date, true);
+    const query = admin_db.collection('Invitations')
+            .where('userId', '==', userId)
+            .where('date', '==', weekStart);
+    const snapshot = await query.get();
+    const invites: Invitation[] = [];
+    snapshot.forEach((doc) => {
+        invites.push(doc.data() as Invitation);
+    });
+    return invites;
 }
