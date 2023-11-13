@@ -1,4 +1,4 @@
-import {Interest, Timeslots, User, UserAvailability} from "@/interfaces";
+import {Interest, Invitation, Timeslots, User, UserAvailability} from "@/interfaces";
 import React from "react";
 import {doc, setDoc} from "firebase/firestore";
 import {admin_db} from "@/firebase/server_side/firebase_admin_init";
@@ -53,9 +53,55 @@ export async function findAvailableForTimeAndInterest(
     for (let avail of avails) {
         const user = await getUserFromDb(avail.userId);
         if (user) {
+            user.id = avail.userId;
             users.push(user);
         }
     }
 
     return users;
+}
+
+export async function addInviteToDb(invite: Invitation): Promise<Invitation | null> {
+    const docId = invite.id;
+    const docRef = admin_db.doc(`Invitations/${docId}`);
+
+    // check if the doc already exists
+    const docSnap = await docRef.get();
+    if (docSnap.exists) {
+        console.log('invite already exists!');
+        return docSnap.data() as Invitation;
+    } else {
+        try {
+            await docRef.set(invite);
+            return invite;
+        } catch (e) {
+            console.log('error adding invite to db', e);
+            return null;
+        }
+    }
+}
+
+export async function updateInviteStatus(inviteId: string, status: string): Promise<boolean> {
+    const docRef = admin_db.doc(`Invitations/${inviteId}`);
+    try {
+        await docRef.update({status: status});
+    } catch (e) {
+        console.log('error updating invite status', e);
+        return false;
+    }
+
+    return true;
+}
+
+export async function getInvitesForUser(userId: string, date: Date): Promise<Invitation[]> {
+    const weekStart = getWeekStartingDateAsString(date, true);
+    const query = admin_db.collection('Invitations')
+            .where('userId', '==', userId)
+            .where('date', '==', weekStart);
+    const snapshot = await query.get();
+    const invites: Invitation[] = [];
+    snapshot.forEach((doc) => {
+        invites.push(doc.data() as Invitation);
+    });
+    return invites;
 }
