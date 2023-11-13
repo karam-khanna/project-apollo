@@ -1,7 +1,9 @@
 import {NextApiRequest, NextApiResponse} from "next";
-import {AlgoMatchReturn, Interest, Timeslots} from "@/interfaces";
-import {findAvailableForTimeAndInterest} from "@/utils/server_side/serverDbInterface";
-import {getWeekStartingDate, getWeekStartingDateAsString} from "@/utils/client_side/helpers";
+import {AlgoMatchReturn, Interest, Invitation, Timeslots} from "@/interfaces";
+import {addInviteToDb, findAvailableForTimeAndInterest, getUserFromDb} from "@/utils/server_side/serverDbInterface";
+import {getWeekStartingDate, getWeekStartingDateAsString, parseInviteDocId} from "@/utils/client_side/helpers";
+import {undefined} from "zod";
+import {sendText} from "@/utils/server_side/twillioInterface";
 
 export default async function matchSlot(req: NextApiRequest, res: NextApiResponse) {
     if (req.method === 'GET') {
@@ -50,6 +52,47 @@ export default async function matchSlot(req: NextApiRequest, res: NextApiRespons
                 }
             }
         }
+        const invitations: Invitation[] = [];
+        for (const result of results) {
+            for (const user of result.matches) {
+                let toPush: Invitation = {
+                    date: result.date,
+                    id: parseInviteDocId(user.id, result.timeslot, result.date),
+                    interest: result.interest,
+                    status: "notSent",
+                    timeslot: result.timeslot,
+                    userId: user.id,
+                }
+                // invitation will get set to whats in the db if its already there
+                const invitation = await addInviteToDb(toPush);
+                if (invitation) {
+                    invitations.push(invitation);
+                }
+            }
+        }
+
+        for (const invitation of invitations) {
+            if (invitation.status === "notSent") {
+                // get the user from the db
+                const user = await getUserFromDb(invitation.userId);
+                if (!user) {
+                    continue;
+                }
+                if (!user.phone || user.phone === "") {
+                    console.log('user has no phone number', user);
+                    continue;
+                }
+
+                // send the text message
+                await sendText(user.phone, `You have been invited to play ${invitation.interest} on ${invitation.date} at ${invitation.timeslot}. Head into Mutuals to accept or decline.`);
+
+                // update the db
+
+
+            }
+        }
+
+
         res.status(200).json(results);
     } else {
         res.status(400).json({error: 'Only takes GET'});
