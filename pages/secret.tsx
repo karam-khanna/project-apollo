@@ -25,7 +25,7 @@ export default function Home() {
         const fetchData = async () => {
         try {
             const querySnapshot = await getDocs(userCollection);
-            const phones = [];
+            const phones: any = [];
             querySnapshot.forEach((doc) => {
             const userData = doc.data();
             const phone = userData.phone;
