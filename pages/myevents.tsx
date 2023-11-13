@@ -89,7 +89,7 @@ export default function TableDemo() {
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {events.map((events) => (
+                        {events.map((events: any) => (
                                 <TableRow key={events.Day}>
                                     <TableCell>{events.Day}</TableCell>
                                     <TableCell>{events.Time}</TableCell>
