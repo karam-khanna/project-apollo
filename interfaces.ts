@@ -5,9 +5,11 @@ export interface User {
     lastName: string;
     age: string;
     picture: string;
+    phone: string;
     onboarded: boolean;
     poker: boolean;
     basketball: boolean;
+    response: boolean;
 
 }
 
@@ -57,4 +59,13 @@ export interface AlgoMatchReturn {
     timeslot: Timeslots;
     interest: Interest;
     matches: User[];
+}
+
+export interface Invitation {
+    id: string;
+    userId: string;
+    date: string;
+    timeslot: Timeslots;
+    interest: Interest;
+    status: "notSent" | "sent" | "accept" | "decline";
 }
