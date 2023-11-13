@@ -140,8 +140,6 @@ https://mutuals-beta.vercel.app/myevents
                     console.error('Error:', error);
                 });
     };
-
-
     return (
             
             <div>

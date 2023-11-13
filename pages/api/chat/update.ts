@@ -23,7 +23,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             const response = await axios.put(
                 'https://api.chatengine.io/users/',
                 {
-                    'username': user.email,
+                    'username': user.firstName + " " + user.lastName,
                     'secret': reqBody.userid as String
                 },
                 {
@@ -38,7 +38,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 `https://api.chatengine.io/users/${chatconnect}`,
                 {
                     'first_name': user.firstName,
-                    'last_name': user.lastName
+                    'last_name': user.lastName,
+                    'email': user.email
                 },
                 {
                     headers: {

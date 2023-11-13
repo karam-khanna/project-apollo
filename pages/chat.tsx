@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import { User } from '@/interfaces'
 import axios from 'axios';
 import { custom } from "zod";
+import ReportForm from "@/components/chat/reporting";
 
 
 export default function Chat() {
@@ -22,7 +23,7 @@ export default function Chat() {
           router.push('/login').then();
         }
     }
-    const chatProps = useMultiChatLogic(projectId, user?.email || '', user?.id || '');
+    const chatProps = useMultiChatLogic(projectId, user?.firstName + " " + user?.lastName || '', user?.id || '');
     const [isReady, setReady] = useState(false);
     useEffect(() => {
         setReady(true)
@@ -40,7 +41,7 @@ export default function Chat() {
 
     const customNoSettings = () => {
         //reporting system goes here
-        return <div></div>
+        return <div><ReportForm/></div>
     }
     return isReady ? (
             <div>
