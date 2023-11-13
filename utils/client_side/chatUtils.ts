@@ -27,3 +27,31 @@ export async function getMyChats(user: User){
         .catch((error) => {throw new Error(error)});
 }
 
+
+export async function getGroups(user: User): Promise<any> {
+    function getPeople(data: any) {
+        let collect: { [key: string]: any } = {};
+        data.forEach((chat: { title: any; people: { person: { username: any; }; }[]; }) => {
+            const title: string = chat.title;
+            const people: any = [];
+            chat.people.forEach((something: { person: { username: any; }; }) => {
+                people.push(something.person.username)
+            })
+            collect[title] = people
+        })
+        return collect
+    }
+    let groups: Object = {};
+    axios({
+        method: 'get',
+        url: 'https://api.chatengine.io/chats/',
+        headers: {
+            'project-id': process.env.NEXT_PUBLIC_CHAT_PROJECT as string,
+            'user-name': user?.firstName + " " + user?.lastName,
+            'user-secret': user?.id as string
+        }
+    })
+        .then((response) => { groups = getPeople(response.data) })
+        .catch((error) => { throw new Error(error) });
+    return groups;
+}
