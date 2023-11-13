@@ -14,6 +14,11 @@ export default async function matchSlot(req: NextApiRequest, res: NextApiRespons
     if (req.method === 'GET') {
         const reqBody = req.body;
         let date = new Date();
+        let shouldText = false;
+        if (reqBody && reqBody.shouldText && reqBody.shouldText === true) {
+            shouldText = true;
+        }
+
         if (reqBody && reqBody.date) {
             date = new Date(reqBody.date);
         } else {
@@ -76,24 +81,25 @@ export default async function matchSlot(req: NextApiRequest, res: NextApiRespons
             }
         }
 
-        for (const invitation of invitations) {
-            if (invitation.status === "notSent") {
-                // get the user from the db
-                const user = await getUserFromDb(invitation.userId);
-                if (!user) {
-                    continue;
+        if (shouldText) {
+            for (const invitation of invitations) {
+                if (invitation.status === "notSent") {
+                    // get the user from the db
+                    const user = await getUserFromDb(invitation.userId);
+                    if (!user) {
+                        continue;
+                    }
+                    if (!user.phone || user.phone === "") {
+                        console.log('user has no phone number', user.email);
+                        continue;
+                    }
+
+                    // send the text message
+                    await sendText(user.phone, `You have been invited to play ${invitation.interest} on ${invitation.timeslot}. Head into Mutuals to accept or decline.`);
+
+                    // update the db
+                    await updateInviteStatus(invitation, "sent");
                 }
-                if (!user.phone || user.phone === "") {
-                    console.log('user has no phone number', user.email);
-                    continue;
-                }
-
-                // send the text message
-                await sendText(user.phone, `You have been invited to play ${invitation.interest} on ${invitation.timeslot}. Head into Mutuals to accept or decline.`);
-
-                // update the db
-                await updateInviteStatus(invitation, "sent");
-
 
             }
         }
