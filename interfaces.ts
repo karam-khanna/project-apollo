@@ -66,5 +66,5 @@ export interface Invitation {
     date: string;
     timeslot: Timeslots;
     interest: Interest;
-    status: "notSent" | "sent" | "accepted" | "declined";
+    status: "notSent" | "sent" | "accept" | "decline";
 }
