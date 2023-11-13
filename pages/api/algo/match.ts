@@ -1,6 +1,11 @@
 import {NextApiRequest, NextApiResponse} from "next";
 import {AlgoMatchReturn, Interest, Invitation, Timeslots} from "@/interfaces";
-import {addInviteToDb, findAvailableForTimeAndInterest, getUserFromDb} from "@/utils/server_side/serverDbInterface";
+import {
+    addInviteToDb,
+    findAvailableForTimeAndInterest,
+    getUserFromDb,
+    updateInviteStatus
+} from "@/utils/server_side/serverDbInterface";
 import {getWeekStartingDate, getWeekStartingDateAsString, parseInviteDocId} from "@/utils/client_side/helpers";
 import {undefined} from "zod";
 import {sendText} from "@/utils/server_side/twillioInterface";
@@ -79,14 +84,15 @@ export default async function matchSlot(req: NextApiRequest, res: NextApiRespons
                     continue;
                 }
                 if (!user.phone || user.phone === "") {
-                    console.log('user has no phone number', user);
+                    console.log('user has no phone number', user.email);
                     continue;
                 }
 
                 // send the text message
-                await sendText(user.phone, `You have been invited to play ${invitation.interest} on ${invitation.date} at ${invitation.timeslot}. Head into Mutuals to accept or decline.`);
+                await sendText(user.phone, `You have been invited to play ${invitation.interest} on ${invitation.timeslot}. Head into Mutuals to accept or decline.`);
 
                 // update the db
+                await updateInviteStatus(invitation, "sent");
 
 
             }
