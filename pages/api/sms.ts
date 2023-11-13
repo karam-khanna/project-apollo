@@ -1,16 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import twilio from 'twilio';
-import {Inter} from 'next/font/google'
-import {useContext, useState} from "react";
-import {UserContext} from "@/context/UserContext";
-import {useEffect} from 'react';
-import {firebase_auth} from "@/firebase/client_side/firebase_init";
-import { useRouter } from 'next/router';
-import {admin_db} from "@/firebase/server_side/firebase_admin_init";
 import {db} from "@/firebase/client_side/firebase_init";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, SubmitHandler } from "react-hook-form";
-import * as z from "zod";
 import { collection, getDocs, doc, query} from "firebase/firestore";
 
 
@@ -30,6 +20,7 @@ const findUserIdByPhone = async (searchPhone: any) => {
           }
         } catch (error) {
           console.error('Error fetching user phones:', error);
+          return null;
         }
         return null; // Return null if the phone number is not found
 };
