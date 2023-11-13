@@ -5,56 +5,77 @@ import {useEffect} from 'react';
 import {firebase_auth} from "@/firebase/client_side/firebase_init";
 import { useRouter } from 'next/router';
 import {admin_db} from "@/firebase/server_side/firebase_admin_init";
+import {db} from "@/firebase/client_side/firebase_init";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, SubmitHandler } from "react-hook-form";
 import * as z from "zod";
+import { collection, getDocs, doc, query} from "firebase/firestore";
 
 
 const inter = Inter({subsets: ['latin']})
 
 export default function Home() {
-    /*
-    //admin database:
-    var db = admin_db; //need the .env to run with no errors
-    // Access a specific collection in the database
-    const userCollection = db.collection('Users');
 
-    // Retrieve user phone number from the user collection where the field 'phone' exists
-    userCollection
-    .where('phone', '!=', null) // Filters documents where 'phone' field is not null
-    .get()
-    .then((querySnapshot) => {
-    querySnapshot.forEach((doc) => {
-        const userData = doc.data();
-        const phoneNumber = userData.phone;
-        console.log('User Phone Number:', phoneNumber);
-    });
-    })
-    .catch((error) => {
-    console.error('Error getting documents:', error);
-    });
+    const { user } = useContext(UserContext);
+    const [userPhones, setUserPhones] = useState([]);
+    
+    const userCollection = collection(db, 'Users');
 
-*/
-
-    const {user, setUser} = useContext(UserContext);
-    const [destination, setDestination] = useState("");
-    const [phoneNumber, setPhoneNumber] = useState(""); //set phone number to current user
-    const [text, setText] = useState("");
-
-    const router = useRouter();
-
-    //if user is logged in, set firebase email as the user's email
     useEffect(() => {
-        const fetchUserEmail = async () => {
-            const currentUser = firebase_auth.currentUser;
-            if (currentUser) {
-                const userEmail = currentUser.email || "";
-                setDestination(userEmail);
-            }
+        const fetchData = async () => {
+        try {
+            const querySnapshot = await getDocs(userCollection);
+            const phones = [];
+            querySnapshot.forEach((doc) => {
+            const userData = doc.data();
+            const phone = userData.phone;
+            phones.push(phone);
+            });
+            setUserPhones(phones);
+        } catch (error) {
+            console.error('Error fetching user emails:', error);
+            console.error('Error fetching user phones:', error);
+        }
         };
 
-        fetchUserEmail(); // Call the function to set the destination state variable when the component mounts
-    }, []);
+        fetchData();
+    }, [userCollection]);
+
+    /*
+    const findUserIdByPhone = async (searchPhone) => {
+        const userCollection = collection(db, 'Users');
+        try {
+          const querySnapshot = await getDocs(userCollection);
+          for (const doc of querySnapshot.docs) {
+            const userData = doc.data();
+            const phone = userData.phone;
+            if (phone === searchPhone) {
+              return doc.id;
+            }
+          }
+        } catch (error) {
+          console.error('Error fetching user phones:', error);
+        }
+        return null; // Return null if the phone number is not found
+      };
+      
+      const searchPhone = "9258021344";
+      
+      findUserIdByPhone(searchPhone)
+        .then((userId) => {
+          if (userId) {
+            console.log("User id:", userId);
+          } else {
+            console.log("User not found for phone:", searchPhone);
+          }
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+      */
+
+  //const [destination, setDestination] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
 
     //Sample messages for notifications
     const eventReminder = `
@@ -68,6 +89,7 @@ Get hyped for BASKETBALL. We wanted to remind you that your basketball event is 
     Location: [Event Location]
 
 Have fun balling! If you want to connect with your group head to the app:)
+https://mutuals-beta.vercel.app/myevents
 
     Your Mutual,
     Devkam
@@ -77,6 +99,7 @@ Have fun balling! If you want to connect with your group head to the app:)
     Hello ${user?.firstName || ''},
 
 Our calendar is LIVE. Head over to the app to mark your availability for this weekend!
+https://mutuals-beta.vercel.app/calendarpage
 
     Your Mutual,
     Devkam
@@ -93,14 +116,11 @@ You've been added to an event for this weekend.
         Location: [Event Location]
 
 Head to the app to accept your event or reply 1 to accept or 2 to decline!
+https://mutuals-beta.vercel.app/myevents
 
     Your Mutual,
     Devkam
     `;
-
-//set message and subject to random option for testing purposes
-    const messageOptions = [eventReminder, calendarLive, acceptEvent];
-    const subjectOptions = ['Upcoming Events', 'Calendar now Live', 'Event Posted'];
 
     //For Event Posted, save response (1 or 2)
 
@@ -123,6 +143,7 @@ Head to the app to accept your event or reply 1 to accept or 2 to decline!
 
 
     return (
+            
             <div>
                 <div className={"flex flex-col items-center justify-center pt-16 gap-9"}>
                     <h1 className="text-6xl font-bold text-center">Secret Page!</h1>
@@ -137,6 +158,16 @@ Head to the app to accept your event or reply 1 to accept or 2 to decline!
                 
                 </div>
 
+                <div className="flex flex-col items-center justify-center pt-16 gap-1">
+        <h1 className="text-2xl font-semibold mb-2">Phone Numbers in Database</h1>
+      <ul>
+        {userPhones.map((phone, index) => (
+          <li key={index}>{phone}</li>
+        ))}
+      </ul>
+
+        
+      </div>
 
                 <div className="flex flex-col items-center justify-center pt-16 gap-1">
                     <h1 className="text-2xl font-semibold mb-2">Phone Notification Testing</h1> {/* Header */}

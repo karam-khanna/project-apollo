@@ -9,6 +9,7 @@ export interface User {
     onboarded: boolean;
     poker: boolean;
     basketball: boolean;
+    response: boolean;
 
 }
 

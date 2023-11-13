@@ -13,6 +13,14 @@ export async function clientSideGetUser(userId: string): Promise<User | null> {
     return null;
 }
 
+export async function updateUserResponse(
+    user: User,
+    response: boolean,
+    setUser: React.Dispatch<React.SetStateAction<User | null>>
+): Promise<boolean> {
+return updateUserField(user, 'response', response, setUser);
+}
+
 export async function updateUserFirstName(
         user: User,
         firstName: string,
