@@ -4,6 +4,7 @@ import { UserContext } from "@/context/UserContext";
 import { useEffect } from 'react';
 import { firebase_auth } from "@/firebase/client_side/firebase_init";
 import { Button } from '@/components/ui/button';
+import { getMyChats } from '@/utils/client_side/chatUtils';
 import axios from 'axios';
 const inter = Inter({ subsets: ['latin'] })
 
@@ -86,16 +87,46 @@ Devkam
                 console.error('Error:', error);
             });
     };
+    function mapChats(data: any) {
+        return data.title
+    }
 
-    const testAPI = async() => {
+    function getPeople(data: any) {
+        const people: any = []
+        data.forEach((chat: { people: any[]; }) => {
+            const collect: any[] = []
+            chat.people.forEach((something: { person: { username: any; }; }) => {
+                collect.push(something.person.username)
+            })
+            people.push(collect)
+        })
+        return people
+    }
+    const testAPI = async () => {
+        function getPeople(data: any) {
+            let collect: { [key: string]: any } = {};
+            data.forEach((chat: { title: any; people: { person: { username: any; }; }[]; }) => {
+                const title: string = chat.title;
+                const people: any = [];
+                chat.people.forEach((something: { person: { username: any; }; }) => {
+                    people.push(something.person.username)
+                })
+                collect[title] = people
+            })
+            return collect
+        }
         try {
-            const chatkey = await axios.post(
-                '/api/chat/make_chat',
-                {
-                    "chatid": "test-us"
+            axios({
+                method: 'get',
+                url: 'https://api.chatengine.io/chats/',
+                headers: {
+                    'project-id': process.env.NEXT_PUBLIC_CHAT_PROJECT as string,
+                    'user-name': user?.firstName + " " + user?.lastName,
+                    'user-secret': user?.id as string
                 }
-            )
-            console.log(chatkey)
+            })
+                .then((response) => { console.log(getPeople(response.data)) })
+                .catch((error) => { throw new Error(error) });
         }
         catch (error) {
             console.log(error)

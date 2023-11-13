@@ -24,15 +24,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         }
 
         const secrets = cnnct.users
-        let emails: string[] = []
+        let usernames: string[] = []
         for (const secret of secrets) {
             var user = await getUserFromDb(secret)
             if (user) {
-                var email = user.email
-                emails.push(email)
+                var username = user.firstName + " " + user.lastName
+                usernames.push(username)
             }
             else {
-                emails.push("ERROR")
+                usernames.push("ERROR")
             }
         }
         if (!process.env.NEXT_PUBLIC_CHAT_PROJECT) {
@@ -43,14 +43,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             const response = await axios.put(
                 "https://api.chatengine.io/chats/",
                 {
-                    "usernames": emails,
+                    "usernames": usernames,
                     "title": chat,
                     "is_direct_chat": false
                 },
                 {
                     "headers": {
                         "project-id": process.env.NEXT_PUBLIC_CHAT_PROJECT,
-                        "user-name": emails[0],
+                        "user-name": usernames[0],
                         "user-secret": secrets[0]
                     }
                 }
