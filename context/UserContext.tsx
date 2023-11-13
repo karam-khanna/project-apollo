@@ -1,8 +1,10 @@
 // UserContext.tsx
+
 import React, {createContext} from 'react';
 import {User as FirebaseUser} from '@firebase/auth';
 import {User} from '@/interfaces';
 
+// Define the properties expected in UserContext
 interface UserContextProps {
     userAuth: FirebaseUser | null;
     setUserAuth: React.Dispatch<React.SetStateAction<FirebaseUser | null>>;

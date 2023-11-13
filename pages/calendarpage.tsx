@@ -20,6 +20,7 @@ import {parseAvailability} from "@/utils/client_side/helpers";
 import {useContext} from "react";
 import {UserContext} from "@/context/UserContext";
 
+// Defining time slots for the weekend.
 const items = [
     {
         id: "fridayMorning",
@@ -71,12 +72,14 @@ const items = [
     },
 ] as const
 
+// Creating a new form using zod.
 const FormSchema = z.object({
     items: z.array(z.string()).refine((value) => value.some((item) => item), {
         message: "You have to select at least one item.",
     }),
 })
 
+// React component for the form
 export default function CheckboxReactHookFormMultiple() {
 
     const {user} = useContext(UserContext);
@@ -90,8 +93,8 @@ export default function CheckboxReactHookFormMultiple() {
     async function onSubmit(data: z.infer<typeof FormSchema>) {
 
         if (user) {
-            let availability = parseAvailability(user, data.items)
-            if (availability) {
+            let availability = parseAvailability(user, data.items) // Parse user's availability based on selected items.
+            if (availability) {// Update user's availability 
                 const res = await fetch(`/api/users/${user.id}/availability/update`, {
                     method: "POST",
                     headers: {
@@ -102,9 +105,8 @@ export default function CheckboxReactHookFormMultiple() {
                 console.log("res", await res.json())
             }
 
-
+            // Log availability and display a toast notification
             console.log("availability", availability)
-
             toast({
                 title: "You submitted the following values:",
                 description: (
@@ -121,6 +123,7 @@ export default function CheckboxReactHookFormMultiple() {
 
     }
 
+    // Rendering form
     return (
         <div className="flex flex-col items-center justify-center pt-16 gap-9">
                 <Form {...form}>

@@ -1,3 +1,7 @@
+// onboarding-from
+// This .tsx files is used for the onboarding process.
+// It collects the information required to create new users.
+
 "use client"
 import Image from 'next/image';
 import {zodResolver} from "@hookform/resolvers/zod"
@@ -29,7 +33,6 @@ import {Checkbox} from "@/components/ui/checkbox";
 import axios from 'axios';
 
 const interestEnum = z.enum(["poker", "basketball"])
-
 type interestEnum = z.infer<typeof interestEnum>;
 
 const interests = [
@@ -43,10 +46,12 @@ const interests = [
   },
 ] as const;
 
+// Schema for age.
 const ageSchema = z.string().refine((value) => !isNaN(parseInt(value, 10)) && parseInt(value, 10) >= 18, {
   message: "Must be above age of 18 to join.",
 });
 
+// Schema for the actual onbaording form.
 const formSchema = z.object({
   firstName: z.string().min(2, {
     message: "First name",
@@ -72,7 +77,6 @@ const avatarOptions = [
   "/avatars/hoodiemale.png",
 ];
 
-
 export interface OnboardingFormProps {
   setIsLoading: Dispatch<SetStateAction<boolean>>;
 }
@@ -82,6 +86,7 @@ export function OnboardingForm(props: OnboardingFormProps) {
   const { toast } = useToast();
   const router = useRouter();
 
+// Creating default values of the form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -90,7 +95,7 @@ export function OnboardingForm(props: OnboardingFormProps) {
       phone: "",
       interests: [],
       age: "",
-      selectedAvatar: "", // Initialize the selectedAvatar field
+      selectedAvatar: "", 
     },
   });
   const { user, setUser } = useContext(UserContext);
@@ -103,6 +108,7 @@ export function OnboardingForm(props: OnboardingFormProps) {
 async function onSubmit(values: z.infer<typeof formSchema>) {
   if (user) {
     props.setIsLoading(true);
+    // Entering all values.
     let firstName = values.firstName;
     let lastName = values.lastName;
     let phone = values.phone;
@@ -110,6 +116,7 @@ async function onSubmit(values: z.infer<typeof formSchema>) {
     const age = parseInt(values.age, 10); // Convert age to a number
     const selectedAvatar = values.selectedAvatar;
 
+    // Error messages to be displayed if anything is not entered that is required.
     if (firstName === "" || lastName === "" || !selectedAvatar || isNaN(age)) {
       toast({
         title: "Oops! You forgot to enter your name, select an avatar, or provide a valid age",
@@ -125,14 +132,14 @@ async function onSubmit(values: z.infer<typeof formSchema>) {
                 return
     }
     
-    // check if interests contains poker
+    // Check if interests contains poker
             if (userInterests.includes("poker")) {
                 await updateUserInterest(user, "poker" as Interest, true, setUser)
             } else {
                 await updateUserInterest(user, "poker" as Interest, false, setUser)
             }
 
-            // check if interests contains basketball
+            // Check if interests contains basketball
             if (userInterests.includes("basketball")) {
                 await updateUserInterest(user, "basketball" as Interest, true, setUser)
             } else {
@@ -142,7 +149,7 @@ async function onSubmit(values: z.infer<typeof formSchema>) {
     // Save the selected avatar in the database
     await updateUserPicture(user, selectedAvatar, setUser);
 
-
+    // Updating all values entered.
     userInterests.forEach(async (interest) => {
       await updateUserInterest(user, interest as Interest, true, setUser);
     });
@@ -162,11 +169,12 @@ async function onSubmit(values: z.infer<typeof formSchema>) {
   }
 }
 
-  
+  // Final typescript output being returned. 
   return (
     <div>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+          {/* First name class*/}
           <FormField
             control={form.control}
             name="firstName"
@@ -180,6 +188,7 @@ async function onSubmit(values: z.infer<typeof formSchema>) {
               </FormItem>
             )}
           />
+          {/* Last name class*/}
           <FormField
             control={form.control}
             name="lastName"
@@ -197,26 +206,28 @@ async function onSubmit(values: z.infer<typeof formSchema>) {
               </FormItem>
             )}
           />
+          {/* Phone Number Class*/}
           <FormField
-                                control={form.control}
-                                name="phone"
-                                render={({field}) => (
-                                        <FormItem>
-                                            <FormLabel>
-                                                <div className={"container pl-0 gap "}>
-                                                    <h2>Phone Number</h2>
-                                                </div>
-                                            </FormLabel>
-                                            <FormDescription>
-                                                    {"Enter your phone number without dashes or spaces"}
-                                                </FormDescription>
-                                            <FormControl>
-                                                <Input placeholder="XXXXXXXXXX" {...field} />
-                                            </FormControl>
-                                            <FormMessage/>
-                                        </FormItem>
-                                )}
-                        />
+              control={form.control}
+              name="phone"
+              render={({field}) => (
+                      <FormItem>
+                          <FormLabel>
+                              <div className={"container pl-0 gap "}>
+                                  <h2>Phone Number</h2>
+                              </div>
+                          </FormLabel>
+                          <FormDescription>
+                                  {"Enter your phone number without dashes or spaces"}
+                              </FormDescription>
+                          <FormControl>
+                              <Input placeholder="XXXXXXXXXX" {...field} />
+                          </FormControl>
+                          <FormMessage/>
+                      </FormItem>
+              )}
+          />
+          {/* Interests Class */}
           <FormField
             control={form.control}
             name="interests"
@@ -254,38 +265,38 @@ async function onSubmit(values: z.infer<typeof formSchema>) {
               </FormItem>
             )}
           />
+          {/* User Profile Picture Class*/}
          <FormField
-  control={form.control}
-  name="selectedAvatar"
-  render={({ field }) => (
-    <FormItem>
-      <FormLabel>Profile Avatar</FormLabel>
-      <FormControl>
-        <select {...field} onChange={handleAvatarChange}>
-          <option value="">Select an Avatar</option>
-          {avatarOptions.map((avatar, index) => (
-            <option key={index} value={avatar}>
-              Avatar {index + 1}
-            </option>
-          ))}
-        </select>
-      </FormControl>
-      <div className="text-center">
-        {field.value ? (
-          <Image
-            src={field.value}
-            alt="Selected Avatar"
-            width={100}
-            height={100}
+            control={form.control}
+            name="selectedAvatar"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Profile Avatar</FormLabel>
+                <FormControl>
+                  <select {...field} onChange={handleAvatarChange}>
+                    <option value="">Select an Avatar</option>
+                    {avatarOptions.map((avatar, index) => (
+                      <option key={index} value={avatar}>
+                        Avatar {index + 1}
+                      </option>
+                    ))}
+                  </select>
+                </FormControl>
+                <div className="text-center">
+                  {field.value ? (
+                    <Image
+                      src={field.value}
+                      alt="Selected Avatar"
+                      width={100}
+                      height={100}
+                    />
+                  ) : null}
+                </div>
+                <FormMessage />
+              </FormItem>
+            )}
           />
-        ) : null}
-        {/* Display the selected avatar */}
-      </div>
-      <FormMessage />
-    </FormItem>
-  )}
-/>
-
+          {/* Age Class */}
           <FormField
             control={form.control}
             name="age"
