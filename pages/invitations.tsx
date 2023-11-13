@@ -47,6 +47,7 @@ export default function RadioGroupForm() {
             user ? `/api/users/${user.id}/invitations` : null,
             fetcherWithNoAuthToken,
     );
+    const router = useRouter();
 
 
     // useEffect(() => {
@@ -67,9 +68,6 @@ export default function RadioGroupForm() {
     }
 
     // The form schema based on the events
-
-
-    const router = useRouter();
 
 
     const onSubmit: SubmitHandler<FormData> = (data) => {
