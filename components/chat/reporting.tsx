@@ -5,7 +5,7 @@ import React, { Dispatch, SetStateAction, useEffect, useState, useContext } from
 import { Input } from "@/components/ui/input";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import {getGroups} from "@/utils/client_side/chatUtils"
+import { getGroups } from "@/utils/client_side/chatUtils"
 import {
     Select,
     SelectGroup,
@@ -18,44 +18,37 @@ import {
 import { Card, CardContent, CardDescription } from "@/components/ui/card";
 import { UserContext } from "@/context/UserContext";
 import { zodResolver } from "@hookform/resolvers/zod"
-import {db} from '@/firebase/client_side/firebase_init';
-import {doc, setDoc, Timestamp} from "firebase/firestore"
+import { db } from '@/firebase/client_side/firebase_init';
+import { doc, setDoc, Timestamp } from "firebase/firestore"
 import * as z from "zod"
 import axios from 'axios'
 
 export default function ReportForm() {
     const [groups, setGroups] = useState([""])
+    const [metadata, setMetadata] = useState({})
+    const [people, setPeople] = useState([])
     const [reporting, setReporting] = useState(false)
     const [done, setDone] = useState(false)
     const { user, setUser } = useContext(UserContext)
     if (!user) {
         return <div></div>
     }
-    
+
     useEffect(() => {
         async function fetchData() {
             try {
                 if (user) {
                     const result = await getGroups(user);
-                    console.log(result)
+                    setGroups(Object.keys(result))
+                    setMetadata(result)
                 }
             } catch (error) {
                 console.error("Error fetching groups:", error);
             }
         }
         fetchData();
-    }, []);
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    }, [user]);
 
-    function generateString(length: number) {
-        let result = ' ';
-        const charactersLength = characters.length;
-        for (let i = 0; i < length; i++) {
-            result += characters.charAt(Math.floor(Math.random() * charactersLength));
-        }
-
-        return result;
-    }
 
     const formSchema = z.object({
         group: z.string().nonempty("Select a group"),
@@ -73,6 +66,17 @@ export default function ReportForm() {
             concern: "",
         },
     });
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+    function generateString(length: number) {
+        let result = ' ';
+        const charactersLength = characters.length;
+        for (let i = 0; i < length; i++) {
+            result += characters.charAt(Math.floor(Math.random() * charactersLength));
+        }
+
+        return result;
+    }
     async function onSubmit(values: z.infer<typeof formSchema>) {
         const ts = Timestamp.fromDate(new Date())
         axios.get('')
@@ -99,9 +103,18 @@ export default function ReportForm() {
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>Group</FormLabel>
-                                        <FormControl>
-                                            <Input placeholder="group chat" {...field} />
-                                        </FormControl>
+                                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                            <FormControl>
+                                                <SelectTrigger>
+                                                    <SelectValue placeholder="Select a group to report" />
+                                                </SelectTrigger>
+                                            </FormControl>
+                                            <SelectContent>
+                                                {groups.map(group => 
+                                                    <SelectItem value={group}>{group}</SelectItem>
+                                                )}
+                                            </SelectContent>
+                                        </Select>
                                     </FormItem>)}
                             />
                             <FormField

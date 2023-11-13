@@ -29,7 +29,7 @@ export async function getMyChats(user: User){
 
 
 export async function getGroups(user: User): Promise<any> {
-    function getPeople(data: any) {
+    function format(data: any) {
         let collect: { [key: string]: any } = {};
         data.forEach((chat: { title: any; people: { person: { username: any; }; }[]; }) => {
             const title: string = chat.title;
@@ -41,17 +41,19 @@ export async function getGroups(user: User): Promise<any> {
         })
         return collect
     }
-    let groups: Object = {};
-    axios({
-        method: 'get',
-        url: 'https://api.chatengine.io/chats/',
-        headers: {
-            'project-id': process.env.NEXT_PUBLIC_CHAT_PROJECT as string,
-            'user-name': user?.firstName + " " + user?.lastName,
-            'user-secret': user?.id as string
-        }
-    })
-        .then((response) => { groups = getPeople(response.data) })
-        .catch((error) => { throw new Error(error) });
-    return groups;
+    try{
+        const response = await  axios({
+            method: 'get',
+            url: 'https://api.chatengine.io/chats/',
+            headers: {
+                'project-id': process.env.NEXT_PUBLIC_CHAT_PROJECT as string,
+                'user-name': user?.firstName + " " + user?.lastName,
+                'user-secret': user?.id as string
+            }
+        })
+        return format(response.data)
+    }
+    catch(error){
+        throw new Error("Error getting groups");
+    }
 }
