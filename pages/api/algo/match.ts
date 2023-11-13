@@ -66,7 +66,7 @@ export default async function matchSlot(req: NextApiRequest, res: NextApiRespons
         for (const result of results) {
             for (const user of result.matches) {
                 let toPush: Invitation = {
-                    date: result.date,
+                    date: getWeekStartingDateAsString(new Date(result.date), true),
                     id: parseInviteDocId(user.id, result.timeslot, result.date),
                     interest: result.interest,
                     status: "notSent",
@@ -98,7 +98,7 @@ export default async function matchSlot(req: NextApiRequest, res: NextApiRespons
                     await sendText(user.phone, `You have been invited to play ${invitation.interest} on ${invitation.timeslot}. Head into Mutuals to accept or decline.`);
 
                     // update the db
-                    await updateInviteStatus(invitation, "sent");
+                    await updateInviteStatus(invitation.id, "sent");
                 }
 
             }
