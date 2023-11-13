@@ -30,9 +30,6 @@ export default function ReportForm() {
     const [reporting, setReporting] = useState(false)
     const [done, setDone] = useState(false)
     const { user, setUser } = useContext(UserContext)
-    if (!user) {
-        return <div></div>
-    }
 
     useEffect(() => {
         async function fetchData() {
@@ -111,7 +108,7 @@ export default function ReportForm() {
                                             </FormControl>
                                             <SelectContent>
                                                 {groups.map(group => 
-                                                    <SelectItem value={group}>{group}</SelectItem>
+                                                    <SelectItem key={group} value={group}>{group}</SelectItem>
                                                 )}
                                             </SelectContent>
                                         </Select>
@@ -158,7 +155,7 @@ export default function ReportForm() {
         return (
             <div>
                 <Card className={"absolute top-0 right-2 mt-8 sm:mt-16 w-11/12 p-3 sm:p-6"}>
-                    <CardDescription>Seeing behavior you don't like?</CardDescription>
+                    <CardDescription>Seeing behavior you don&apos;t like?</CardDescription>
                     <Button onClick={() => setReporting(true)}>Submit a Report</Button>
                 </Card>
             </div>
