@@ -8,6 +8,7 @@ export interface User {
     onboarded: boolean;
     poker: boolean;
     basketball: boolean;
+    phone?: string;
 
 }
 
@@ -57,4 +58,13 @@ export interface AlgoMatchReturn {
     timeslot: Timeslots;
     interest: Interest;
     matches: User[];
+}
+
+export interface Invitation {
+    id: string;
+    userId: string;
+    date: string;
+    timeslot: Timeslots;
+    interest: Interest;
+    status: "notSent" | "sent" | "accepted" | "declined";
 }
