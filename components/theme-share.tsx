@@ -1,5 +1,6 @@
 import * as React from "react";
 import { Share } from "lucide-react";
+import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
 
 interface ShareBoxProps {
@@ -56,6 +57,7 @@ Devkam
           value={phoneNumber}
           onChange={(e) => setPhoneNumber(e.target.value)}
           className="border p-2 w-full text-white rounded mt-2"
+          style={{ backgroundColor: 'lightgrey' }}
         />
       </label>
       <Button onClick={handleSend}>
@@ -80,7 +82,8 @@ export function ShareSite() {
     <div>
       <div className="flex items-center space-x-4">
         <Button variant="ghost" size="icon" onClick={openPopUp}>
-          <Share className="hidden h-5 w-5 dark:block" />
+          <Share className="hidden h-5 w-5 dark:block "/>
+          <Share className="h-[1.5rem] w-[1.3rem] dark:hidden"/>
           <span className="sr-only">Toggle theme</span>
         </Button>
       </div>
