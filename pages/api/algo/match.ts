@@ -9,6 +9,9 @@ import {
 import {getWeekStartingDate, getWeekStartingDateAsString, parseInviteDocId} from "@/utils/client_side/helpers";
 import {undefined} from "zod";
 import {sendText} from "@/utils/server_side/twillioInterface";
+import { doc, setDoc } from "firebase/firestore";
+import { db } from "@/firebase/client_side/firebase_init";
+import axios from "axios";
 
 export default async function matchSlot(req: NextApiRequest, res: NextApiResponse) {
     if (req.method === 'GET') {
@@ -59,6 +62,29 @@ export default async function matchSlot(req: NextApiRequest, res: NextApiRespons
                         interest: interest as Interest,
                         matches
                     });
+                    await setDoc(doc(db, 'chats', interest + "-" + timeslot), {'users': []})
+                    try {
+                        const response = await axios.put(
+                            "https://api.chatengine.io/chats/",
+                            {
+                                "usernames": ["Mutuals Admin"],
+                                "title": interest + "-" + timeslot,
+                                "is_direct_chat": false
+                            },
+                            {
+                                "headers": {
+                                    "project-id": process.env.NEXT_PUBLIC_CHAT_PROJECT as string,
+                                    "user-name": "Mutuals Admin",
+                                    "user-secret": "z468vf3TWVMVOnLst4fB4b1z4T82"
+                                }
+                            }
+                        )
+                        await setDoc(doc(db, 'chats', interest + "-" + timeslot), {'users': [], 'chatid': response.data.id});
+                    }
+                    catch (error) {
+                        res.status(400).json(error)
+                        return
+                    }
                 }
             }
         }
@@ -81,28 +107,28 @@ export default async function matchSlot(req: NextApiRequest, res: NextApiRespons
             }
         }
 
-        if (shouldText) {
-            for (const invitation of invitations) {
-                if (invitation.status === "notSent") {
-                    // get the user from the db
-                    const user = await getUserFromDb(invitation.userId);
-                    if (!user) {
-                        continue;
-                    }
-                    if (!user.phone || user.phone === "") {
-                        console.log('user has no phone number', user.email);
-                        continue;
-                    }
+        // if (shouldText) {
+        //     for (const invitation of invitations) {
+        //         if (invitation.status === "notSent") {
+        //             // get the user from the db
+        //             const user = await getUserFromDb(invitation.userId);
+        //             if (!user) {
+        //                 continue;
+        //             }
+        //             if (!user.phone || user.phone === "") {
+        //                 console.log('user has no phone number', user.email);
+        //                 continue;
+        //             }
 
-                    // send the text message
-                    await sendText(user.phone, `You have been invited to play ${invitation.interest} on ${invitation.timeslot}. Head into Mutuals to accept or decline.`);
+        //             // send the text message
+        //             await sendText(user.phone, `You have been invited to play ${invitation.interest} on ${invitation.timeslot}. Head into Mutuals to accept or decline.`);
 
-                    // update the db
-                    await updateInviteStatus(invitation.id, "sent");
-                }
+        //             // update the db
+        //             await updateInviteStatus(invitation.id, "sent");
+        //         }
 
-            }
-        }
+        //     }
+        // }
 
 
         res.status(200).json(results);

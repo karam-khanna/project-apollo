@@ -34,6 +34,7 @@
     "firebase": "^10.4.0",
     "firebase-admin": "^11.11.0",
     "firebase-hooks": "^0.0.1",
+    "fs": "^0.0.1-security",
     "jsdom": "^22.1.0",
     "lib-utils-ts": "^2.0.4-stable",
     "lucide-react": "^0.279.0",

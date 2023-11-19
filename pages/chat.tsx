@@ -7,6 +7,7 @@ import { User } from '@/interfaces'
 import axios from 'axios';
 import { custom } from "zod";
 import ReportForm from "@/components/chat/reporting";
+import { useTheme } from "next-themes";
 
 
 export default function Chat() {
@@ -17,6 +18,7 @@ export default function Chat() {
     }
     const router = useRouter();
     const {user, setUser} = useContext(UserContext);
+    const {theme, setTheme} = useTheme()
     if (typeof window !== 'undefined') {
         // Now you can safely use the router
         if (!user) {
@@ -26,6 +28,7 @@ export default function Chat() {
     const chatProps = useMultiChatLogic(projectId, user?.firstName + " " + user?.lastName || '', user?.id || '');
     const [isReady, setReady] = useState(false);
     useEffect(() => {
+        setTheme("light")
         setReady(true)
     }, [])
 
@@ -43,10 +46,12 @@ export default function Chat() {
         //reporting system goes here
         return <div><ReportForm/></div>
     }
+
+    const actChat = router.query.chatid ? Number(router.query.chatid) : 0;
     return isReady ? (
             <div>
                 <MultiChatSocket {...chatProps} />
-                <MultiChatWindow {...chatProps} renderChatHeader={customRenderChatHeader} renderChatSettings={customNoSettings} style={{height: '100vh'}}/>
+                <MultiChatWindow {...chatProps} activeChatId={actChat} renderChatHeader={customRenderChatHeader} renderChatSettings={customNoSettings} style={{height: '100vh'}}/>
             </div>
     ) : <div>errors...</div>
 };
