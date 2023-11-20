@@ -47,12 +47,23 @@ export default function Chat() {
         return <div><ReportForm/></div>
     }
 
-    const actChat = router.query.chatid ? Number(router.query.chatid) : 0;
-    return isReady ? (
+    const actChat = router.query.chatid ? Number(router.query.chatid) : undefined;
+    if (actChat) {
+        return isReady ? (
             <div>
                 <MultiChatSocket {...chatProps} />
                 <MultiChatWindow {...chatProps} activeChatId={actChat} renderChatHeader={customRenderChatHeader} renderChatSettings={customNoSettings} style={{height: '100vh'}}/>
             </div>
     ) : <div>errors...</div>
+    }
+    else {
+        return isReady ? (
+            <div>
+                <MultiChatSocket {...chatProps} />
+                <MultiChatWindow {...chatProps} renderChatHeader={customRenderChatHeader} renderChatSettings={customNoSettings} style={{height: '100vh'}}/>
+            </div>
+    ) : <div>errors...</div>
+    }
+    
 };
 

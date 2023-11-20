@@ -40,6 +40,15 @@ interface Event {
 //         GroupChat: <a href="https://www.emory.edu/home/index.html">Join GroupChat</a>,
 //     },
 // ]
+function format(name: string) {
+    // Split the name before the first uppercase letter
+    const words = name.split(/(?=[A-Z])/);
+  
+    // Capitalize the first letter of each word and join them with spaces
+    const formattedName = words.map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+  
+    return formattedName;
+  }
 
 export default function TableDemo() {
     const { user } = useContext(UserContext);
@@ -69,22 +78,34 @@ export default function TableDemo() {
                     return docSnap.chatid
                 }
             }
+            const eventUserList = async (event: Invitation) => {
+                const docRef = await getDoc(doc(db, "chats", event.interest + "-" + event.timeslot))
+                const docSnap = docRef.data()
+                if (docSnap) {
+                    return docSnap.users.length
+                }
+            }
 
             const fetchChatId = async (event: Invitation) => {
                 const chatId = await eventChatId(event);
                 return chatId;
             };
 
+            const fetchUserList = async (event: Invitation) => {
+                const uslen = await eventUserList(event);
+                return uslen;
+            };
+
             const createNewEvents = async () => {
                 const newEvents = await Promise.all(
                     accepts.map(async (event) => {
                         const chatId = await fetchChatId(event);
-
+                        const len = await fetchUserList(event)
                         return {
                             Day: event.date,
-                            Time: event.timeslot.toString(),
+                            Time: format(event.timeslot.toString()),
                             Activity: event.interest.toString(),
-                            NumberOfPeople: "69",
+                            NumberOfPeople: len,
                             GroupChat: (
                                 <Button onClick={() => router.push(`/chat?chatid=${chatId}`).then()}>Join GroupChat</Button>
                             ),
