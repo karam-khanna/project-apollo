@@ -30,18 +30,11 @@ export default function Chat() {
     useEffect(() => {
         setTheme("light")
         setReady(true)
-    }, [])
+    }, [theme])
 
-    
-
-    const customRenderChatHeader = (props: { title?: React.ReactNode }) => {
-        return <div style={{
-            textAlign: 'center',
-            fontSize: 'larger',
-            fontWeight: 'bold'
-        }}>{props.title}</div>;
-    };
-
+    const noWelcomeGif = () => {
+        return <div>HELP HELP HELP</div>
+    }
     const customNoSettings = () => {
         //reporting system goes here
         return <div><ReportForm/></div>
@@ -52,7 +45,7 @@ export default function Chat() {
         return isReady ? (
             <div>
                 <MultiChatSocket {...chatProps} />
-                <MultiChatWindow {...chatProps} activeChatId={actChat} renderChatHeader={customRenderChatHeader} renderChatSettings={customNoSettings} style={{height: '100vh'}}/>
+                <MultiChatWindow {...chatProps} activeChatId={actChat} renderChatSettings={customNoSettings} style={{height: '100vh'}}/>
             </div>
     ) : <div>errors...</div>
     }
@@ -60,7 +53,7 @@ export default function Chat() {
         return isReady ? (
             <div>
                 <MultiChatSocket {...chatProps} />
-                <MultiChatWindow {...chatProps} renderChatHeader={customRenderChatHeader} renderChatSettings={customNoSettings} style={{height: '100vh'}}/>
+                <MultiChatWindow {...chatProps} renderWelcomeGif = {noWelcomeGif} renderChatSettings={customNoSettings} style={{height: '100vh'}}/>
             </div>
     ) : <div>errors...</div>
     }
