@@ -40,7 +40,15 @@ const createFormSchema = (invitations: Invitation[]) => {
     });
 };
 
-
+function format(name: string) {
+    // Split the name before the first uppercase letter
+    const words = name.split(/(?=[A-Z])/);
+  
+    // Capitalize the first letter of each word and join them with spaces
+    const formattedName = words.map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+  
+    return formattedName;
+  }
 export default function RadioGroupForm() {
     const {user} = useContext(UserContext);
     const {data: invitations, error} = useSWR<Invitation[]>(
@@ -92,7 +100,7 @@ export default function RadioGroupForm() {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify(eventResponse.type),
-            }).then(r => console.log("sent response"))
+            }).then(r => console.log("response submitted"))
         })
         router.push('/myevents');
     };
@@ -111,7 +119,7 @@ export default function RadioGroupForm() {
                                         render={({field}) => (
                                                 <FormItem className="space-y-3">
                                                     <FormLabel
-                                                            className="text-pink cursor-pointer ml-2 font-bold ">{invite.id}</FormLabel>
+                                                            className="text-pink cursor-pointer ml-2 font-bold ">{String(invite.interest).charAt(0).toUpperCase() + String(invite.interest).substring(1,) + ": " + format(invite.timeslot)}</FormLabel>
                                                     <FormControl>
                                                         <RadioGroup
                                                                 onValueChange={field.onChange}

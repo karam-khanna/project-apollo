@@ -8,10 +8,42 @@ import {
 } from "@/utils/server_side/serverDbInterface";
 import {getWeekStartingDate, getWeekStartingDateAsString, parseInviteDocId} from "@/utils/client_side/helpers";
 import {undefined} from "zod";
-import {sendText} from "@/utils/server_side/twillioInterface";
+//import {sendText} from "@/utils/server_side/twillioInterface";
 import { doc, setDoc } from "firebase/firestore";
 import { db } from "@/firebase/client_side/firebase_init";
 import axios from "axios";
+import twilio from 'twilio';
+
+const client = twilio(process.env.NEXT_PUBLIC_TWILIO_ACCOUNT_SID, process.env.NEXT_PUBLIC_TWILIO_AUTH_TOKEN);
+
+const sendText = async (req:any, res:any) => {
+
+    const {to, message} = JSON.parse(req.body);
+
+    try {
+        await client.messages.create({
+            body: message,
+            to, // The recipient's phone number
+            from: '+18559620462', // Your Twilio phone number
+          })
+          res.status(200).json({message: 'Text sent'});
+
+    } catch (error){
+        console.log('Error sending text:', error);
+        res.status(500).json({error: 'Text not sent'});
+    }
+
+}
+
+function format(name: string) {
+    // Split the name before the first uppercase letter
+    const words = name.split(/(?=[A-Z])/);
+  
+    // Capitalize the first letter of each word and join them with spaces
+    const formattedName = words.map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+  
+    return formattedName;
+  }
 
 export default async function matchSlot(req: NextApiRequest, res: NextApiResponse) {
     if (req.method === 'GET') {
@@ -107,28 +139,28 @@ export default async function matchSlot(req: NextApiRequest, res: NextApiRespons
             }
         }
 
-        // if (shouldText) {
-        //     for (const invitation of invitations) {
-        //         if (invitation.status === "notSent") {
-        //             // get the user from the db
-        //             const user = await getUserFromDb(invitation.userId);
-        //             if (!user) {
-        //                 continue;
-        //             }
-        //             if (!user.phone || user.phone === "") {
-        //                 console.log('user has no phone number', user.email);
-        //                 continue;
-        //             }
+        if (shouldText) {
+            for (const invitation of invitations) {
+                if (invitation.status === "notSent") {
+                    // get the user from the db
+                    const user = await getUserFromDb(invitation.userId);
+                    if (!user) {
+                        continue;
+                    }
+                    if (!user.phone || user.phone === "") {
+                        console.log('user has no phone number', user.email);
+                        continue;
+                    }
 
-        //             // send the text message
-        //             await sendText(user.phone, `You have been invited to play ${invitation.interest} on ${invitation.timeslot}. Head into Mutuals to accept or decline.`);
+                    // send the text message
+                    await sendText(user.phone, `You have been invited to play ${invitation.interest} on ${format(invitation.timeslot)}. Head into Mutuals to accept or decline.`);
 
-        //             // update the db
-        //             await updateInviteStatus(invitation.id, "sent");
-        //         }
+                    // update the db
+                    await updateInviteStatus(invitation.id, "sent");
+                }
 
-        //     }
-        // }
+            }
+        }
 
 
         res.status(200).json(results);
