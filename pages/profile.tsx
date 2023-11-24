@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -16,18 +16,19 @@ interface ProfileData {
   picture: string; // Add picture property
 }
 
-const ProfilePage: React.FC = () => {
+export default function ProfilePage() {
   const { user, setUser } = useContext(UserContext);
-  const router = useRouter();
-  // Ensure that user exists before accessing its properties
-  const [profile, setProfile] = useState<ProfileData>({
-    name: user ? `${user.firstName} ${user.lastName}` : '',
-    email: user ? user.email : '',
-    interests: ['Poker', 'Basketball'],
-    age: user ? user.age : '', // Get the age property from the user
-    picture: user ? user.picture : '', // Get the picture URL from the user
-  });
+  const router = useRouter(); 
 
+  let ints: string[] = []
+  if(user){
+    if(user.basketball){
+      ints.push("Basketball")
+    }
+    if(user.poker){
+      ints.push("Poker")
+    }
+  }
   return (
     <div className="flex flex-col items-center justify-center pt-16 gap-10">
       <div className="container mx-auto px-4 pt-16">
@@ -39,7 +40,7 @@ const ProfilePage: React.FC = () => {
             <div className="flex items-center">
               <Avatar>
                 <div style={{ width: '100px', height: '100px' }}>
-                  <AvatarImage src={profile.picture} /> {/* Use the picture URL from the profile */}
+                  <AvatarImage src={user?.picture} /> {/* Use the picture URL from the profile */}
                 </div>
                 <AvatarFallback>PIC</AvatarFallback>
               </Avatar>
@@ -49,32 +50,30 @@ const ProfilePage: React.FC = () => {
 
             <div className='text text-gray-300'>Interests:</div>
             <div className="flex gap-2 mb-4">
-              {profile.interests.map((interest, index) => (
+              {ints.map((interest, index) => (
                 <Badge key={index}>{interest}</Badge>
               ))}
             </div>
 
             <div className="bg-black p-2 text-white rounded-xl w-64 h-16 text-center">
               <div className="text-xs text-pink">Name:</div>
-              {profile.name}
+              {user?.firstName + " " + user?.lastName}
             </div>
             <div className="bg-black p-2 text-white rounded-xl w-64 h-16 text-center">
               <div className="text-xs text-pink">Email:</div>
-              {profile.email}
+              {user?.email}
             </div>
 
             {/* Add a section to display age */}
             <div className="bg-black p-2 text-white rounded-xl w-64 h-16 text-center">
               <div className="text-xs text-pink">Age:</div>
-              {profile.age}
+              {user?.age}
             </div>
 
-            <Button onClick={() => router.push('/updateprofile').then()}>Edit Profile</Button>
+            <Button onClick={() => router.push('/updateprofile')}>Edit Profile</Button>
           </div>
         </div>
       </div>
     </div>
-  );
+  )
 };
-
-export default ProfilePage;
