@@ -73,6 +73,7 @@ export async function addInviteToDb(invite: Invitation): Promise<Invitation | nu
     } else {
         try {
             await docRef.set(invite);
+            console.log("success!")
             return invite;
         } catch (e) {
             console.log('error adding invite to db', e);
