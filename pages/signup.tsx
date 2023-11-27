@@ -48,14 +48,14 @@ export default function Signup() {
                             placeholder="Email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            className="bg-black border rounded p-2"
+                            className="bg-black border rounded p-2 text-white"
                     />
                     <input
                             type="password"
                             placeholder="Password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            className="bg-black border rounded p-2"
+                            className="bg-black border rounded p-2 text-white"
                     />
                     <Button type="submit">Submit</Button>
                 </form>
@@ -67,10 +67,6 @@ export default function Signup() {
                     Log In
                 </span>
                 </p>
-                <div className={"flex items-center"}>
-                    <Label className={"text-xl"}>Light/Dark Toggle</Label>
-                    <ThemeToggle/>
-                </div>
             </div>
     )
 }

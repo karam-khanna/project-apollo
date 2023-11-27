@@ -8,11 +8,11 @@ export const siteConfig = {
         {
             title: "Home",
             href: "/",
-        },
+        } /*,
         {
             title: "Secret",
             href: "/secret",
-        }
+        } */
     ],
     links: {
         github: "https://github.com/karam-khanna/project-apollo",

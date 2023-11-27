@@ -58,7 +58,7 @@ export default function Settings() {
                             <select
                                     value={verificationMethod}
                                     onChange={(e) => setVerificationMethod(e.target.value)}
-                                    className="rounded w-full p-2"
+                                    className="bg-black border rounded w-full p-2 text-white"
                             >
                                 <option value="email">Email</option>
                                 <option value="phone">Phone</option>
@@ -71,7 +71,7 @@ export default function Settings() {
                                             placeholder="Phone Number"
                                             value={contactInfo}
                                             onChange={(e) => setContactInfo(e.target.value)}
-                                            className="bg-black border rounded w-full p-2"
+                                            className="bg-black border rounded w-full p-2 text-white"
                                     />
                                 </div>
                         )}
@@ -82,7 +82,7 @@ export default function Settings() {
                                             placeholder="Email"
                                             value={contactInfo}
                                             onChange={(e) => setContactInfo(e.target.value)}
-                                            className="bg-black border rounded w-full p-2"
+                                            className="bg-black border rounded w-full p-2 text-white"
                                     />
                                 </div>
                         )}
