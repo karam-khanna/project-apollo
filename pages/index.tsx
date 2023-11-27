@@ -17,6 +17,7 @@ import {useContext} from "react";
 import {UserContext} from "@/context/UserContext";
 import {firebase_auth} from "@/firebase/client_side/firebase_init";
 import { format, startOfWeek, endOfWeek } from 'date-fns';
+import InvitationsPane from '@/components/invites';
 
 const inter = Inter({subsets: ['latin']})
 
@@ -66,33 +67,7 @@ function SignedScreen () {
             {/*Main Content */}
             <div className={"flex-1 flex-col items-center justify-start pt-16 gap-9 overflow-y-auto"}>
                 <h1 className="text-6xl font-bold text-center">Welcome back {user?.firstName}!</h1>
-            <div className="flex gap-4 overflow-x-auto" style={{ paddingTop: '60px' }}>
-                { <Card className="w-[350px]">
-                    <CardHeader>
-                        <CardTitle>This is a sample card</CardTitle>
-                        <CardDescription>See a fun weekend event here</CardDescription>
-                    </CardHeader>
-                    <CardFooter className="flex justify-between">
-                        <Button>Accept</Button>
-                        <Button variant="outline">Decline</Button>
-                    </CardFooter>
-                </Card> }
-                { <Card className="w-[350px]">
-                    <CardHeader>
-                        <CardTitle>This is a sample card</CardTitle>
-                        <CardDescription>See a fun weekend event here</CardDescription>
-                    </CardHeader>
-                    <CardFooter className="flex justify-between">
-                        <Button>Accept</Button>
-                        <Button variant="outline">Decline</Button>
-                    </CardFooter>
-                </Card> }
-                { <Card className="w-[350px] items-canter justify-center">
-                    <CardHeader>
-                        <CardTitle>No more invitations</CardTitle>
-                    </CardHeader>
-                </Card> }
-            </div>
+            <InvitationsPane/>
 
             <div className="Split pt-16 font-semibold">
             <h1>Upcoming Events: {formattedStartDate} - {formattedEndDate}</h1>
