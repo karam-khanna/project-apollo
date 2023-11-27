@@ -20,7 +20,8 @@ import { format, startOfWeek, endOfWeek } from 'date-fns';
 
 const inter = Inter({subsets: ['latin']})
 
-export default function Home() {
+
+function SignedScreen () {
     const {user, setUser} = useContext(UserContext);
     const {userAuth, setUserAuth} = useContext(UserContext);
     const router = useRouter();
@@ -33,8 +34,7 @@ export default function Home() {
     const formattedStartDate = format(startOfWeekDate, 'MMMM d');
     const formattedEndDate = format(endOfWeekDate, 'd');
 
-    return (
-        <div className={"flex"}>
+    return (<div className={"flex"}>
             {/* Left sidebar (Navigation) */}
             {user
                 ?
@@ -227,7 +227,45 @@ export default function Home() {
                     
                 </div>
             </div>
-        </div>
+    </div>)
+}
+
+function NotSignedScreen () {
+    const router = useRouter();
+    return (<div className="mx-auto text-center justify-center h-screen items-center ">
+    <h1 className="text-6xl font-bold text-center mt-4 mb-4">Welcome to Mutuals!</h1>
+    
+    <div className="w-full p-3 pt-0 sm:p-0 sm:w-2/4 pl-6 sm:pl-0 text-center mx-auto mt-4 mb-4">
+        <h2 className="text-sm sm:text-xl text-muted-foreground font-normal text-left sm:text-center">
+            Kindred Interests, Memorable Meets: Connecting You to Your Ideal Events.
+        </h2>
+    </div>
+   
+    <div>
+        <Button className = "mr-8" onClick={() => router.push('/login').then()}>Log In</Button>
+        <Button onClick={() => router.push('/signup').then()}>Sign Up</Button>
+    </div>
+    </div>)
+}
+
+export default function Home() {
+    const {user, setUser} = useContext(UserContext);
+    const {userAuth, setUserAuth} = useContext(UserContext);
+    const router = useRouter();
+    const currentDate = new Date();
+    const currentDay = currentDate.getDay(); // 0 is Sunday, 1 is Monday, ..., 6 is Saturday
+    const currentHour = currentDate.getHours(); // 0 to 23
+    const isCalendarButtonVisible = currentDay == 1 || currentDay == 2 || currentDay == 3|| (currentDay == 4 && currentHour <= 12);
+    const startOfWeekDate = startOfWeek(currentDate, { weekStartsOn: 1 }); // Adjust weekStartsOn based on your locale
+    const endOfWeekDate = endOfWeek(currentDate, { weekStartsOn: 1 });
+    const formattedStartDate = format(startOfWeekDate, 'MMMM d');
+    const formattedEndDate = format(endOfWeekDate, 'd');
+
+    return (
+        <>
+            {user? SignedScreen(): NotSignedScreen()}
+        </> 
     )
+
 }
 
