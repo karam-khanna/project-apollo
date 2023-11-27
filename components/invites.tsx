@@ -29,7 +29,7 @@ export default function InvitationsPane(){
             < Card >
                 <CardHeader>
                     <CardTitle>Invitations</CardTitle>
-                    <CardDescription>No current invites. You've either submitted all potential invites or have not been invited to anything. Check back soon!</CardDescription>
+                    <CardDescription>No current invites. You&apos;ve either submitted all potential invites or have not been invited to anything. Check back soon!</CardDescription>
                 </CardHeader>
             </Card >
             </div>
@@ -48,7 +48,7 @@ export default function InvitationsPane(){
     return (
         <div className="flex gap-4 overflow-x-auto" style={{ paddingTop: '60px' }}>
         {invites.map((invite) => (
-            < Card className="w-[225px] flex-shrink-0" >
+            < Card key={invite.id} className="w-[225px] flex-shrink-0" >
                 <CardHeader>
                     <CardTitle>{String(invite.interest).charAt(0).toUpperCase() + String(invite.interest).substring(1,)}</CardTitle>
                     <CardDescription>{format(invite.timeslot)}</CardDescription>
