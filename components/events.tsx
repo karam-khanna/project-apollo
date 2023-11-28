@@ -102,13 +102,13 @@ export default function EventsComponent() {
         events: Event[];
     }
     const DaySection: React.FC<DaySectionProps> = ({ dayName, events }) => (
-        <div className="scrollable-section" style={{ height: '400px', overflowY: 'auto' }}>
+        <div className="scrollable-section flex-shrink-1" style={{ height: '400px', overflowY: 'auto' }}>
             <div className="flex flex-col items-center space-y-3">
-                <div className="sticky top-0 bg-pink p-2 rounded-md" style={{ width: '200px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                <div className="flex sticky top-0 bg-pink p-2 justify-center items-center w-200px rounded-md">
                     <h1 className='text-white font-bold'>{dayName}</h1>
                 </div>
                 {events.map((event) => (
-                    <Card key={'..'} className="w-[200px] h-[200px]">
+                    <Card key={'..'} className="w-200px h-200px">
                         <CardHeader>
                             <CardTitle>{event.Activity.charAt(0).toUpperCase() + event.Activity.substring(1)}</CardTitle>
                             <CardDescription>{format(event.Time)}</CardDescription>
@@ -127,7 +127,7 @@ export default function EventsComponent() {
     );
     return (
         <div className="App pt-8">
-            <div className="flex flex-row items-center space-x-10 space-y-0">
+            <div className="flex flex-row items-center space-x-2 flex-shrink-1 space-y-0">
                 <DaySection dayName="FRIDAY" events={fridayEvents} />
                 <DaySection dayName="SATURDAY" events={saturdayEvents} />
                 <DaySection dayName="SUNDAY" events={sundayEvents} />

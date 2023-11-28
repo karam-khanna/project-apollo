@@ -57,7 +57,7 @@ function SignedScreen() {
         }
 
         {/*Main Content */}
-        <div className={"flex-1 flex-col items-center justify-start pt-16 gap-9 overflow-auto"}>
+        <div className={"flex flex-col items-center justify-center pt-16 gap-9 overflow-auto"}>
             <h1 className="text-6xl font-bold text-center">Welcome back {user?.firstName}!</h1>
             <InvitationsPane />
             
