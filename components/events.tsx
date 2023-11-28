@@ -8,6 +8,7 @@ import useSWR from "swr";
 import { Button } from "./ui/button";
 import router from "next/router";
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "./ui/card";
+import { EventsContext } from "@/context/EventsContext";
 
 interface Event {
     Day: string;
@@ -28,25 +29,14 @@ function format(name: string) {
 }
 export default function EventsComponent() {
     const { user } = useContext(UserContext);
-    const { data: invitations, error } = useSWR<Invitation[]>(
-        user ? `/api/users/${user.id}/invitations` : null,
-        fetcherWithNoAuthToken,
-    );
-    const [events, setEvents] = useState<Event[]>([]);
+    const { events, setEvents } = useContext(EventsContext);
+    const [eventDisplays, setEventDisplays] = useState<Event[]>([]);
     const [eventURLS, setEventURLS] = useState([])
-
     useEffect(() => {
         // create a new array of events
-        if (invitations) {
+        if (events) {
             // filter to only events that are accepted
-            const accepts = invitations.filter((event) => {
-                return event.status === "accept";
-            });
-
-            if (accepts.length === 0) {
-                setEvents([]);
-                return;
-            }
+            
             const eventChatId = async (event: Invitation) => {
                 const docRef = await getDoc(doc(db, "chats", event.interest + "-" + event.timeslot))
                 const docSnap = docRef.data()
@@ -74,7 +64,7 @@ export default function EventsComponent() {
 
             const createNewEvents = async () => {
                 const newEvents = await Promise.all(
-                    accepts.map(async (event) => {
+                    events.map(async (event) => {
                         const chatId = await fetchChatId(event);
                         const len = await fetchUserList(event)
                         return {
@@ -88,15 +78,15 @@ export default function EventsComponent() {
                         };
                     })
                 );
-                setEvents(newEvents);
+                setEventDisplays(newEvents);
             };
 
             createNewEvents();
         }
-    }, [invitations]);
-    const fridayEvents = events.filter(item => item.Time.toLowerCase().includes("friday"))
-    const saturdayEvents = events.filter(item => item.Time.toLowerCase().includes("saturday"))
-    const sundayEvents = events.filter(item => item.Time.toLowerCase().includes("sunday"))
+    }, [events]);
+    const fridayEvents = eventDisplays.filter(item => item.Time.toLowerCase().includes("friday"))
+    const saturdayEvents = eventDisplays.filter(item => item.Time.toLowerCase().includes("saturday"))
+    const sundayEvents = eventDisplays.filter(item => item.Time.toLowerCase().includes("sunday"))
     interface DaySectionProps {
         dayName: string;
         events: Event[];
@@ -108,13 +98,12 @@ export default function EventsComponent() {
                     <h1 className='text-white font-bold'>{dayName}</h1>
                 </div>
                 {events.map((event) => (
-                    <Card key={'..'} className="w-200px h-200px">
+                    <Card key={'..'} className="w-[200px]">
                         <CardHeader>
                             <CardTitle>{event.Activity.charAt(0).toUpperCase() + event.Activity.substring(1)}</CardTitle>
                             <CardDescription>{format(event.Time)}</CardDescription>
+                            {event.GroupChat}
                         </CardHeader>
-
-                        <CardFooter>{event.GroupChat}</CardFooter>
                         <div className="flex justify-center items-center mt-2 text-gray-500">
                             <span>{event.NumberOfPeople} confirmed.</span>
                         </div>

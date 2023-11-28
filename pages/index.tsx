@@ -13,12 +13,16 @@ import {
 } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
 import { ThemeToggle } from "@/components/theme-toggle";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { UserContext } from "@/context/UserContext";
 import { firebase_auth } from "@/firebase/client_side/firebase_init";
 import { format, startOfWeek, endOfWeek } from 'date-fns';
 import InvitationsPane from '@/components/invites';
 import EventsComponent from '@/components/events';
+import { EventsContext } from '@/context/EventsContext';
+import { Invitation } from '@/interfaces';
+import useSWR from 'swr';
+import { fetcherWithNoAuthToken } from '@/utils/client_side/helpers';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -26,6 +30,7 @@ const inter = Inter({ subsets: ['latin'] })
 function SignedScreen() {
     const { user, setUser } = useContext(UserContext);
     const { userAuth, setUserAuth } = useContext(UserContext);
+    const [events, setEvents] = useState<Invitation[] | null>(null);
     const router = useRouter();
     const currentDate = new Date();
     const currentDay = currentDate.getDay(); // 0 is Sunday, 1 is Monday, ..., 6 is Saturday
@@ -35,7 +40,6 @@ function SignedScreen() {
     const endOfWeekDate = endOfWeek(currentDate, { weekStartsOn: 1 });
     const formattedStartDate = format(startOfWeekDate, 'MMM. d');
     const formattedEndDate = format(endOfWeekDate, 'MMM. d');
-
     return (<div className={"flex"}>
         {/* Left sidebar (Navigation) */}
         {user
@@ -57,6 +61,7 @@ function SignedScreen() {
         }
 
         {/*Main Content */}
+        <EventsContext.Provider value={{events: events, setEvents: setEvents}}>
         <div className={"flex flex-col items-center justify-center pt-16 gap-9 overflow-auto"}>
             <h1 className="text-6xl font-bold text-center">Welcome back {user?.firstName}!</h1>
             <InvitationsPane />
@@ -66,27 +71,10 @@ function SignedScreen() {
 
                 {/* Weekly Calendar */}
                 <EventsComponent />
-            </div>
-            <div className="flex gap-4 overflow-x-auto" style={{ paddingTop: '60px' }}>
-            
         </div>
+        </EventsContext.Provider>
 
-        {/* Right sidebar (Events Coming Up) */}
-        <div className="w-1/5 h-screen flex flex-col items-end justify-between p-4 pt-32 pr-8">
-            <div className="flex flex-col gap-2">
-                <h1 className="text-xl font-bold" style={{ paddingTop: '20px' }}>New Messages</h1>
-                <Button onClick={() => router.push('/chat').then()}>Chat</Button>
-                <Button onClick={
-                    () => {
-                        firebase_auth.signOut().then((r) => {
-                            setUserAuth(null);
-                            setUser(null);
-                        });
-                    }
-                }
-                >Logout</Button>
-            </div>
-        </div>
+        
     </div>)
 }
 

@@ -1,10 +1,11 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { UserContext } from "@/context/UserContext";
 import useSWR from "swr";
 import { Invitation } from "@/interfaces";
 import { fetcherWithNoAuthToken } from "@/utils/client_side/helpers";
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "./ui/card";
 import { Button } from "./ui/button";
+import { EventsContext } from "@/context/EventsContext";
 
 function format(name: string) {
     // Split the name before the first uppercase letter
@@ -18,12 +19,22 @@ function format(name: string) {
 
 export default function InvitationsPane(){
     const { user } = useContext(UserContext);
-    const { data: invitations, error } = useSWR<Invitation[]>(
-        user ? `/api/users/${user.id}/invitations` : null,
-        fetcherWithNoAuthToken,
-    );
-    const [invites, setInvites] = useState(invitations?.filter(item => item.status == "notSent"))
-    if (!invites || invites.length == 0) {
+    const { events, setEvents } = useContext(EventsContext);
+    const { data: invites, error } = useSWR<Invitation[]>(
+            user ? `/api/users/${user.id}/invitations` : null,
+            fetcherWithNoAuthToken,
+        );
+    const [invitations, setInvitations] = useState<Invitation[]>()
+    useEffect(() => {
+        if(invites){
+            setEvents(invites.filter(item => item.status == "accept"))
+            console.log(events)
+            setInvitations(invites.filter(item => item.status == "notSent"))
+        }
+    }, [invites])
+    
+    
+    if (!invitations || invitations.length == 0) {
         return (
             <div className="flex gap-4 overflow-x-auto" style={{ paddingTop: '60px' }}>
             < Card >
@@ -43,12 +54,15 @@ export default function InvitationsPane(){
             },
             body: JSON.stringify(status),
         }).then(r => console.log("response submitted"))
-        setInvites(invites.filter(item => item !== invite))
+        setInvitations(invitations.filter(item => item !== invite))
+        if(status == "accept"){
+            setEvents(events? events.concat([invite]) : [invite])
+        }
     }
     return (
-        <div className="flex gap-4 overflow-x-auto" style={{ paddingTop: '60px' }}>
-        {invites.map((invite) => (
-            < Card key={invite.id} className="w-[225px] flex-shrink-0" >
+        <div className="scrollable-section flex gap-4 overflow-x-auto" style={{ paddingTop: '60px' }}>
+        {invitations.map((invite) => (
+            < Card key={invite.timeslot + " " + invite.interest} className="w-[225px] flex-shrink-0" >
                 <CardHeader>
                     <CardTitle>{String(invite.interest).charAt(0).toUpperCase() + String(invite.interest).substring(1,)}</CardTitle>
                     <CardDescription>{format(invite.timeslot)}</CardDescription>
