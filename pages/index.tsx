@@ -32,7 +32,7 @@ function SignedScreen () {
     const startOfWeekDate = startOfWeek(currentDate, { weekStartsOn: 1 }); // Adjust weekStartsOn based on your locale
     const endOfWeekDate = endOfWeek(currentDate, { weekStartsOn: 1 });
     const formattedStartDate = format(startOfWeekDate, 'MMMM d');
-    const formattedEndDate = format(endOfWeekDate, 'd');
+    const formattedEndDate = format(endOfWeekDate, 'MMMM d');
 
     return (<div className={"flex"}>
             {/* Left sidebar (Navigation) */}
