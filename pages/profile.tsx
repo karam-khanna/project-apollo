@@ -39,7 +39,7 @@ export default function ProfilePage() {
             <div className='mb-5'></div>
             <div className="flex items-center">
               <Avatar>
-                <div style={{ width: '100px', height: '100px' }}>
+                <div style={{ width: '150px', height: '150px' }}>
                   <AvatarImage src={user?.picture} /> {/* Use the picture URL from the profile */}
                 </div>
                 <AvatarFallback>PIC</AvatarFallback>

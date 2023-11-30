@@ -84,6 +84,11 @@ const ProfileModificationPage: React.FC = () => {
             ];
     
             const updatedUser = { ...user }; // Create a copy of the user object
+
+            updatedUser.firstName = formData.firstName;
+            updatedUser.lastName = formData.lastName;
+            updatedUser.age = formData.age.toString();
+            updatedUser.picture = formData.picture;
     
             if (prevInterests.includes('Poker')) {
                 await updateUserPoker(updatedUser, true, (updated) => setUser(updated));
