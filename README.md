@@ -45,9 +45,9 @@ Mutuals is a web-based application that simplifies the process of finding and co
 | 5 | 23rd Oct | [Profile Page and SMS Notifications](https://www.canva.com/design/DAF0EfT68P4/sWcNyTQGT37DC4vwbPP_VQ/edit) |
 | 6 | 30th Oct | [Chat and Matching Algorithm](https://www.canva.com/design/DAF0ETByDd0/OZm4cD3JHL29_IBIbMxemA/edit) |
 | 7 | 6th Nov | [Invitations Page and Chat System](https://www.canva.com/design/DAF0ET55YBk/a4SM-vEAoFR-qY8Hu5TP2Q/edit) |
-| 8 | 13th Nov | [Matching Algorithm linked to Database]() |
-| 9 | 20th Nov | Project Display |
-| 10 | 27th Nov |  |
+| 8 | 13th Nov | [Matching Algorithm linked to Database](https://www.canva.com/design/DAF0EzgZBtk/MwNDz7t_a_J_O4dpRMOeUg/edit) |
+| 9 | 20th Nov | Thanksgiving Break |
+| 10 | 27th Nov |[Bug Fixes and UI improvement](https://www.canva.com/design/DAF1q7FgCiU/kIMOSzntZToMspxcVkDpNA/edit)|
 
 
 ## Getting Started
