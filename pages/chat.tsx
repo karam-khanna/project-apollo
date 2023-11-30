@@ -45,7 +45,7 @@ export default function Chat() {
         return isReady ? (
             <div>
                 <MultiChatSocket {...chatProps} />
-                <MultiChatWindow {...chatProps} activeChatId={actChat} renderChatSettings={customNoSettings} style={{height: '100vh'}}/>
+                <MultiChatWindow {...chatProps} activeChatId={actChat} renderChatSettings={customNoSettings} style={{height: '90vh'}}/>
             </div>
     ) : <div>errors...</div>
     }
@@ -53,7 +53,7 @@ export default function Chat() {
         return isReady ? (
             <div>
                 <MultiChatSocket {...chatProps} />
-                <MultiChatWindow {...chatProps} renderWelcomeGif = {noWelcomeGif} renderChatSettings={customNoSettings} style={{height: '100vh'}}/>
+                <MultiChatWindow {...chatProps} renderWelcomeGif = {noWelcomeGif} renderChatSettings={customNoSettings} style={{height: '80vh'}}/>
             </div>
     ) : <div>errors...</div>
     }
