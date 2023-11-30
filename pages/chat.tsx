@@ -41,11 +41,11 @@ export default function Chat() {
     }
 
     const actChat = router.query.chatid ? Number(router.query.chatid) : undefined;
-    if (actChat) {
+    if (actChat){
         return isReady ? (
             <div>
                 <MultiChatSocket {...chatProps} />
-                <MultiChatWindow {...chatProps} activeChatId={actChat} renderChatSettings={customNoSettings} style={{height: '90vh'}}/>
+                <MultiChatWindow {...chatProps} renderChatSettings={customNoSettings} style={{height: '90vh'}}/>
             </div>
     ) : <div>errors...</div>
     }
