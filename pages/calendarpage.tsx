@@ -114,7 +114,31 @@ export default function CheckboxReactHookFormMultiple() {
 
 
             console.log("availability", availability)
-
+            const results: any = []
+            const uid: string = availability.userId
+            const weekStart: string = availability.weekStart
+            const interests: string[] = availability.interests
+            for(const key in availability){
+                if(!['userId', 'id', 'weekStart', 'interests'].includes(key)){
+                    if((availability as any)[key]){
+                        for(const i in interests){
+                            results.push({
+                                "timeslot": key,
+                                "interest": interests[i],
+                                "id": uid,
+                                "date": String(new Date())
+                            })
+                        }
+                    }
+                }
+            }
+            const response = await fetch(`/api/algo/increment`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(results),
+            })
             router.push("/")
         } else {
             toast({

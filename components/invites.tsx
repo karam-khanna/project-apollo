@@ -39,8 +39,8 @@ export default function InvitationsPane(){
             <div className="flex gap-4 overflow-x-auto" style={{ paddingTop: '60px' }}>
             < Card >
                 <CardHeader>
-                    <CardTitle>Invitations</CardTitle>
-                    <CardDescription>No current invites. You&apos;ve either submitted all potential invites or have not been invited to anything. Check back soon!</CardDescription>
+                    <CardTitle>No current invites. 😢</CardTitle>
+                    <CardDescription>You&apos;ve either submitted all potential invites or have not been invited to anything. Check back soon!</CardDescription>
                 </CardHeader>
             </Card >
             </div>
@@ -60,7 +60,7 @@ export default function InvitationsPane(){
         }
     }
     return (
-        <div className="scrollable-section flex gap-4 overflow-x-auto" style={{ paddingTop: '60px' }}>
+        <div className="flex max-w-[200px] sm:max-w-[500px] overflow-x-auto gap-4">
         {invitations.map((invite) => (
             < Card key={invite.timeslot + " " + invite.interest} className="w-[225px] flex-shrink-0" >
                 <CardHeader>
