@@ -82,27 +82,30 @@ const ProfileModificationPage: React.FC = () => {
                 updateUserAge(user, parseInt(formData.age, 10), setUser),
                 updateUserPicture(user, formData.picture, setUser),
             ];
-
-            if(prevInterests.includes('Poker')){
-                await updateUserPoker(user, true, setUser);
+    
+            const updatedUser = { ...user }; // Create a copy of the user object
+    
+            if (prevInterests.includes('Poker')) {
+                await updateUserPoker(updatedUser, true, (updated) => setUser(updated));
+                updatedUser.poker = true; // Update local user object
+            } else {
+                await updateUserPoker(updatedUser, false, (updated) => setUser(updated));
+                updatedUser.poker = false; // Update local user object
             }
-            else{
-                await updateUserPoker(user, false, setUser);
+    
+            if (prevInterests.includes('Basketball')) {
+                await updateUserBasketball(updatedUser, true, (updated) => setUser(updated));
+                updatedUser.basketball = true; // Update local user object
+            } else {
+                await updateUserBasketball(updatedUser, false, (updated) => setUser(updated));
+                updatedUser.basketball = false; // Update local user object
             }
-            if(prevInterests.includes('Basketball')){
-                await updateUserBasketball(user, true, setUser);
-            }
-            else{
-                await updateUserBasketball(user, false, setUser);
-            }
-
-
-            Promise.all(updatePromises)
-                .then(() => {
-                    // All updates are complete
-                    router.push('/profile').then();
-                })
-
+    
+            // Update the user context/state with the modified interests
+            setUser(updatedUser);
+    
+            // All updates are complete
+            router.push('/profile');
         }
     };
 
