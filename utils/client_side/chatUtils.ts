@@ -10,7 +10,7 @@ export function makeChatUser(userid: string) {
             userid: userid
         }
     }).then((response) => {return response.data})
-    .catch((error) => { throw new Error(error) });
+    .catch((error) => { console.log(error)});
 }
 
 export async function getMyChats(user: User){

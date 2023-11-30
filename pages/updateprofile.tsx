@@ -29,7 +29,7 @@ const ProfileModificationPage: React.FC = () => {
         }
         return interests;
     });
-    
+
 
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -50,14 +50,14 @@ const ProfileModificationPage: React.FC = () => {
             setPrevInterests((prevInterests: any) => prevInterests.filter((item: any) => item !== interest));
         }
     };
-    
+
 
     const handlePictureChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const files = e.target.files;
         if (files && files.length > 0) {
             const file = files[0];
             const reader = new FileReader();
-    
+
             reader.onload = (e) => {
                 const result = e.target?.result as string | null;
                 if (result) {
@@ -67,19 +67,21 @@ const ProfileModificationPage: React.FC = () => {
                     });
                 }
             };
-    
+
             reader.readAsDataURL(file);
         }
     };
-    
-    
+
+
 
     const saveChanges = async () => {
         if (user) {
-            await updateUserFirstName(user, formData.firstName, setUser);
-            await updateUserLastName(user, formData.lastName, setUser);
-            await updateUserAge(user, parseInt(formData.age, 10), setUser);
-            await updateUserPicture(user, formData.picture, setUser);
+            const updatePromises = [
+                updateUserFirstName(user, formData.firstName, setUser),
+                updateUserLastName(user, formData.lastName, setUser),
+                updateUserAge(user, parseInt(formData.age, 10), setUser),
+                updateUserPicture(user, formData.picture, setUser),
+            ];
 
             if(prevInterests.includes('Poker')){
                 await updateUserPoker(user, true, setUser);
@@ -94,7 +96,13 @@ const ProfileModificationPage: React.FC = () => {
                 await updateUserBasketball(user, false, setUser);
             }
 
-            router.push('/profile')
+
+            Promise.all(updatePromises)
+                .then(() => {
+                    // All updates are complete
+                    router.push('/profile').then();
+                })
+
         }
     };
 

@@ -17,8 +17,10 @@ import {
 } from "@/components/ui/form"
 import {toast} from "@/components/ui/use-toast"
 import {parseAvailability} from "@/utils/client_side/helpers";
-import {useContext} from "react";
+import {useContext, useEffect} from "react";
+import { useRouter } from "next/router"
 import {UserContext} from "@/context/UserContext";
+import { Interest } from "@/interfaces"
 
 const items = [
     {
@@ -80,6 +82,14 @@ const FormSchema = z.object({
 export default function CheckboxReactHookFormMultiple() {
 
     const {user} = useContext(UserContext);
+    const router = useRouter()
+    console.log(user)
+    useEffect(() => {
+        if(user && user?.firstName == "") {
+            console.log("User onboarding not updated")
+            router.reload()
+        }
+    })
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
         defaultValues: {
@@ -105,14 +115,7 @@ export default function CheckboxReactHookFormMultiple() {
 
             console.log("availability", availability)
 
-            toast({
-                title: "You submitted the following values:",
-                description: (
-                        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-                        <code className="text-white">{JSON.stringify(availability, null, 2)}</code>
-                        </pre>
-                ),
-            })
+            router.push("/")
         } else {
             toast({
                 title: "Not logged in!",
