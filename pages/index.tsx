@@ -38,8 +38,9 @@ function SignedScreen() {
     const isCalendarButtonVisible = currentDay == 1 || currentDay == 2 || currentDay == 3 || (currentDay == 4 && currentHour <= 12);
     const startOfWeekDate = startOfWeek(currentDate, { weekStartsOn: 1 }); // Adjust weekStartsOn based on your locale
     const endOfWeekDate = endOfWeek(currentDate, { weekStartsOn: 1 });
-    const formattedStartDate = format(startOfWeekDate, 'MMM. d');
-    const formattedEndDate = format(endOfWeekDate, 'MMM. d');
+    const formattedStartDate = format(startOfWeekDate, 'MMMM d');
+    const formattedEndDate = format(endOfWeekDate, 'MMMM d');
+
     return (<div className={"flex"}>
         {/* Left sidebar (Navigation) */}
         {user
@@ -65,7 +66,7 @@ function SignedScreen() {
         <div className={"flex flex-col items-center justify-center pt-16 gap-9 overflow-auto"}>
             <h1 className="text-6xl font-bold text-center">Welcome back {user?.firstName}!</h1>
             <InvitationsPane />
-            
+
             <CardTitle className='flex justify-center items-center mt-3'>Upcoming Events: {formattedStartDate} - {formattedEndDate}</CardTitle>
 
 
@@ -74,7 +75,7 @@ function SignedScreen() {
         </div>
         </EventsContext.Provider>
 
-        
+
     </div>)
 }
 
@@ -116,4 +117,3 @@ export default function Home() {
     )
 
 }
-
