@@ -69,7 +69,7 @@ function SignedScreen() {
         <EventsContext.Provider value={{events: events, setEvents: setEvents}}>
         <div className={"flex flex-col items-center justify-center pt-16 gap-9 overflow-auto"}>
             <h1 className="text-6xl font-bold text-center">Welcome back {user?.firstName}!</h1>
-            <InvitationsPane />
+            <CardTitle className='flex justify-center items-center'>Invitations:</CardTitle>
 
             <CardTitle className='flex justify-center items-center mt-3'>Upcoming Events: {formattedStartDate} - {formattedEndDate}</CardTitle>
 
