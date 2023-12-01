@@ -1,5 +1,5 @@
 # Mutuals 
-Mutals - Emory University CS 370 Group Project - Team Devkam
+Mutuals - Emory University CS 370 Group Project - Team Devkam
 
 ## About Mutuals 
 Mutuals is a web-based application that simplifies the process of finding and connecting with individuals who share a common interest in playing sports during the weekend. By allowing users to input their sport preferences and availability, Mutuals facilitates the formation of groups with similar interests and schedules. The application uses an algorithm that runs every Thursday, creating groups of users who can connect through a group chat to plan and organize their sporting events.
@@ -19,7 +19,7 @@ Mutuals is a web-based application that simplifies the process of finding and co
 
 #### El Yirdaw
 - Year: Junior
-- Interests: 
+- Interests: Watching Netflix, Socializing With Friends, and Exploring New Technology
 
 #### Karam Khanna
 - Year: Junior
