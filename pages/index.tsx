@@ -26,6 +26,10 @@ import { fetcherWithNoAuthToken } from '@/utils/client_side/helpers';
 
 const inter = Inter({ subsets: ['latin'] })
 
+interface PulsingTextStyle extends React.CSSProperties {
+    animation: string;
+  }
+
 
 function SignedScreen() {
     const { user, setUser } = useContext(UserContext);
@@ -81,21 +85,75 @@ function SignedScreen() {
 
 function NotSignedScreen() {
     const router = useRouter();
-    return (<div className="mx-auto text-center justify-center h-screen items-center ">
-        <h1 className="text-6xl font-bold text-center mt-4 mb-4">Welcome to Mutuals!</h1>
-
-        <div className="w-full p-3 pt-0 sm:p-0 sm:w-2/4 pl-6 sm:pl-0 text-center mx-auto mt-4 mb-4">
-            <h2 className="text-sm sm:text-xl text-muted-foreground font-normal text-left sm:text-center">
-                Kindred Interests, Memorable Meets: Connecting You to Your Ideal Events.
-            </h2>
+  
+    const calculateGradientPosition = (letterIndex: number) => {
+      return `${letterIndex * 10}% 50%`; // Adjust the multiplier to control the speed
+    };
+  
+    const pulsingTextStyle: PulsingTextStyle = {
+      background: 'linear-gradient(45deg, #F43F5E, #FF8B9F)',
+      backgroundSize: '200% 200%',
+      animation: 'pulse 3s infinite',
+      WebkitBackgroundClip: 'text',
+      color: 'transparent',
+      fontSize: '5rem',
+      textAlign: 'center', // Explicitly set to 'center'
+      lineHeight: '1.2',
+    };
+  
+    const largerBoldTextStyle = {
+      fontSize: '1.2rem',
+      fontWeight: 'bold',
+    };
+  
+    const largerMutualsStyle = {
+      fontSize: '5rem',
+      fontWeight: 'bold',
+    };
+  
+    const widerTextStyle = {
+      width: '15rem',
+    };
+  
+    const smallerTextStyle = {
+      fontSize: '0.9rem',
+      fontWeight: 'normal',
+    };
+  
+    return (
+      <div className="flex flex-col items-center justify-center h-screen">
+        <style jsx>{`
+          @keyframes pulse {
+            0% { background-position: ${calculateGradientPosition(0)}; }
+            50% { background-position: ${calculateGradientPosition(10)}; }
+            100% { background-position: ${calculateGradientPosition(20)}; }
+          }
+        `}</style>
+  
+        <img src="/mutuals.svg" alt="Your Image Alt Text" style={{ width: '100px', height: '100px' }} />
+  
+        <h1 className="text-4xl font-extrabold mb-4" style={{ ...pulsingTextStyle, animation: 'pulse 3s infinite' }}>
+          Welcome to<br /><span style={largerMutualsStyle}>Mutuals</span>!
+        </h1>
+  
+        <p className="text-lg sm:text-xl font-bold text-gray-500 mb-2 text-center" style={{ ...largerBoldTextStyle, ...widerTextStyle }}>
+          Connecting You to Your Ideal Events.
+        </p>
+  
+        <p className="text-sm sm:text-base text-gray-500 mb-6 text-center" style={{ ...smallerTextStyle, ...widerTextStyle }}>
+          Our goal with this app is to connect people with like-minded individuals for activities that they like to take part in.
+          However, Mutuals doesn’t just plan events; it creates opportunities for individuals to share experiences and make lasting memories.
+        </p>
+  
+        <div className="space-x-4">
+          <button onClick={() => router.push('/login')}>Log In</button>
+          <button onClick={() => router.push('/signup')}>Sign Up</button>
         </div>
-
-        <div>
-            <Button className="mr-8" onClick={() => router.push('/login').then()}>Log In</Button>
-            <Button onClick={() => router.push('/signup').then()}>Sign Up</Button>
-        </div>
-    </div>)
-}
+      </div>
+    );
+  }
+  
+ 
 
 export default function Home() {
     const { user, setUser } = useContext(UserContext);
