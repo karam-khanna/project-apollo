@@ -16,7 +16,7 @@ const ShareBox: React.FC<ShareBoxProps> = ({ onClose }) => {
 Mutuals is a website that allows its members to connect and plan poker and basketball events with other Emory students.
 
 To find out more, head to the official website:
-https://mutuals-beta.vercel.app
+https://project-apollo-gamma.vercel.app/
 
 Your Mutual,
 Devkam
