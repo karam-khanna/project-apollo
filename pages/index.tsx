@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
 import { ThemeToggle } from "@/components/theme-toggle";
-import { useContext, useEffect, useState } from "react";
+import { Fragment, useContext, useEffect, useState } from "react";
 import { UserContext } from "@/context/UserContext";
 import { firebase_auth } from "@/firebase/client_side/firebase_init";
 import { format, startOfWeek, endOfWeek } from 'date-fns';
@@ -41,11 +41,11 @@ function SignedScreen() {
     const formattedStartDate = format(startOfWeekDate, 'MMMM d');
     const formattedEndDate = format(endOfWeekDate, 'MMMM d');
 
-    return (<div className={"flex"}>
+    return (<div className={"flex justify-center"}>
         {/* Left sidebar (Navigation) */}
         {user
             ?
-            <div className="w-1/5 h-screen flex flex-col items-start justify-between p-4 pt-32">
+            <Fragment className="w-1/5 h-screen flex flex-col items-start justify-between p-4 pt-32">
                 <div className={"flex flex-col gap-2"}>
                     {/* {isCalendarButtonVisible && <Button onClick={() => router.push('/calendarpage').then()}>Calendar Page</Button>}
                     <Button onClick={() => router.push('/profile').then()}>Profile</Button>
@@ -53,7 +53,7 @@ function SignedScreen() {
                     <Button onClick={() => router.push('/invitations').then()}>Invitations</Button>
                     <Button onClick={() => router.push('/myevents').then()}>My Events</Button> */}
                 </div>
-            </div>
+            </Fragment>
             :
             <>
                 <Button onClick={() => router.push('/login').then()}>Log In</Button>

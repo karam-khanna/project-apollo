@@ -116,7 +116,7 @@ export default function EventsComponent() {
     );
     return (
         <div className="App pt-8">
-            <div className="flex flex-row items-center space-x-2 flex-shrink-1 space-y-0">
+            <div className="flex flex-row flex-wrap items-center space-x-2 flex-shrink-1 space-y-0">
                 <DaySection dayName="FRIDAY" events={fridayEvents} />
                 <DaySection dayName="SATURDAY" events={saturdayEvents} />
                 <DaySection dayName="SUNDAY" events={sundayEvents} />
