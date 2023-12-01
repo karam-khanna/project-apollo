@@ -54,6 +54,22 @@ export async function updateUserOnboarded(
     return updateUserField(user, 'onboarded', onboarded, setUser);
 }
 
+export async function updateUserPoker(
+        user: User,
+        poker: boolean,
+        setUser: React.Dispatch<React.SetStateAction<User | null>>
+): Promise<boolean> {
+    return updateUserField(user, 'poker', poker, setUser);
+}
+
+export async function updateUserBasketball(
+        user: User,
+        basketball: boolean,
+        setUser: React.Dispatch<React.SetStateAction<User | null>>
+): Promise<boolean> {
+    return updateUserField(user, 'basketball', basketball, setUser);
+}
+
 export async function updateUserInterest(
         user: User,
         interest: Interest,

@@ -5,8 +5,8 @@ import { Badge } from "@/components/ui/badge";
 import { Label } from "@/components/ui/label";
 import { useContext } from "react";
 import { UserContext } from "@/context/UserContext";
-import { updateUserFirstName, updateUserLastName, updateUserAge, updateUserPicture } from "@/utils/client_side/clientDbInterface";
-import { useRouter } from 'next/router';
+import { updateUserFirstName, updateUserLastName, updateUserAge, updateUserPicture, updateUserPoker, updateUserBasketball } from "@/utils/client_side/clientDbInterface";
+import {useRouter} from 'next/router';
 
 const ProfileModificationPage: React.FC = () => {
     const { user, setUser } = useContext(UserContext);
@@ -18,6 +18,20 @@ const ProfileModificationPage: React.FC = () => {
         picture: user ? user.picture : '',
     });
 
+    //populate user interest options and show current selections
+    const [prevInterests, setPrevInterests] = useState(() => {
+        const interests = [];
+        if (user?.poker) {
+            interests.push('Poker');
+        }
+        if (user?.basketball) {
+            interests.push('Basketball');
+        }
+        return interests;
+    });
+
+
+
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setFormData({
@@ -25,6 +39,18 @@ const ProfileModificationPage: React.FC = () => {
             [name]: value,
         });
     };
+
+    // Function to handle changes in checkboxes
+    const handleCheckboxChange = (interest: any, isChecked: any) => {
+        if (isChecked) {
+            // If checked, add the interest to prevInterests
+            setPrevInterests((prevInterests: any) => [...prevInterests, interest]);
+        } else {
+            // If unchecked, remove the interest from prevInterests
+            setPrevInterests((prevInterests: any) => prevInterests.filter((item: any) => item !== interest));
+        }
+    };
+
 
     const handlePictureChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const files = e.target.files;
@@ -56,12 +82,35 @@ const ProfileModificationPage: React.FC = () => {
                 updateUserAge(user, parseInt(formData.age, 10), setUser),
                 updateUserPicture(user, formData.picture, setUser),
             ];
+    
+            const updatedUser = { ...user }; // Create a copy of the user object
 
-            Promise.all(updatePromises)
-                .then(() => {
-                    // All updates are complete
-                    router.push('/profile').then();
-                })
+            updatedUser.firstName = formData.firstName;
+            updatedUser.lastName = formData.lastName;
+            updatedUser.age = formData.age.toString();
+            updatedUser.picture = formData.picture;
+    
+            if (prevInterests.includes('Poker')) {
+                await updateUserPoker(updatedUser, true, (updated) => setUser(updated));
+                updatedUser.poker = true; // Update local user object
+            } else {
+                await updateUserPoker(updatedUser, false, (updated) => setUser(updated));
+                updatedUser.poker = false; // Update local user object
+            }
+    
+            if (prevInterests.includes('Basketball')) {
+                await updateUserBasketball(updatedUser, true, (updated) => setUser(updated));
+                updatedUser.basketball = true; // Update local user object
+            } else {
+                await updateUserBasketball(updatedUser, false, (updated) => setUser(updated));
+                updatedUser.basketball = false; // Update local user object
+            }
+    
+            // Update the user context/state with the modified interests
+            setUser(updatedUser);
+    
+            // All updates are complete
+            router.push('/profile');
         }
     };
 
@@ -88,6 +137,30 @@ const ProfileModificationPage: React.FC = () => {
                             onChange={handlePictureChange}
                         />
                         <div className='mb-4'></div>
+
+                        <div className="bg-black p-2 text-white rounded-xl w-64 h-16 text-center">
+                        <div className="text-xs text-pink">Interests:</div>
+                        <div style={{ display: 'flex', justifyContent: 'flex-start', gap: '10px', alignItems: 'center' }}>
+                            <label style={{ marginRight: '20px' , marginLeft: '20px'}}>
+                                Basketball:
+                                <input
+                                type="checkbox"
+                                name="basketball"
+                                checked={prevInterests.includes('Basketball')}
+                                onChange={(e) => handleCheckboxChange('Basketball', e.target.checked)}
+                                />
+                            </label>
+                            <br />
+                            <label>
+                                Poker:
+                                <input
+                                type="checkbox"
+                                name="poker"
+                                checked={prevInterests.includes('Poker')}
+                                onChange={(e) => handleCheckboxChange('Poker', e.target.checked)}
+                                />
+                            </label>
+                        </div></div>
 
                         <div className="bg-black p-2 text-white rounded-xl w-64 h-16 text-center">
                             <div className="text-xs text-pink">First Name:</div>
