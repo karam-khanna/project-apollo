@@ -45,7 +45,8 @@ function SignedScreen() {
         {/* Left sidebar (Navigation) */}
         {user
             ?
-            <Fragment className="w-1/5 h-screen flex flex-col items-start justify-between p-4 pt-32">
+            //className="w-1/5 h-screen flex flex-col items-start justify-between p-4 pt-32"
+            <Fragment> 
                 <div className={"flex flex-col gap-2"}>
                     {/* {isCalendarButtonVisible && <Button onClick={() => router.push('/calendarpage').then()}>Calendar Page</Button>}
                     <Button onClick={() => router.push('/profile').then()}>Profile</Button>
