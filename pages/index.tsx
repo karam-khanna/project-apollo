@@ -26,6 +26,10 @@ import { fetcherWithNoAuthToken } from '@/utils/client_side/helpers';
 
 const inter = Inter({ subsets: ['latin'] })
 
+interface PulsingTextStyle extends React.CSSProperties {
+    animation: string;
+  }
+
 
 function SignedScreen() {
     const { user, setUser } = useContext(UserContext);
@@ -81,46 +85,38 @@ function SignedScreen() {
 function NotSignedScreen() {
     const router = useRouter();
   
-    const calculateGradientPosition = (letterIndex) => {
+    const calculateGradientPosition = (letterIndex: number) => {
       return `${letterIndex * 10}% 50%`; // Adjust the multiplier to control the speed
     };
   
-    const pulsingTextStyle = {
+    const pulsingTextStyle: PulsingTextStyle = {
       background: 'linear-gradient(45deg, #F43F5E, #FF8B9F)',
       backgroundSize: '200% 200%',
       animation: 'pulse 3s infinite',
       WebkitBackgroundClip: 'text',
       color: 'transparent',
-      fontSize: '2.5rem', // Adjust the font size as needed
-      textAlign: 'center', // Center the text
-      lineHeight: '1.2', // Adjust line height to prevent text cutoff
+      fontSize: '5rem',
+      textAlign: 'center', // Explicitly set to 'center'
+      lineHeight: '1.2',
     };
   
     const largerBoldTextStyle = {
-      fontSize: '1.2rem', // Adjust the font size
-      fontWeight: 'bold', // Set the font weight to bold
+      fontSize: '1.2rem',
+      fontWeight: 'bold',
     };
   
     const largerMutualsStyle = {
-      fontSize: '5rem', // Adjust the font size for the word "Mutuals"
-      fontWeight: 'bold', // Set the font weight to bold
+      fontSize: '5rem',
+      fontWeight: 'bold',
     };
   
     const widerTextStyle = {
-      width: '15rem', // Adjust the width as needed
+      width: '15rem',
     };
   
     const smallerTextStyle = {
-      fontSize: '0.9rem', // Adjust the font size for the additional line
-      fontWeight: 'normal', // Set the font weight to normal
-    };
-  
-    const animationStyle = {
-      '@keyframes pulse': {
-        '0%': { backgroundPosition: calculateGradientPosition(0) },
-        '50%': { backgroundPosition: calculateGradientPosition(10) },
-        '100%': { backgroundPosition: calculateGradientPosition(20) },
-      },
+      fontSize: '0.9rem',
+      fontWeight: 'normal',
     };
   
     return (
@@ -132,11 +128,11 @@ function NotSignedScreen() {
             100% { background-position: ${calculateGradientPosition(20)}; }
           }
         `}</style>
-
-        <img src={"/mutuals.svg"} alt="Your Image Alt Text" style={{ width: '100px', height: '100px' }} />
-
+  
+        <img src="/mutuals.svg" alt="Your Image Alt Text" style={{ width: '100px', height: '100px' }} />
+  
         <h1 className="text-4xl font-extrabold mb-4" style={{ ...pulsingTextStyle, animation: 'pulse 3s infinite' }}>
-          Welcome to<br /><span style={largerMutualsStyle}>Mutuals!</span>
+          Welcome to<br /><span style={largerMutualsStyle}>Mutuals</span>!
         </h1>
   
         <p className="text-lg sm:text-xl font-bold text-gray-500 mb-2 text-center" style={{ ...largerBoldTextStyle, ...widerTextStyle }}>
@@ -149,14 +145,14 @@ function NotSignedScreen() {
         </p>
   
         <div className="space-x-4">
-          <Button onClick={() => router.push('/login')}>Log In</Button>
-          <Button onClick={() => router.push('/signup')}>Sign Up</Button>
+          <button onClick={() => router.push('/login')}>Log In</button>
+          <button onClick={() => router.push('/signup')}>Sign Up</button>
         </div>
       </div>
     );
   }
   
-   
+ 
 
 export default function Home() {
     const { user, setUser } = useContext(UserContext);
