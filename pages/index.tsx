@@ -73,7 +73,6 @@ function SignedScreen() {
             <InvitationsPane/>
             <CardTitle className='flex justify-center items-center mt-3'>Upcoming Events: {formattedStartDate} - {formattedEndDate}</CardTitle>
 
-
                 {/* Weekly Calendar */}
                 <EventsComponent />
         </div>

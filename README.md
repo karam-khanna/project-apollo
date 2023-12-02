@@ -7,30 +7,37 @@ Mutuals is a web-based application that simplifies the process of finding and co
 ## Team Members
 #### Aarush Bedi
 - Year: Junior
-- Interests: 
+- Major: Computer Science and QSS
+- Interests: Sports, Movies, Machine Learning and Artifical Intelligence 
 
 #### Avarna Swaika
 - Year: Junior
-- Interests: 
+- Major: Computer Science and Business 
+- Interests: Cooking, Swimming, Business Intelligence and Finance 
 
 #### Dani Roytburg
 - Year: Junior
-- Interests:
+- Major: Computer Science and QTM
+- Interests: Machine Learning, Languages, Architecture and Art
 
 #### El Yirdaw
 - Year: Junior
+- Major: Computer Science and QTM
 - Interests: Watching Netflix, Socializing With Friends, and Exploring New Technology
 
 #### Karam Khanna
 - Year: Junior
-- Interests: 
+- Major: Computer Science and Mathematics 
+- Interests: Poker, Artifical Intelligence, Machine Learning and Bakestball 
 
 #### Macarah Morgan
 - Year: Junior
+- Major: QSS
 - Interests: 
 
 #### Vidhi Mittal
 - Year: Junior
+- Major: Computer Science and Economics
 - Interests: 
 
 ## Sprint Review
