@@ -9,7 +9,7 @@ import { custom } from "zod";
 import ReportForm from "@/components/chat/reporting";
 import { useTheme } from "next-themes";
 
-
+//Chat component handling multi chat function and user authenticaion
 export default function Chat() {
     const projectId = process.env.NEXT_PUBLIC_CHAT_PROJECT
     const privateId = process.env.NEXT_PUBLIC_CHAT_PRIVATE

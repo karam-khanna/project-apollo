@@ -5,6 +5,7 @@ import {ThemeToggle} from "@/components/theme-toggle";
 import {createUserWithEmailAndPassword, sendEmailVerification, signOut} from "firebase/auth";
 import {firebase_auth} from "@/firebase/client_side/firebase_init";
 
+//Signup component handling user signup using email and password
 export default function Signup() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');

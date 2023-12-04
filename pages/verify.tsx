@@ -2,6 +2,7 @@ import {useState} from 'react';
 import {ThemeToggle} from "@/components/theme-toggle";
 import {firebase_auth} from "@/firebase/client_side/firebase_init";
 
+// Settings component managing user settings
 export default function Settings() {
     const [message, setMessage] = useState('');
     const [verificationMethod, setVerificationMethod] = useState('email'); // Default to email verification

@@ -82,7 +82,7 @@ function SignedScreen() {
 
     </div>)
 }
-
+//Displaying welcome message and login/signup options 
 function NotSignedScreen() {
     const router = useRouter();
   
@@ -154,7 +154,7 @@ function NotSignedScreen() {
   }
   
  
-
+// Rendering content based on user context and current date 
 export default function Home() {
     const { user, setUser } = useContext(UserContext);
     const { userAuth, setUserAuth } = useContext(UserContext);

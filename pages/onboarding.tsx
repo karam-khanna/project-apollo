@@ -6,6 +6,8 @@ import { OnboardingForm } from "@/components/onboarding/form/onboarding-form";
 import { Card, CardContent, CardDescription } from "@/components/ui/card";
 import useMobileScreen from "@/components/ui/isMobile";
 
+
+// Onboarding component displaying welcome message and rendering an onboarding form
 export default function Onboarding() {
   const isMobile = useMobileScreen();
   // context variables
