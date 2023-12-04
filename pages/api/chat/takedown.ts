@@ -21,8 +21,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                     "user-secret": "z468vf3TWVMVOnLst4fB4b1z4T82"
                 }
             })
-            const toDelete = response.data.map((chat: any) => chat.id);
-            const delTitles = response.data.map((chat: any) => chat.title );
+            const toDelete = response.data.filter((chat: any) => Number(chat.id) != 217340).map((chat: any) => chat.id);
+            const delTitles = response.data.filter((chat: any) => chat.title != "Everyone's Here!").map((chat: any) => chat.title );
             const delFromChat = toDelete.map(async (chatid: string) => {
                 await axios({
                     url: `https://api.chatengine.io/chats/${chatid}/`,

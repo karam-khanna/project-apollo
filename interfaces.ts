@@ -17,6 +17,7 @@ export interface User {
 export enum Interest {
     basketball = 'basketball',
     poker = 'poker',
+    demo = 'demo'
 }
 
 export enum Timeslots {
