@@ -102,7 +102,7 @@ export default function EventsComponent() {
                     <h1 className='text-white font-bold'>{dayName}</h1>
                 </div>
                 {events.map((event) => (
-                    <Card key={event.Activity + " " + event.Time} className={`w-[${thismobile?"300":"200"}px]`}>
+                    <Card key={event.Activity + " " + event.Time} className={`w-[${thismobile?"300px":"200px"}]`}>
                         <CardHeader>
                             <CardTitle>{event.Activity.charAt(0).toUpperCase() + event.Activity.substring(1)}</CardTitle>
                             <CardDescription>{format(event.Time)}</CardDescription>
