@@ -1,6 +1,6 @@
 import * as React from "react"
 import Link from "next/link"
-
+import isMobile from "@/components/ui/isMobile"
 import {cn} from "@/lib/utils"
 import {Icons} from "@/components/icons"
 import {siteConfig} from "@/components/config/config";
@@ -21,7 +21,7 @@ export function MainNav({items}: MainNavProps) {
             <div className="flex gap-6 md:gap-10">
                 <Link href="/" className="flex items-center space-x-2">
                     <Icons.logo className="h-6 w-6"/>
-                    <span className="inline-block font-bold">{siteConfig.name}</span>
+                    {isMobile()?<></>:<span className="inline-block font-bold">{siteConfig.name}</span>}
                 </Link>
                 {items?.length ? (
                         <nav className="flex gap-6">
