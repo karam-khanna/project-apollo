@@ -9,6 +9,7 @@ import { Button } from "./ui/button";
 import router from "next/router";
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "./ui/card";
 import { EventsContext } from "@/context/EventsContext";
+import isMobile from "@/components/ui/isMobile"
 
 interface Event {
     Day: string;
@@ -98,7 +99,7 @@ export default function EventsComponent() {
                     <h1 className='text-white font-bold'>{dayName}</h1>
                 </div>
                 {events.map((event) => (
-                    <Card key={event.Activity + " " + event.Time} className="w-[200px]">
+                    <Card key={event.Activity + " " + event.Time} className={`w-[${isMobile()?"300px":"200px"}]`}>
                         <CardHeader>
                             <CardTitle>{event.Activity.charAt(0).toUpperCase() + event.Activity.substring(1)}</CardTitle>
                             <CardDescription>{format(event.Time)}</CardDescription>
@@ -114,14 +115,32 @@ export default function EventsComponent() {
             </div>
         </div>
     );
-    return (
-        <div className="App pt-8">
-            <div className="flex flex-row items-center space-x-2 flex-shrink-1 space-y-0">
+
+    function mobilecal () {
+        return <div className="App pt-8">
+            <div className={"flex flex-col items-center space-x-2 flex-shrink-1 space-y-0 gap-8" }>
                 <DaySection dayName="FRIDAY" events={fridayEvents} />
                 <DaySection dayName="SATURDAY" events={saturdayEvents} />
                 <DaySection dayName="SUNDAY" events={sundayEvents} />
             </div>
         </div>
+    }
+
+    function nonmobilecal () {
+        return <div className="App pt-8">
+            <div className={"flex flex-row items-center space-x-2 flex-shrink-1 space-y-0" }>
+                <DaySection dayName="FRIDAY" events={fridayEvents} />
+                <DaySection dayName="SATURDAY" events={saturdayEvents} />
+                <DaySection dayName="SUNDAY" events={sundayEvents} />
+            </div>
+        </div>
+    }
+
+
+    return (
+        <>
+            {isMobile()?mobilecal():nonmobilecal()}
+        </>
     )
 
 }
