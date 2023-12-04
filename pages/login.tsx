@@ -89,7 +89,7 @@ export default function Login() {
                     {/* Sign Up Link Styling */}
                     <span
                         className="text-pink cursor-pointer ml-2"
-                        onClick={() => window.location.href = '/verify'}
+                        onClick={() => window.location.href = 'resetPassword'}
                     >
                         Reset Password
                     </span>

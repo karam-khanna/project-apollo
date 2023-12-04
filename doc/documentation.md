@@ -176,8 +176,8 @@ Component handles user signup using email and password. Validates the email form
 #### 15.  File:`updateprofile.tsx`
 Component allows users to modify their profile information, including first name, last name, age, profile picture, and interests (Basketball and Poker). Provides an interface for users to update their details and save the changes. The modified information is then updated in the user context/state.
 
-#### 16.  File:`verify.tsx`
-Component manages user settings, specifically providing functionality for resetting the password. Users can choose between email and phone verification methods, and after entering the verification code, they can proceed to reset their password.
+#### 16.  File:`resetPassword.tsx`
+Component manages user settings, specifically providing functionality for resetting the password. Users can reset their password using an email they receive after inputting their email.
 
 
 ### Components 
