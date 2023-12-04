@@ -20,6 +20,7 @@ import {parseAvailability} from "@/utils/client_side/helpers";
 import {useContext} from "react";
 import {UserContext} from "@/context/UserContext";
 
+// Creating labels for time slots
 const items = [
     {
         id: "fridayMorning",
