@@ -60,3 +60,10 @@
         @apply bg-background text-foreground;
     }
 }
+
+@media (prefers-color-scheme: dark) {
+    path {
+      fill: white;
+    }
+  }
+  
