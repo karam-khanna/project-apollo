@@ -146,7 +146,7 @@ function NotSignedScreen() {
   
         <div className="space-x-4">
           <button onClick={() => router.push('/login')}>Log In</button>
-          <button onClick={() => router.push('/signup')}>Sign Up</button>
+          <button onClick={() =>  window.location.href =('/signup')}>Sign Up</button>
         </div>
       </div>
     );
