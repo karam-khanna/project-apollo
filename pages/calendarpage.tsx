@@ -244,7 +244,7 @@ const DayCheckboxSet = ({dayLabel, items, formControl}: DayCheckboxSetProps) => 
                                                         isSelected={isSelected}
                                                         onClick={() => {
                                                             return isSelected
-                                                                    ? field.onChange(field.value.filter((value) => value !== item.id))
+                                                                    ? field.onChange(field.value.filter((value: string) => value !== item.id))
                                                                     : field.onChange([...field.value, item.id]);
                                                         }}
                                                 />
