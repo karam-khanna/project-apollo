@@ -61,12 +61,16 @@ function SignedScreen() {
                         <h2 className="text-3xl font-semibold text-foreground pl-4">{"Welcome back, " +
                                 user?.firstName + "!"}</h2>
                         <div className="flex space-x-4">
-                            <Button size="sm" variant="outline">
-                                Edit Availability
-                            </Button>
-                            <Button size="sm" variant="outline">
-                                Edit Profile
-                            </Button>
+                            <Link href={"/calendarpage"}>
+                                <Button size="sm" variant="outline">
+                                    Edit Availability
+                                </Button>
+                            </Link>
+                            <Link href={"/profile"}>
+                                <Button size="sm" variant="outline">
+                                    Edit Profile
+                                </Button>
+                            </Link>
                         </div>
                     </div>
                 </div>
