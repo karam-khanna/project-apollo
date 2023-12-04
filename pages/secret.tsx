@@ -14,6 +14,7 @@ import axios from "axios"
 
 const inter = Inter({ subsets: ['latin'] })
 
+//Home component fetching user data from Firestore
 export default function Home() {
 
     const { user } = useContext(UserContext);

@@ -16,6 +16,7 @@ interface ProfileData {
   picture: string; // Add picture property
 }
 
+//ProfilePage component displaying user interests
 export default function ProfilePage() {
   const { user, setUser } = useContext(UserContext);
   const router = useRouter(); 
