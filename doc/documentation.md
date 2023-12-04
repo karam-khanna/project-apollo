@@ -10,6 +10,13 @@
    - [User Availability Update API](#4-user-availability-update-api)
    - [Invitation Index API](#5-invitation-index-api)
    - [Chat Add User API](#6-chat-add-user-api)
+   - [Chat Make API](#7-chat-make-api)
+   - [Chat Takedown API](#8-chat-takedown-api)
+   - [Chat User Connection API](#9-chat-user-connection-api)
+   - [Demo API](#10-demo-api)
+   - [Send Text API](#11-send-text-api)
+   - [SMS API](#12-sms-api)
+   - [SMS Testing API](#13-sms-testing-api)
 4. [Developer Guide](#4-developer-guide)
    - [Running the Development Server](#running-the-development-server)
    - [Pages](#pages)
@@ -132,7 +139,7 @@ Endpoint for matching available users for specific timeslots and interests. Uses
   ],
   "invitations": [
     {
-      "date": "Mon Jan 01 2023",
+      "date": "Fri Jan 05 2023",
       "id": "invite123",
       "interest": "Basketball",
       "status": "notSent",
@@ -140,7 +147,7 @@ Endpoint for matching available users for specific timeslots and interests. Uses
       "userId": "user123"
     },
     {
-      "date": "Mon Jan 01 2023",
+      "date": "Fri Jan 05 2023",
       "id": "invite456",
       "interest": "Poker",
       "status": "notSent",
@@ -166,7 +173,7 @@ Endpoint for finding available users for a specific timeslot and interest. Helps
 {
   "timeslot": "morning",
   "date": "2023-01-01",
-  "interest": "Party"
+  "interest": "Poker"
 }
 ```
 ### 3. Increment API
@@ -193,7 +200,7 @@ Endpoint for updating user availability.
 {
   "id": "availability123",
   "userId": "user123",
-  "day": "Monday",
+  "day": "Sunday",
   "timeslots": ["morning", "afternoon"]
 }
 ```
@@ -215,17 +222,17 @@ Endpoint for retrieving invitations for a specific user.
 ```json
 [
   {
- "date": "Mon Jan 01 2023",
+ "date": "Fri Jan 05 2023",
     "id": "invite123",
-    "interest": "Party",
+    "interest": "Poker",
     "status": "notSent",
     "timeslot": "morning",
     "userId": "user123"
   },
   {
-    "date": "Tue Jan 02 2023",
+    "date": "Sat Jan 06 2023",
     "id": "invite456",
-    "interest": "Meeting",
+    "interest": "Basketball",
     "status": "sent",
     "timeslot": "afternoon",
     "userId": "user123"
@@ -250,7 +257,110 @@ Endpoint for adding a user to a chat on ChatEngine.
   "userid": "user456"
 }
 ```
+### 7. Chat Make API
+Endpoint for creating a new chat on ChatEngine.
 
+#### Request
+
+- **URL:** `/api/createChat`
+- **Method:** `POST`
+- **Content-Type:** `application/json`
+
+##### Request Body
+
+```json
+{
+  "chatid": "chat123"
+}
+```
+
+### 8. Chat Takedown API
+Endpoint for deleting all chats on ChatEngine after the end of every week. 
+
+#### Request
+
+- **URL:** `/api/deleteChats`
+- **Method:** `DELETE`
+- **Headers:**
+  - `passkey`: Your passkey for authentication (must match `process.env.NEXT_PUBLIC_CHAT_PRIVATE`)
+- **Content-Type:** `application/json`
+
+#### Response
+
+```json
+{
+  "message": "Complete. Deleted 5 chats."
+}
+```
+### 9. Chat User Connection API
+Endpoint for connecting a user to ChatEngine.
+
+#### Request
+
+- **URL:** `/api/connectChatUser`
+- **Method:** `POST`
+- **Content-Type:** `application/json`
+- **Body:**
+  - `userid` (string): The unique identifier of the user in your system.
+
+#### Response
+
+```json
+{
+  "id": "chatengine_user_id",
+  "username": "User Full Name",
+  "created": true
+}
+```
+### 10. Demo API
+Was used to show the matching algorithm demo in class which cleaned, created and matched. 
+
+### 11. Send Text API
+Endpoint for sending SMS messages using Twilio.
+
+#### Request
+
+- **URL:** `/api/sendText`
+- **Method:** `POST`
+- **Content-Type:** `application/json`
+- **Body:**
+  - `to` (string): The recipient's phone number.
+  - `message` (string): The message to be sent.
+
+#### Response
+
+```json
+{
+  "message": "Text sent"
+}
+```
+### 12. SMS API
+Endpoint for receiving SMS messages using Twilio and responding to the sender.
+
+#### Request
+
+- **URL:** `/api/sms`
+- **Method:** `POST`
+- **Content-Type:** `application/x-www-form-urlencoded`
+- **Body:**
+  - `Body` (string): The text of the received SMS message.
+  - `From` (string): The sender's phone number.
+
+#### Response
+
+- **Content-Type:** `application/xml`
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<Response>
+  <Message>
+    <!-- Your response message here -->
+  </Message>
+</Response>
+```
+
+### 13. SMS Testing API
+Was used in class to demonstarte the working of the SMS feature.
 
 ## 4. Developer Guide
 
