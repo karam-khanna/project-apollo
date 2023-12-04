@@ -24,22 +24,8 @@ interface Event {
     NumberOfPeople: string;
     GroupChat: JSX.Element;
 }
-// let events = [
-//     {
-//         Day: "Friday",
-//         Time: "Evening",
-//         Activity: "Poker",
-//         NumberOfPeople: "6/8",
-//         GroupChat: <a href="https://www.emory.edu/home/index.html">Join GroupChat</a>,
-//     },
-//     {
-//         Day: "Friday",
-//         Time: "Late Night",
-//         Activity: "Poker",
-//         NumberOfPeople: "8/8",
-//         GroupChat: <a href="https://www.emory.edu/home/index.html">Join GroupChat</a>,
-//     },
-// ]
+
+//Formatting the string to match our requirement 
 function format(name: string) {
     // Split the name before the first uppercase letter
     const words = name.split(/(?=[A-Z])/);
@@ -50,6 +36,7 @@ function format(name: string) {
     return formattedName;
   }
 
+// Using and exporting table feature of shadcn
 export default function TableDemo() {
     const { user } = useContext(UserContext);
     const { data: invitations, error } = useSWR<Invitation[]>(

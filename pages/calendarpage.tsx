@@ -22,6 +22,7 @@ import { useRouter } from "next/router"
 import {UserContext} from "@/context/UserContext";
 import { Interest } from "@/interfaces"
 
+//Creating labels for all time slots
 const items = [
     {
         id: "fridayMorning",
@@ -73,12 +74,15 @@ const items = [
     },
 ] as const
 
+//Creating form schema where values will be selected 
 const FormSchema = z.object({
     items: z.array(z.string()).refine((value) => value.some((item) => item), {
         message: "You have to select at least one item.",
     }),
 })
 
+
+//Using and exporting Checkbox Function from shadcn
 export default function CheckboxReactHookFormMultiple() {
 
     const {user} = useContext(UserContext);
@@ -97,6 +101,7 @@ export default function CheckboxReactHookFormMultiple() {
         },
     })
 
+    //Storing user chosen slots to databse
     async function onSubmit(data: z.infer<typeof FormSchema>) {
 
         if (user) {
