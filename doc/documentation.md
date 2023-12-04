@@ -170,13 +170,10 @@ Component includes functionality for fetching user data, testing notifications, 
 #### 13.  File:`signup.tsx`
 Component handles user signup using email and password. Validates the email format, creates a new user account, sends a verification email, and displays relevant messages. Provides a user-friendly signup interface with Emory University email validation.
 
-#### 14.  File:`updatePassword.tsx`
-Component is in progress and aims to provide functionality for changing the user's password. Currently, renders a placeholder message indicating that the feature is under development.
-
-#### 15.  File:`updateprofile.tsx`
+#### 14.  File:`updateprofile.tsx`
 Component allows users to modify their profile information, including first name, last name, age, profile picture, and interests (Basketball and Poker). Provides an interface for users to update their details and save the changes. The modified information is then updated in the user context/state.
 
-#### 16.  File:`verify.tsx`
+#### 15.  File:`verify.tsx`
 Component manages user settings, specifically providing functionality for resetting the password. Users can choose between email and phone verification methods, and after entering the verification code, they can proceed to reset their password.
 
 
