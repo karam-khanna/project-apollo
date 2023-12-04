@@ -9,7 +9,7 @@ import { firebase_auth } from "@/firebase/client_side/firebase_init";
 import axios from "axios";
 
 
-
+//  Login component handling user login using email and password
 export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -89,7 +89,7 @@ export default function Login() {
                     {/* Sign Up Link Styling */}
                     <span
                         className="text-pink cursor-pointer ml-2"
-                        onClick={() => window.location.href = '/verify'}
+                        onClick={() => window.location.href = 'resetPassword'}
                     >
                         Reset Password
                     </span>

@@ -57,7 +57,7 @@ Devkam
           value={phoneNumber}
           onChange={(e) => setPhoneNumber(e.target.value)}
           className="border p-2 w-full text-white rounded mt-2"
-          style={{ backgroundColor: 'lightgrey' }}
+          style={{ backgroundColor: 'grey' }}
         />
       </label>
       <Button onClick={handleSend}>

@@ -49,6 +49,8 @@ function format(name: string) {
   
     return formattedName;
   }
+
+  //Using and exporting shadcn component
 export default function RadioGroupForm() {
     const {user} = useContext(UserContext);
     const {data: invitations, error} = useSWR<Invitation[]>(

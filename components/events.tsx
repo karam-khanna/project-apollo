@@ -9,6 +9,7 @@ import { Button } from "./ui/button";
 import router from "next/router";
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "./ui/card";
 import { EventsContext } from "@/context/EventsContext";
+import isMobile from "@/components/ui/isMobile"
 
 interface Event {
     Day: string;
@@ -98,14 +99,17 @@ export default function EventsComponent() {
         dayName: string;
         events: Event[];
     }
-    const DaySection: React.FC<DaySectionProps> = ({ dayName, events }) => (
+    
+    const thismobile = isMobile();
+
+    const DaySection: React.FC<DaySectionProps> = ({ dayName, events }) => ( //${thismobile? "row":"col"}
         <div className="scrollable-section flex-shrink-1" style={{ height: '400px', overflowY: 'auto' }}>
             <div className="flex flex-col items-center space-y-3">
                 <div className="flex sticky top-0 bg-pink p-2 justify-center items-center w-200px rounded-md">
                     <h1 className='text-white font-bold'>{dayName}</h1>
                 </div>
                 {events.map((event) => (
-                    <Card key={event.Activity + " " + event.Time} className="w-[200px]">
+                    <Card key={event.Activity + " " + event.Time} style={{width:thismobile?"300px":"200px"}}>
                         <CardHeader>
                             <CardTitle>{event.Activity.charAt(0).toUpperCase() + event.Activity.substring(1)}</CardTitle>
                             <CardDescription>{format(event.Time)}</CardDescription>
@@ -123,7 +127,7 @@ export default function EventsComponent() {
     );
     return (
         <div className="App pt-8">
-            <div className="flex flex-row items-center space-x-2 flex-shrink-1 space-y-0">
+            <div className={`flex flex-${thismobile?"col":"row"} items-center space-x-2 ${thismobile?"gap-6":""} flex-shrink-1 space-y-0`}>
                 <DaySection dayName="FRIDAY" events={fridayEvents} />
                 <DaySection dayName="SATURDAY" events={saturdayEvents} />
                 <DaySection dayName="SUNDAY" events={sundayEvents} />
