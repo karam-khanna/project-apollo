@@ -45,54 +45,8 @@ function SignedScreen() {
     const formattedStartDate = format(startOfWeekDate, 'MMMM d');
     const formattedEndDate = format(endOfWeekDate, 'MMMM d');
 
-    const calculateGradientPosition = (letterIndex: number) => {
-        return `${letterIndex * 10}% 50%`; // Adjust the multiplier to control the speed
-    };
-
-    const pulsingTextStyle: PulsingTextStyle = {
-        background: 'linear-gradient(45deg, #F43F5E, #FF8B9F)',
-        backgroundSize: '200% 200%',
-        animation: 'pulse 3s infinite',
-        WebkitBackgroundClip: 'text',
-        color: 'transparent',
-        fontSize: '5rem',
-        textAlign: 'center', // Explicitly set to 'center'
-        lineHeight: '1.2',
-    };
-
-    const largerBoldTextStyle = {
-        fontSize: '1.2rem',
-        fontWeight: 'bold',
-    };
-
-    const largerMutualsStyle = {
-        fontSize: '5rem',
-        fontWeight: 'bold',
-    };
-
-    const widerTextStyle = {
-        width: '15rem',
-    };
-
-    const smallerTextStyle = {
-        fontSize: '0.9rem',
-        fontWeight: 'normal',
-    };
 
     return (<div className={"flex justify-center"}>
-        <style jsx>{`
-          @keyframes pulse {
-            0% {
-              background-position: ${calculateGradientPosition(0)};
-            }
-            50% {
-              background-position: ${calculateGradientPosition(10)};
-            }
-            100% {
-              background-position: ${calculateGradientPosition(20)};
-            }
-          }
-        `}</style>
         {user
                 ?
                 //className="w-1/5 h-screen flex flex-col items-start justify-between p-4 pt-32"
