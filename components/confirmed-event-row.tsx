@@ -30,12 +30,13 @@ export function ConfirmedEventRow({invite}: ConfirmedEventRowProps) {
                     <div className="flex-1 min-w-0">
                         <p className="text-sm font-medium text-foreground capitalize">{invite.interest}</p>
                         <p className="text-sm text-muted-foreground dark:text-muted-foreground truncate">{dateString}</p>
-
                     </div>
                     <div>
-                        <Button size="sm">
-                            Go to Chat
-                        </Button>
+                        <Link href={"/chat"}>
+                            <Button size="sm">
+                                Chat
+                            </Button>
+                        </Link>
                         <Button className="ml-4" size="sm" variant="outline" onClick={async () => {
                             fetch(`/api/users/${user?.id}/invitations/${invite.id}/respond`, {
                                 method: "POST",
