@@ -28,7 +28,7 @@ Mutuals is a web-based application that simplifies the process of finding and co
 #### Karam Khanna
 - Year: Junior
 - Major: Computer Science and Mathematics 
-- Interests: Poker, Artifical Intelligence, Machine Learning and Bakestball 
+- Interests: Poker, Artifical Intelligence, Machine Learning and Basketball 
 
 #### Macarah Morgan
 - Year: Junior
@@ -38,7 +38,7 @@ Mutuals is a web-based application that simplifies the process of finding and co
 #### Vidhi Mittal
 - Year: Junior
 - Major: Computer Science and Economics
-- Interests: 
+- Interests: Literature, Fintech, Hiking, and Tennis
 
 ## Sprint Review
 
