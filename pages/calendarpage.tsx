@@ -18,9 +18,9 @@ import {
 import {toast} from "@/components/ui/use-toast"
 import {parseAvailability} from "@/utils/client_side/helpers";
 import {useContext, useEffect} from "react";
-import { useRouter } from "next/router"
+import {useRouter} from "next/router"
 import {UserContext} from "@/context/UserContext";
-import { Interest } from "@/interfaces"
+import {Interest} from "@/interfaces"
 
 //Creating labels for all time slots
 const items = [
@@ -89,7 +89,7 @@ export default function CheckboxReactHookFormMultiple() {
     const router = useRouter()
     console.log(user)
     useEffect(() => {
-        if(user && user?.firstName == "") {
+        if (user && user?.firstName == "") {
             console.log("User onboarding not updated")
             router.reload()
         }
@@ -103,7 +103,6 @@ export default function CheckboxReactHookFormMultiple() {
 
     //Storing user chosen slots to databse
     async function onSubmit(data: z.infer<typeof FormSchema>) {
-
         if (user) {
             let availability = parseAvailability(user, data.items)
             if (availability) {
@@ -123,10 +122,10 @@ export default function CheckboxReactHookFormMultiple() {
             const uid: string = availability.userId
             const weekStart: string = availability.weekStart
             const interests: string[] = availability.interests
-            for(const key in availability){
-                if(!['userId', 'id', 'weekStart', 'interests'].includes(key)){
-                    if((availability as any)[key]){
-                        for(const i in interests){
+            for (const key in availability) {
+                if (!['userId', 'id', 'weekStart', 'interests'].includes(key)) {
+                    if ((availability as any)[key]) {
+                        for (const i in interests) {
                             results.push({
                                 "timeslot": key,
                                 "interest": interests[i],
@@ -154,7 +153,7 @@ export default function CheckboxReactHookFormMultiple() {
     }
 
     return (
-        <div className="flex flex-col items-center justify-center pt-16 gap-9">
+            <div className="flex flex-col items-center justify-center pt-16 gap-9">
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="items-center space-y-8">
                         <FormField
