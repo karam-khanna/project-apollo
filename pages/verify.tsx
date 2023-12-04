@@ -87,7 +87,7 @@ export default function Settings() {
                                 </div>
                         )}
 
-                        <button onClick={handleChange}
+                        <button onClick={handleChange} 
                                 className="bg-rose-600 hover:bg-rose-700 text-white font-semibold py-2 px-4 rounded w-full"
                         >
                             Reset Password

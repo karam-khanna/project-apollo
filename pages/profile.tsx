@@ -31,9 +31,9 @@ export default function ProfilePage() {
   }
   return (
     <div className="flex flex-col items-center justify-center pt-16 gap-10">
-      <div className="container mx-auto px-4 pt-16">
-        <div className="bg-gray-800 rounded-lg p-8">
-          <h1 className="text-6xl font-bold text-center"> Mutuals.</h1>
+      <div className="container mx-auto px-4 pt-16 w-2/3  mb-10">
+        <div className="rounded-lg p-8" style={{ backgroundColor: 'rgba(218, 150, 148, 0.5)' }}>
+          <h1 className="text-6xl font-bold text-center text-white"> Mutuals.</h1>
 
           <div className="flex flex-col items-center justify-center gap-2">
             <div className='mb-5'></div>
@@ -48,7 +48,7 @@ export default function ProfilePage() {
 
             <div className='mb-4'></div>
 
-            <div className='text text-gray-300'>Interests:</div>
+            <div className='text text-white'>Interests:</div>
             <div className="flex gap-2 mb-4">
               {ints.map((interest, index) => (
                 <Badge key={index}>{interest}</Badge>
