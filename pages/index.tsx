@@ -47,25 +47,7 @@ function SignedScreen() {
 
 
     return (<div className={"flex justify-center"}>
-        {user
-                ?
-                //className="w-1/5 h-screen flex flex-col items-start justify-between p-4 pt-32"
-                <Fragment>
-                    <div className={"flex flex-col gap-2"}>
-                        {/* {isCalendarButtonVisible && <Button onClick={() => router.push('/calendarpage').then()}>Calendar Page</Button>}
-                    <Button onClick={() => router.push('/profile').then()}>Profile</Button>
-                    <Button onClick={() => router.push('/chat').then()}>Chat</Button>
-                    <Button onClick={() => router.push('/invitations').then()}>Invitations</Button>
-                    <Button onClick={() => router.push('/myevents').then()}>My Events</Button> */}
-                    </div>
-                </Fragment>
-                :
-                <>
-                    <Button onClick={() => router.push('/login').then()}>Log In</Button>
-                    <Button onClick={() => router.push('/signup').then()}>Sign Up</Button>
-                </>
-        }
-
+        
         {/*Main Content */}
         <EventsContext.Provider value={{events: events, setEvents: setEvents}}>
             <div className={"flex flex-col items-center justify-center pt-16 overflow-auto"}>
