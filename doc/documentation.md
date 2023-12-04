@@ -81,6 +81,47 @@ Here’s the link to the current deployment of the app: [Mutuals App](https://mu
 
 ## 4. Developer Guide
 
+This project is a Next.js application, bootstrapped with `create-next-app`.
+
+### Running the Development Server
+
+To start the development server, run one of the following commands:
+
+```markdown
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) in your browser to view the application.
+
+### Editing Pages
+
+- Edit the page by modifying `pages/index.tsx`. 
+- The page auto-updates as you edit the file.
+
+### API Routes
+
+- Access API routes at [http://localhost:3000/api/hello](http://localhost:3000/api/hello).
+- Edit this endpoint in `pages/api/demo.ts`.
+- Files in `pages/api` are API routes, not React pages.
+
+### Fonts
+
+This project uses `next/font` for automatic optimization and loading of Inter, a custom Google Font.
+
+### Learn More
+
+For more information about Next.js:
+
+- [Next.js Documentation](https://nextjs.org/docs) - Learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - An interactive Next.js tutorial.
+- [Next.js GitHub Repository](https://github.com/vercel/next.js/) - Feedback and contributions are welcome!
+
 ## 5. Contact Information
 ...
 
