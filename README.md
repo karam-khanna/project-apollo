@@ -33,7 +33,7 @@ Mutuals is a web-based application that simplifies the process of finding and co
 #### Macarah Morgan
 - Year: Junior
 - Major: QSS
-- Interests: 
+- Interests: Soccer, Eating, Data Visualization, NLP, and Traveling
 
 #### Vidhi Mittal
 - Year: Junior
