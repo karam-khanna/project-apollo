@@ -12,6 +12,7 @@ import { UserContext } from "@/context/UserContext"
 import { useContext } from "react"
 import { firebase_auth } from "@/firebase/client_side/firebase_init"
 import { useRouter } from "next/router"
+import { AlignJustify } from 'lucide-react';
 
 export function SiteHeader() {
     const { user, setUser, setUserAuth } = useContext(UserContext)
@@ -75,16 +76,22 @@ export function SiteHeader() {
 
     function mobileheader () {
         return <header className="bg-background sticky top-0 z-40 w-full border-b">
-            <div className="container flex h-16 items-center space-x-4 justify-between sm:space-x-0">
-                <MainNav />
+            <div className="container flex h-16 items-center space-x-4  sm:space-x-0">
+                <MainNav/>
 
-
+               
                 <DropdownMenu>
-                    <DropdownMenuTrigger style={{fontSize: "200%"}}>≡</DropdownMenuTrigger>
+                    <DropdownMenuTrigger style={{fontSize: "200%", marginLeft: "auto"}}>
+                        <AlignJustify className="hidden h-5 w-5 dark:block "/>
+                        <AlignJustify className="h-[1.5rem] w-[1.3rem] dark:hidden"/>
+                    </DropdownMenuTrigger>
+                    
                     <DropdownMenuContent className="text-center">
-                    <DropdownMenuItem className="justify-center"><Button variant="ghost" onClick={() => router.push("/profile").then()} className="flex items-center text-sm font-medium text-muted-foreground">Profile</Button></DropdownMenuItem>
-                    <DropdownMenuItem className="justify-center"><Button variant="ghost" onClick={() => router.push("/chat").then()} className="flex items-center text-sm font-medium text-muted-foreground">Chat</Button></DropdownMenuItem>
-                    <DropdownMenuItem className="justify-center"><Button variant="ghost" className="flex items-center text-sm font-medium text-muted-foreground" onClick={() => { firebase_auth.signOut().then((r) => { setUserAuth(null); setUser(null);});}}>Sign out</Button></DropdownMenuItem>
+                    {user && user.firstName !== ""? <>
+                        <DropdownMenuItem className="justify-center"><Button variant="ghost" onClick={() => router.push("/profile").then()} className="flex items-center text-sm font-medium text-muted-foreground">Profile</Button></DropdownMenuItem>
+                        <DropdownMenuItem className="justify-center"><Button variant="ghost" onClick={() => router.push("/chat").then()} className="flex items-center text-sm font-medium text-muted-foreground">Chat</Button></DropdownMenuItem>
+                        <DropdownMenuItem className="justify-center"><Button variant="ghost" className="flex items-center text-sm font-medium text-muted-foreground" onClick={() => { firebase_auth.signOut().then((r) => { setUserAuth(null); setUser(null);});}}>Sign out</Button></DropdownMenuItem>
+                    </>:<></>}
                         <DropdownMenuItem className="justify-center">
                             <Link href={siteConfig.links.github} target="_blank" rel="noreferrer">
                                     <div className={buttonVariants({ size: "icon", variant: "ghost", })}>
@@ -93,10 +100,12 @@ export function SiteHeader() {
                                     </div>
                             </Link> 
                             <ThemeToggle /> 
-                           <ShareSite/>
+                           
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
+                <ShareSite/>
+               
   
                  
 
