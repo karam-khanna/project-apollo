@@ -6,7 +6,7 @@
 3. [API Documentation](#api-documentation)
 4. [Developer Guide](#developer-guide)
 5. [Contact Information](#contact-information)
-6. [License and Legal Information](#license-and-legal-information)
+
 
 ## 1. Introduction
 ### Purpose
@@ -82,7 +82,15 @@ Here’s the link to the current deployment of the app: [Mutuals App](https://mu
 ## 4. Developer Guide
 
 ## 5. Contact Information
-...
+### Team Members
+- Dani Roytburg - d.j.roytburg@emory.edu
+- El Yirdaw - el.yirdaw@emory.edu
+- Vidhi Mittal - vidhi.mittal@emory.edu
+- Karam Khanna - karam.khanna@emory.edu
+- Aarush Bedi - aarush.bedi@emory.edu
+- Avarna Swaika - avarna.swaika@emory.edu
+- Macarah Morgan - macarah.morgan@emory.edu
+
 
 ## 6. License and Legal Information
 ...
