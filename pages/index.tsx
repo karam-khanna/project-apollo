@@ -44,9 +44,49 @@ function SignedScreen() {
     const endOfWeekDate = endOfWeek(currentDate, { weekStartsOn: 1 });
     const formattedStartDate = format(startOfWeekDate, 'MMMM d');
     const formattedEndDate = format(endOfWeekDate, 'MMMM d');
+    
+    const calculateGradientPosition = (letterIndex: number) => {
+        return `${letterIndex * 10}% 50%`; // Adjust the multiplier to control the speed
+      };
+  
+      const pulsingTextStyle: PulsingTextStyle = {
+        background: 'linear-gradient(45deg, #F43F5E, #FF8B9F)',
+        backgroundSize: '200% 200%',
+        animation: 'pulse 3s infinite',
+        WebkitBackgroundClip: 'text',
+        color: 'transparent',
+        fontSize: '5rem',
+        textAlign: 'center', // Explicitly set to 'center'
+        lineHeight: '1.2',
+      };
+  
+      const largerBoldTextStyle = {
+        fontSize: '1.2rem',
+        fontWeight: 'bold',
+      };
+  
+      const largerMutualsStyle = {
+        fontSize: '5rem',
+        fontWeight: 'bold',
+      };
+  
+      const widerTextStyle = {
+        width: '15rem',
+      };
+  
+      const smallerTextStyle = {
+        fontSize: '0.9rem',
+        fontWeight: 'normal',
+      };
 
     return (<div className={"flex justify-center"}>
-        {/* Left sidebar (Navigation) */}
+        <style jsx>{`
+          @keyframes pulse {
+            0% { background-position: ${calculateGradientPosition(0)}; }
+            50% { background-position: ${calculateGradientPosition(10)}; }
+            100% { background-position: ${calculateGradientPosition(20)}; }
+          }
+        `}</style>
         {user
             ?
             //className="w-1/5 h-screen flex flex-col items-start justify-between p-4 pt-32"
@@ -69,7 +109,7 @@ function SignedScreen() {
         {/*Main Content */}
         <EventsContext.Provider value={{events: events, setEvents: setEvents}}>
         <div className={"flex flex-col items-center justify-center pt-16 gap-9 overflow-auto"}>
-            <h1 className="text-6xl font-bold text-center">Welcome back, {user?.firstName}!</h1>
+            <h1 className="text-6xl font-bold text-center" style={{ ...pulsingTextStyle, animation: 'pulse 3s infinite' }}>Welcome back, {user?.firstName}!</h1>
             <CardTitle className='flex justify-center items-center'>Invitations:</CardTitle>
             <InvitationsPane/>
             <CardTitle className='flex justify-center items-center mt-3 text-center'>Upcoming Events: {formattedStartDate} - {formattedEndDate}</CardTitle>
