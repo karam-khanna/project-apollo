@@ -122,6 +122,99 @@ For more information about Next.js:
 - [Learn Next.js](https://nextjs.org/learn) - An interactive Next.js tutorial.
 - [Next.js GitHub Repository](https://github.com/vercel/next.js/) - Feedback and contributions are welcome!
 
+
+### Components 
+#### File: `chat/reporting.tsx`
+- Implements reporting functionality within the chat feature.
+- Handles user reporting for inappropriate behavior or no-show incidents.
+  
+#### File: `onboarding/onboarding-form.tsx`
+- Implements a user onboarding form using `react-hook-form` for form management and `zod` for schema validation.
+- Collects user details, including name, phone, interests (poker, basketball), age, and avatar, with custom UI components from `@/components/ui`.
+- Integrates `UserContext` for state management and `clientDbInterface` utilities for updating user data.
+- Validation includes age (18+ years) and phone number regex checks.
+- Successful submission updates user data and redirects to the calendar page.
+
+#### Directory: `ui/`
+- Contains React components sourced from `shadcn/ui`.
+- Offers a suite of UI components designed for functionality and aesthetics.
+- Components, such as `Toast` and `Avatar`, are built using React patterns.
+- Provides UI elements including notifications, buttons, input fields, and avatars for modularity and reusability.
+
+#### File: `events.tsx`
+- Displays upcoming events for users.
+- Utilizes contexts from `UserContext` and `EventsContext` for state management.
+- Defines an `Event` interface detailing properties like day, time, and activity.
+- Uses Firebase Firestore to fetch details about event chat rooms and participants.
+- Dynamically creates event cards for Friday, Saturday, and Sunday, each in their respective `DaySection` components.
+- The `format` function is used to format event times.
+
+#### File: `icons.tsx`
+- Defines a collection of icon components using `lucide-react`.
+- Exports an `Icons` object containing pre-defined icons such as `SunMedium`, `Moon`, `Twitter`, `Share`, and custom SVG icons for 'logo' and 'gitHub'.
+- Each icon is structured as a functional component, allowing for consistent and reusable iconography throughout the Mutuals app.
+
+#### File: `invites.tsx`
+- Manages the display and interaction with user invitations.
+- Uses `UserContext` and `EventsContext` for state management and `useSWR` for data fetching.
+- Fetches and displays invitations, allowing users to accept or decline them.
+- Invitations are presented using `Card` components from `./ui/card`.
+- The `respond` function updates the invitation status and modifies the local state accordingly.
+- The `format` function is used for formatting the display of timeslots.
+
+#### File: `main-nav.tsx`
+- Renders the main navigation menu.
+- Utilizes `Link` from Next.js for navigation and a utility `isMobile` to adapt to mobile environments.
+- Accepts `items` as props, each representing a navigation item defined by the `NavItem` interface.
+- Conditionally renders the app logo from `Icons` and the site name from `siteConfig` based on the device type.
+- Dynamically generates navigation links from the `items` array, with styling applied using `cn` for conditional classes and handling disabled states.
+
+#### File: `site-header.tsx`
+- Renders the site's header.
+- Dynamically displays different headers for mobile and desktop using the `isMobile` utility.
+- Includes navigation links defined in `MainNav`, a theme toggle button (`ThemeToggle`), and a site sharing feature (`ShareSite`).
+- For authenticated users, it shows additional navigation options like Home, Profile, Chat, and Sign out, handled by `UserContext`.
+- The sign-out functionality integrates `firebase_auth` for user session management.
+- Includes a dropdown menu for mobile view, adapting the header's layout and functionality to smaller screens.
+
+#### File: `theme-provider.tsx`
+- Wraps the `NextThemesProvider` from `next-themes`.
+- Facilitates theme management across the application, allowing for easy theme switching and customization.
+- Accepts `ThemeProviderProps`, passing them along to the `NextThemesProvider`.
+- Renders its children within this provider context, ensuring that theme-related functionality is consistently available throughout the app.
+
+#### File: `theme-share.tsx`
+- Defines a React component for sharing the app with friends.
+- Includes a `ShareBox` component that allows users to send an invitation text message to a friend's phone number.
+- Uses a `POST` request to `/api/sendText` with the phone number and a predefined invitation message.
+- The main `ShareSite` component manages the visibility of the `ShareBox` pop-up, toggling it open and closed.
+- The sharing functionality is initiated by a button with a `Share` icon from `lucide-react`.
+
+#### File: `theme-toggle.tsx`
+- Provides theme toggle functionality.
+- Utilizes the `useTheme` hook from `next-themes` to manage theme states.
+- Renders a `Button` which, on click, switches the app's theme between light and dark modes.
+- The toggle is visually represented by `Sun` and `Moon` icons from `lucide-react`, conditionally displayed based on the current theme.
+- Uses the `setTheme` function from `useTheme` to change the theme accordingly.
+
+### Firebase - Client Side
+#### File: `client_side/firebase_init.tsx`
+- Initializes and exports Firebase authentication (`firebase_auth`), Firestore database (`db`), and the Firebase app (`firebase_app`) instances using the provided Firebase configuration.
+- Exports the GoogleAuthProvider (`provider`) for authentication with Google.
+- Allows the application to interact with Firebase services for authentication and database operations.
+
+### Firebase - Server Side
+#### File: `server_side/firebase_admin_init.tsx`
+- Initializes and exports the Firebase Admin application (`firebase_admin_app`), authentication (`firebase_admin_auth`), Firestore database (`admin_db`), and storage bucket (`bucket`).
+- Uses the provided Firebase Admin configuration and private key to authenticate with Firebase services and access the Firestore database and Cloud Storage.
+- The exported instances can be used to perform administrative tasks and interact with Firebase services on the server-side.
+
+### Styles
+#### File: `global.css`
+- Initializes and exports the Firebase Admin application (`firebase_admin_app`), authentication (`firebase_admin_auth`), Firestore database (`admin_db`), and storage bucket (`bucket`).
+- Uses the provided Firebase Admin configuration and private key to authenticate with Firebase services and access the Firestore database and Cloud Storage.
+- The exported instances can be used to perform administrative tasks and interact with Firebase services on the server-side.
+
 ## 5. Contact Information
 ### Team Members
 - Dani Roytburg - d.j.roytburg@emory.edu
@@ -131,7 +224,3 @@ For more information about Next.js:
 - Aarush Bedi - aarush.bedi@emory.edu
 - Avarna Swaika - avarna.swaika@emory.edu
 - Macarah Morgan - macarah.morgan@emory.edu
-
-
-## 6. License and Legal Information
-...
