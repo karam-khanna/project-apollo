@@ -1,8 +1,6 @@
 import {Interest, Invitation, Timeslots, User, UserAvailability} from "@/interfaces";
-import React from "react";
-import {doc, setDoc} from "firebase/firestore";
 import {admin_db} from "@/firebase/server_side/firebase_admin_init";
-import {getWeekStartingDateAsString} from "@/utils/client_side/helpers";
+import {getWeekStartingDateAsString, parseAvailabilityDocId} from "@/utils/client_side/helpers";
 
 export async function getUserFromDb(userId: string): Promise<User | null> {
     const docRef = admin_db.doc(`Users/${userId}`);
@@ -13,6 +11,17 @@ export async function getUserFromDb(userId: string): Promise<User | null> {
     }
 
     return docSnap.data() as User;
+}
+
+export async function getUserAvailability(userId: string): Promise<UserAvailability | null> {
+    const docId = parseAvailabilityDocId(userId, new Date());
+    const docRef = admin_db.doc(`UserAvailability/${docId}`);
+    const docSnap = await docRef.get();
+    if (!docSnap.exists) {
+        console.log('User availability not in database!');
+        return null;
+    }
+    return docSnap.data() as UserAvailability;
 }
 
 export async function updateUserAvailability(
@@ -106,3 +115,4 @@ export async function getInvitesForUser(userId: string, date: Date): Promise<Inv
     });
     return invites;
 }
+
