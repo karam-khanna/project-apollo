@@ -17,10 +17,12 @@ import {
 } from "@/components/ui/form"
 import {toast} from "@/components/ui/use-toast"
 import {parseAvailability} from "@/utils/client_side/helpers";
-import {useContext} from "react";
+import {useContext, useEffect} from "react";
+import { useRouter } from "next/router"
 import {UserContext} from "@/context/UserContext";
+import { Interest } from "@/interfaces"
 
-// Defining time slots for the weekend.
+
 const items = [
     {
         id: "fridayMorning",
@@ -72,17 +74,25 @@ const items = [
     },
 ] as const
 
-// Creating a new form using zod.
 const FormSchema = z.object({
     items: z.array(z.string()).refine((value) => value.some((item) => item), {
         message: "You have to select at least one item.",
     }),
 })
 
-// React component for the form
+
+
 export default function CheckboxReactHookFormMultiple() {
 
     const {user} = useContext(UserContext);
+    const router = useRouter()
+    console.log(user)
+    useEffect(() => {
+        if(user && user?.firstName == "") {
+            console.log("User onboarding not updated")
+            router.reload()
+        }
+    })
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
         defaultValues: {
@@ -90,6 +100,7 @@ export default function CheckboxReactHookFormMultiple() {
         },
     })
 
+    //Storing user chosen slots to databse
     async function onSubmit(data: z.infer<typeof FormSchema>) {
 
         if (user) {
@@ -107,14 +118,32 @@ export default function CheckboxReactHookFormMultiple() {
 
             // Log availability and display a toast notification
             console.log("availability", availability)
-            toast({
-                title: "You submitted the following values:",
-                description: (
-                        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-                        <code className="text-white">{JSON.stringify(availability, null, 2)}</code>
-                        </pre>
-                ),
+            const results: any = []
+            const uid: string = availability.userId
+            const weekStart: string = availability.weekStart
+            const interests: string[] = availability.interests
+            for(const key in availability){
+                if(!['userId', 'id', 'weekStart', 'interests'].includes(key)){
+                    if((availability as any)[key]){
+                        for(const i in interests){
+                            results.push({
+                                "timeslot": key,
+                                "interest": interests[i],
+                                "id": uid,
+                                "date": String(new Date())
+                            })
+                        }
+                    }
+                }
+            }
+            const response = await fetch(`/api/algo/increment`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(results),
             })
+            router.push("/")
         } else {
             toast({
                 title: "Not logged in!",

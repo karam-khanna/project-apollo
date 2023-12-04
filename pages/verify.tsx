@@ -2,6 +2,7 @@ import {useState} from 'react';
 import {ThemeToggle} from "@/components/theme-toggle";
 import {firebase_auth} from "@/firebase/client_side/firebase_init";
 
+// Settings component managing user settings
 export default function Settings() {
     const [message, setMessage] = useState('');
     const [verificationMethod, setVerificationMethod] = useState('email'); // Default to email verification
@@ -58,7 +59,7 @@ export default function Settings() {
                             <select
                                     value={verificationMethod}
                                     onChange={(e) => setVerificationMethod(e.target.value)}
-                                    className="rounded w-full p-2"
+                                    className="bg-black border rounded w-full p-2 text-white"
                             >
                                 <option value="email">Email</option>
                                 <option value="phone">Phone</option>
@@ -71,7 +72,7 @@ export default function Settings() {
                                             placeholder="Phone Number"
                                             value={contactInfo}
                                             onChange={(e) => setContactInfo(e.target.value)}
-                                            className="bg-black border rounded w-full p-2"
+                                            className="bg-black border rounded w-full p-2 text-white"
                                     />
                                 </div>
                         )}
@@ -82,7 +83,7 @@ export default function Settings() {
                                             placeholder="Email"
                                             value={contactInfo}
                                             onChange={(e) => setContactInfo(e.target.value)}
-                                            className="bg-black border rounded w-full p-2"
+                                            className="bg-black border rounded w-full p-2 text-white"
                                     />
                                 </div>
                         )}

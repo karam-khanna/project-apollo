@@ -9,11 +9,13 @@ export function userFromDbData(data: DocumentData, userId: string): User {
         email: data.email || '',
         firstName: data.firstName || '',
         lastName: data.lastName || '',
+        phone: data.phone || '',
         poker: data.poker || false,
         basketball: data.basketball || false,
         onboarded: data.onboarded || false,
         picture: data.picture || 'https://github.com/shadcn.png',
         age: data.age || '',
+        response: data.response || false,
     };
 }
 

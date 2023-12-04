@@ -9,7 +9,7 @@ import { firebase_auth } from "@/firebase/client_side/firebase_init";
 import axios from "axios";
 
 
-
+//  Login component handling user login using email and password
 export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -56,14 +56,14 @@ export default function Login() {
                         placeholder="Email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        className="bg-black border rounded p-2"
+                        className="bg-black border rounded p-2 text-white"
                     />
                     <input
                         type="password"
                         placeholder="Password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        className="bg-black border rounded p-2"
+                        className="bg-black border rounded p-2 text-white"
                     />
                     <Button type="submit">
                         Submit
@@ -94,12 +94,6 @@ export default function Login() {
                         Reset Password
                     </span>
                 </p>
-
-                {/* Light/Dark Toggle */}
-                <div className="flex items-center justify-center mt-6">
-                    <Label className="text-xl">Light/Dark Toggle</Label>
-                    <ThemeToggle />
-                </div>
             </div>
         </div>
     );

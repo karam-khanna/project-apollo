@@ -6,7 +6,7 @@ import { makeChatUser } from "@/utils/client_side/chatUtils";
 import axios from 'axios'
 import { NextApiRequest, NextApiResponse } from "next";
 
-async function addChat(chatid: string) {
+async function getChat(chatid: string) {
     const docRef = doc(db, 'chats', chatid);
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
@@ -17,23 +17,10 @@ async function addChat(chatid: string) {
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (req.method === 'POST') {
         const chat = req.body.chatid
-        const cnnct = await addChat(chat)
+        const cnnct = await getChat(chat)
         if (!cnnct) {
-            res.status(400).json({ "error": "MEOW" })
+            res.status(400).json({ "error": "something's broken" })
             return;
-        }
-
-        const secrets = cnnct.users
-        let emails: string[] = []
-        for (const secret of secrets) {
-            var user = await getUserFromDb(secret)
-            if (user) {
-                var email = user.email
-                emails.push(email)
-            }
-            else {
-                emails.push("ERROR")
-            }
         }
         if (!process.env.NEXT_PUBLIC_CHAT_PROJECT) {
             res.status(400).json("no project ID")
@@ -43,18 +30,21 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             const response = await axios.put(
                 "https://api.chatengine.io/chats/",
                 {
-                    "usernames": emails,
+                    "usernames": ["Mutuals Admin"],
                     "title": chat,
                     "is_direct_chat": false
                 },
                 {
                     "headers": {
                         "project-id": process.env.NEXT_PUBLIC_CHAT_PROJECT,
-                        "user-name": emails[0],
-                        "user-secret": secrets[0]
+                        "user-name": "Mutuals Admin",
+                        "user-secret": "z468vf3TWVMVOnLst4fB4b1z4T82"
                     }
                 }
             )
+            const docRef = doc(db, 'chats', chat);
+            cnnct["chat-id"] = response.data.id
+            await setDoc(docRef, cnnct)
             res.status(200).json(response.data)
             return;
         }

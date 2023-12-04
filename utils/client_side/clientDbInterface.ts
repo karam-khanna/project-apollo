@@ -13,6 +13,14 @@ export async function clientSideGetUser(userId: string): Promise<User | null> {
     return null;
 }
 
+export async function updateUserResponse(
+    user: User,
+    response: boolean,
+    setUser: React.Dispatch<React.SetStateAction<User | null>>
+): Promise<boolean> {
+return updateUserField(user, 'response', response, setUser);
+}
+
 export async function updateUserFirstName(
         user: User,
         firstName: string,
@@ -44,6 +52,22 @@ export async function updateUserOnboarded(
         setUser: React.Dispatch<React.SetStateAction<User | null>>
 ): Promise<boolean> {
     return updateUserField(user, 'onboarded', onboarded, setUser);
+}
+
+export async function updateUserPoker(
+        user: User,
+        poker: boolean,
+        setUser: React.Dispatch<React.SetStateAction<User | null>>
+): Promise<boolean> {
+    return updateUserField(user, 'poker', poker, setUser);
+}
+
+export async function updateUserBasketball(
+        user: User,
+        basketball: boolean,
+        setUser: React.Dispatch<React.SetStateAction<User | null>>
+): Promise<boolean> {
+    return updateUserField(user, 'basketball', basketball, setUser);
 }
 
 export async function updateUserInterest(
