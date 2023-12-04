@@ -88,18 +88,45 @@ export default function CheckboxReactHookFormMultiple() {
     const {user} = useContext(UserContext);
     const router = useRouter()
     console.log(user)
-    useEffect(() => {
-        if (user && user?.firstName == "") {
-            console.log("User onboarding not updated")
-            router.reload()
-        }
-    })
+
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
         defaultValues: {
             items: []
         },
     })
+
+    useEffect(() => {
+        // Redirect if user onboarding not updated
+        if (user && user?.firstName === "") {
+            console.log("User onboarding not updated");
+            router.reload();
+        }
+
+        // Fetch default items from API
+        const fetchDefaultItems = async () => {
+            try {
+                const res = await fetch(`/api/users/${user.id}/availability`, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                });
+                const data = await res.json();
+                console.log("data zzz", data);
+
+                // Initialize form with fetched data
+                form.reset({items: data.items || []});
+            } catch (error) {
+                console.error("Failed to fetch default items", error);
+                // Handle error case, maybe set some default state or show error message
+            }
+        };
+
+        if (user) {
+            fetchDefaultItems();
+        }
+    }, [user, form, router]);
 
     //Storing user chosen slots to databse
     async function onSubmit(data: z.infer<typeof FormSchema>) {
