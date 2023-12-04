@@ -38,7 +38,7 @@ Mutuals is a web-based application that simplifies the process of finding and co
 #### Vidhi Mittal
 - Year: Junior
 - Major: Computer Science and Economics
-- Interests: Reading, 
+- Interests: Literature, Fintech, Hiking, and Tennis
 
 ## Sprint Review
 
