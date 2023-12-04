@@ -1,11 +1,11 @@
 # Technical Documentation for Mutuals
 
 ## Table of Contents
-1. [Introduction](##introduction)
-2. [User Guide](##user-guide)
-3. [API Documentation](#api-documentation)
-4. [Developer Guide](#developer-guide)
-5. [Contact Information](#contact-information)
+1. [Introduction](#1-introduction)
+2. [User Guide](#2-user-guide)
+3. [API Documentation](#3-api-documentation)
+4. [Developer Guide](#4-developer-guide)
+5. [Contact Information](#5-contact-information)
 
 
 ## 1. Introduction
