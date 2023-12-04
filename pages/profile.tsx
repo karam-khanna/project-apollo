@@ -20,6 +20,16 @@ interface ProfileData {
 export default function ProfilePage() {
   const { user, setUser } = useContext(UserContext);
   const router = useRouter(); 
+  const [showContent, setShowContent] = useState(false);
+
+  useEffect(() => {
+    // Set timeout to display content after a delay for the transition effect
+    const timeout = setTimeout(() => {
+      setShowContent(true);
+    }, 500); // Adjust timing as needed
+
+    return () => clearTimeout(timeout); // Clear timeout on unmount for cleanup
+  }, []);
 
   let ints: string[] = []
   if(user){
@@ -30,13 +40,22 @@ export default function ProfilePage() {
       ints.push("Poker")
     }
   }
+
+  const slideInStyles: React.CSSProperties = {
+    transform: `translateX(${showContent ? '0' : '-100vw'})`,
+    transition: 'transform 0.5s ease-in-out',
+    width: '100%',
+  };
+
+
   return (
     <div className="flex flex-col items-center justify-center pt-16 gap-10">
-      <div className="container mx-auto px-4 pt-16">
-        <div className="bg-gray-400 rounded-lg p-8">
-          <h1 className="text-6xl font-bold text-center"> Mutuals.</h1>
 
-          <div className="flex flex-col items-center justify-center gap-2">
+      <div className="container mx-auto px-4 pt-16 w-2/3  mb-10">
+        <div className="rounded-lg p-8" style={{ backgroundColor: 'rgba(218, 150, 148, 0.5)', ...slideInStyles }}>
+          <h1 className="text-6xl font-bold text-center text-white"> Mutuals.</h1>
+
+          <div className={"flex flex-col items-center justify-center gap-2"} style={slideInStyles}>
             <div className='mb-5'></div>
             <div className="flex items-center">
               <Avatar>
@@ -49,7 +68,7 @@ export default function ProfilePage() {
 
             <div className='mb-4'></div>
 
-            <div className='text text-gray-300'>Interests:</div>
+            <div className='text text-white'>Interests:</div>
             <div className="flex gap-2 mb-4">
               {ints.map((interest, index) => (
                 <Badge key={index}>{interest}</Badge>

@@ -116,13 +116,14 @@ const ProfileModificationPage: React.FC = () => {
 
     return (
         <div className="flex flex-col items-center justify-center pt-16 gap-10">
-            <div className="container mx-auto px-4 pt-16">
-                <div className="bg-gray-400 rounded-lg p-8">
+            <div className="container mx-auto px-4 pt-16 w-2/3 mb-10">
+                <div className="rounded-lg p-8" style={{ backgroundColor: 'rgba(218, 150, 148, 0.5)' }}>
+
                     <h1 className="text-6xl font-bold text-center"> Mutuals.</h1>
 
                     <div className="flex flex-col items-center justify-center gap-2">
                         <div className='mb-5'></div>
-                        <div className="flex items-center">
+                        <div className="flex items-center justify-center">
                             <Avatar>
                                 <div style={{ width: '100px', height: '100px' }}>
                                     <AvatarImage src={formData.picture} /> {/* Use the picture URL from the formData */}
