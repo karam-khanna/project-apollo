@@ -254,13 +254,14 @@ Component manages user settings, specifically providing functionality for resett
 - The toggle is visually represented by `Sun` and `Moon` icons from `lucide-react`, conditionally displayed based on the current theme.
 - Uses the `setTheme` function from `useTheme` to change the theme accordingly.
 
-### Firebase - Client Side
+### Firebase
+#### Client Side
 #### File: `client_side/firebase_init.tsx`
 - Initializes and exports Firebase authentication (`firebase_auth`), Firestore database (`db`), and the Firebase app (`firebase_app`) instances using the provided Firebase configuration.
 - Exports the GoogleAuthProvider (`provider`) for authentication with Google.
 - Allows the application to interact with Firebase services for authentication and database operations.
 
-### Firebase - Server Side
+#### Server Side
 #### File: `server_side/firebase_admin_init.tsx`
 - Initializes and exports the Firebase Admin application (`firebase_admin_app`), authentication (`firebase_admin_auth`), Firestore database (`admin_db`), and storage bucket (`bucket`).
 - Uses the provided Firebase Admin configuration and private key to authenticate with Firebase services and access the Firestore database and Cloud Storage.
@@ -271,6 +272,88 @@ Component manages user settings, specifically providing functionality for resett
 - Initializes and exports the Firebase Admin application (`firebase_admin_app`), authentication (`firebase_admin_auth`), Firestore database (`admin_db`), and storage bucket (`bucket`).
 - Uses the provided Firebase Admin configuration and private key to authenticate with Firebase services and access the Firestore database and Cloud Storage.
 - The exported instances can be used to perform administrative tasks and interact with Firebase services on the server-side.
+
+### Context
+#### File: `EventsContext.tsx`
+- Defines a React context for managing event-related data across the application.
+- Creates EventsContext using React.createContext.
+- Provides a way to pass events data and setEvents function down through the component tree without manual prop passing at every level.
+- Initializes the context with a default value where events is set to null and setEvents is an empty function.
+- Allows components to subscribe to EventsContext and reactively update when event data changes.
+
+#### File: `UserContext.tsx`
+- Establishes a React context for managing user information.
+- Defines UserContext using React.createContext.
+- Designed to globally manage and share the authenticated user's data.
+- Context is initialized with null values for userAuth and user.
+- Empty functions are provided for their corresponding setters.
+
+### Utils
+#### Client Side
+
+#### 1. File:`authInterfaces.ts`
+
+- `getOrCreateUserFromAuth` function
+  - Handles user data related to Firebase authentication in the Mutuals app.
+  - Attempts to retrieve a user from the database using the user's UID from Firebase.
+  - Creates a new user record in the 'Users' collection of Firestore if the user doesn't exist.
+  - Merges data like `emailVerified` and `email`.
+  - Ensures proper retrieval or creation of user data in the database.
+  - Throws an error if the user is not found after the process.
+
+#### 2. File:`chatUtils.ts`
+
+- `makeChatUser` function
+  - Sends a POST request to `/api/chat/update` to update or create a chat user in the database.
+- `getMyChats` function
+  - Fetches chat details for a given user from the Chat Engine API using axios.
+  - Identifies users by their name and a unique identifier.
+- `getGroups` function
+  - Asynchronously retrieves chat groups a user belongs to.
+  - Formats the data and returns a structured object with chat titles and participants.
+  - Leverages axios for HTTP requests and environment variables for API configuration.
+
+#### 3. File:`clientDbInterface.ts`
+
+- Functions for interacting with the Firebase Firestore database:
+  - `clientSideGetUser`: Fetches a user's data from Firestore using their user ID.
+  - Various functions to update specific fields of a user's document in Firestore.
+  - `updateUserField`: A generic function used by other update functions to modify a specific field in the user's document.
+- Manages user data to keep the app's frontend synchronized with the database.
+
+#### 4. File:`clientUserUtils.ts`
+
+- Utility functions for handling user data:
+  - `userFromDbData`: Converts Firestore document data into a `User` object.
+  - `getUserAuthToken`: Asynchronously retrieves the current authenticated user's ID token from Firebase Auth.
+
+#### 5. File:`helpers.tsx`
+
+- Utility functions for handling dates, user availability, and interests:
+  - Functions for server-side interactions with the Firestore database.
+  - Various functions for date handling, document ID parsing, and data transformation.
+  - `fetcherWithNoAuthToken`: A simple fetcher function for making API requests without authentication.
+
+#### Server Side
+
+#### File:`serverDbInterface.ts`
+
+- Functions for server-side management of user data, availability, and invitations:
+  - `addInviteToDb`: Adds an invitation to the database, checking for duplicates.
+  - `updateInviteStatus`: Updates the status of an invitation in the database.
+  - `getInvitesForUser`: Retrieves invitations for a specific user based on a given date.
+
+#### Twilio Integration
+
+#### File:`twillioInterface.ts`
+
+- Responsible for handling SMS text message functionalities using Twilio.
+- Sets up a Twilio client with credentials from environment variables.
+- Exports the `sendText` function to send text messages using Twilio's messaging services.
+- Creates a message with the specified body and recipient's phone number.
+- Sends the message from a defined Twilio phone number.
+- Implements error handling to log and throw any errors encountered during the message sending process.
+
 
 ## 5. Contact Information
 ### Team Members
