@@ -11,6 +11,7 @@ import {getAuth, onAuthStateChanged, User as FirebaseUser} from "@firebase/auth"
 import {getOrCreateUserFromAuth} from "@/utils/client_side/authInterfaces";
 import {firebase_auth} from "@/firebase/client_side/firebase_init";
 
+// Main app compoement - handles user authentication, rendering and onboarding 
 export default function App({Component, pageProps}: AppProps) {
     const router = useRouter();
     const [loading, setLoading] = useState(true);
