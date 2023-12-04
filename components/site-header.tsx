@@ -21,6 +21,7 @@ export function SiteHeader() {
             return (
                 <>
                     <Button variant="ghost" onClick={() => router.push("/").then()} className="flex items-center text-sm font-medium text-muted-foreground">Home</Button>
+                    <Button variant="ghost" onClick={() => router.push("/calendarpage").then()} className="flex items-center text-sm font-medium text-muted-foreground">My Calendar</Button>
                     <Button variant="ghost" onClick={() => router.push("/profile").then()} className="flex items-center text-sm font-medium text-muted-foreground">Profile</Button>
                     <Button variant="ghost" onClick={() => router.push("/chat").then()} className="flex items-center text-sm font-medium text-muted-foreground">Chat</Button>
                     <Button variant="ghost" className="flex items-center text-sm font-medium text-muted-foreground" onClick={
@@ -85,6 +86,7 @@ export function SiteHeader() {
                 <DropdownMenuContent className="text-center">
                     {user && user.firstName !== ""? <>
                         <DropdownMenuItem className="justify-center"><Button variant="ghost" onClick={() => router.push("/").then()} className="flex items-center text-sm font-medium text-muted-foreground">Home</Button></DropdownMenuItem>
+                        <DropdownMenuItem className="justify-center"><Button variant="ghost" onClick={() => router.push("/calendarpage").then()} className="flex items-center text-sm font-medium text-muted-foreground">My Calendar</Button></DropdownMenuItem>
                         <DropdownMenuItem className="justify-center"><Button variant="ghost" onClick={() => router.push("/profile").then()} className="flex items-center text-sm font-medium text-muted-foreground">Profile</Button></DropdownMenuItem>
                         <DropdownMenuItem className="justify-center"><Button variant="ghost" onClick={() => router.push("/chat").then()} className="flex items-center text-sm font-medium text-muted-foreground">Chat</Button></DropdownMenuItem>
                         <DropdownMenuItem className="justify-center"><Button variant="ghost" className="flex items-center text-sm font-medium text-muted-foreground" onClick={() => { firebase_auth.signOut().then((r) => { setUserAuth(null); setUser(null);});}}>Sign out</Button></DropdownMenuItem>
