@@ -5,7 +5,14 @@
 2. [User Guide](#2-user-guide)
 3. [API Documentation](#3-api-documentation)
 4. [Developer Guide](#4-developer-guide)
-5. [Contact Information](#5-contact-information)
+   - [Running the Development Server](#running-the-development-server)
+   - [Pages](#pages)
+   - [Components](#components)
+   - [Firebase](#firebase)
+   - [Styles](#styles)
+   - [Context](#context)
+   - [Utils](#utils)
+6. [Contact Information](#5-contact-information)
 
 
 ## 1. Introduction
