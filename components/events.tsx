@@ -36,7 +36,7 @@ export default function EventsComponent() {
         // create a new array of events
         if (events) {
             // filter to only events that are accepted
-            
+
             const eventChatId = async (event: Invitation) => {
                 const docRef = await getDoc(doc(db, "chats", event.interest + "-" + event.timeslot))
                 const docSnap = docRef.data()
@@ -45,6 +45,13 @@ export default function EventsComponent() {
                 }
             }
             const eventUserList = async (event: Invitation) => {
+                if (String(event.interest) === "demo") {
+                    const docRef = await getDoc(doc(db, "chats", "Everyone's Here!"))
+                    const docSnap = docRef.data()
+                    if (docSnap) {
+                        return docSnap.users.length
+                    }
+                }
                 const docRef = await getDoc(doc(db, "chats", event.interest + "-" + event.timeslot))
                 const docSnap = docRef.data()
                 if (docSnap) {
