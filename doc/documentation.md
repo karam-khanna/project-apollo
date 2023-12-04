@@ -17,10 +17,10 @@
 
 ## 1. Introduction
 ### Purpose
-Mutuals is a web-based application designed to simplify the process of finding and connecting with individuals who share a common interest in playing sports during the weekend. Users can input their sport preferences and availability, facilitating the formation of groups with similar interests and schedules. The application uses an algorithm that runs every Thursday, creating groups of users who can connect through a group chat to plan and organize their sporting events.
+Mutuals is a web-based application designed to simplify the process of finding and connecting with individuals who share a common interest in playing sports or games during the weekend. Users can input their activity preferences and availability, facilitating the formation of groups with similar interests and schedules. The application uses an algorithm that runs every Thursday, creating groups of users who can connect through a group chat to plan and organize their group events.
 
 ### Target Audience
-This document is intended for Emory College students with a valid emory.edu email address. The deliberate restriction to Emory College students is implemented for security purposes, ensuring a controlled and secure user environment in alignment with our commitment to maintaining the utmost standards of safety and confidentiality.
+This application is intended for Emory University students with a valid emory.edu email address. The deliberate restriction to Emory University students is implemented for security purposes, ensuring a controlled and secure user environment in alignment with our commitment to maintaining the utmost standards of safety and confidentiality.
 
 ### App Overview
 Users start by creating a comprehensive profile and completing an onboarding form. Subsequently, they can input their availability through an intuitive calendar interface for the upcoming weekend. Every Thursday, our algorithm curates a personalized selection of events based on user time preferences and interests. Users receive invitations to these events and can choose to accept or decline. Upon acceptance, they join a dedicated group chat, fostering effective coordination with their peers. To maintain a secure and respectful environment, the app features a reporting page where users can promptly flag any instances of unauthorized behavior.
@@ -171,7 +171,7 @@ Component includes functionality for fetching user data, testing notifications, 
 Component handles user signup using email and password. Validates the email format, creates a new user account, sends a verification email, and displays relevant messages. Provides a user-friendly signup interface with Emory University email validation.
 
 #### 14.  File:`updatePassword.tsx`
-Component is in progress and aims to provide functionality for changing the user's password. Currently, renders a placeholder message indicating that the feature is under development.
+
 
 #### 15.  File:`updateprofile.tsx`
 Component allows users to modify their profile information, including first name, last name, age, profile picture, and interests (Basketball and Poker). Provides an interface for users to update their details and save the changes. The modified information is then updated in the user context/state.
