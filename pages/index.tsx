@@ -23,6 +23,9 @@ import {EventsContext} from '@/context/EventsContext';
 import {Invitation} from '@/interfaces';
 import useSWR from 'swr';
 import {fetcherWithNoAuthToken} from '@/utils/client_side/helpers';
+import {Badge} from "@/components/ui/badge";
+import {InviteRow} from "@/components/invite-row";
+import {ConfirmedEventRow} from "@/components/confirmed-event-row";
 
 const inter = Inter({subsets: ['latin']})
 
@@ -44,27 +47,54 @@ function SignedScreen() {
     const endOfWeekDate = endOfWeek(currentDate, {weekStartsOn: 1});
     const formattedStartDate = format(startOfWeekDate, 'MMMM d');
     const formattedEndDate = format(endOfWeekDate, 'MMMM d');
+    const {data: invites, error} = useSWR<Invitation[]>(
+            user ? `/api/users/${user.id}/invitations` : null,
+            fetcherWithNoAuthToken,
+    );
+    console.log(invites)
 
+    return (
 
-    return (<div className={"flex justify-center"}>
-        
-        {/*Main Content */}
-        <EventsContext.Provider value={{events: events, setEvents: setEvents}}>
-            <div className={"flex flex-col items-center justify-center pt-16 overflow-auto"}>
-                <h1 className="text-6xl font-bold text-center"
-                    style={{...pulsingTextStyle, animation: 'pulse 3s infinite'}}>Welcome back, {user?.firstName}!</h1>
-                <CardTitle className='flex justify-center items-center pt-4 pb-0'>Invitations:</CardTitle>
-                <InvitationsPane/>
-                <CardTitle className='flex justify-center items-center mt-3 text-center'>Upcoming
-                    Events: {formattedStartDate} - {formattedEndDate}</CardTitle>
-
-                {/* Weekly Calendar */}
-                <EventsComponent/>
+            <div className="">
+                <div className="w-full shadow rounded-lg p-6">
+                    <div className="flex justify-between items-center">
+                        <h2 className="text-3xl font-semibold text-foreground pl-4">{"Welcome back, " +
+                                user?.firstName + "!"}</h2>
+                        <div className="flex space-x-4">
+                            <Button size="sm" variant="outline">
+                                Edit Availability
+                            </Button>
+                            <Button size="sm" variant="outline">
+                                Edit Profile
+                            </Button>
+                        </div>
+                    </div>
+                </div>
+                <div className="grid lg:grid-cols-[1fr_1fr] gap-6 pr-8 pl-8 pt-4">
+                    <Card className="w-full">
+                        <CardHeader>
+                            <CardTitle>Invitations</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            {invites?.filter(item => item.status != "accept").map((invite) => (
+                                    <InviteRow invite={invite}></InviteRow>
+                            ))}
+                        </CardContent>
+                    </Card>
+                    <Card className="w-full">
+                        <CardHeader>
+                            <CardTitle>Confirmed Events</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            {invites?.filter(item => item.status == "accept").map((invite) => (
+                                    <ConfirmedEventRow invite={invite}></ConfirmedEventRow>
+                            ))}
+                        </CardContent>
+                    </Card>
+                </div>
             </div>
-        </EventsContext.Provider>
 
-
-    </div>)
+    )
 }
 
 //Displaying welcome message and login/signup options
@@ -128,12 +158,12 @@ function NotSignedScreen() {
                     Welcome to<br/><span style={largerMutualsStyle}>Mutuals</span>!
                 </h1>
 
-                <p className="text-lg sm:text-xl font-bold text-gray-500 mb-2 text-center"
+                <p className="text-lg sm:text-xl font-bold text-muted-foreground mb-2 text-center"
                    style={{...largerBoldTextStyle, ...widerTextStyle}}>
                     Connecting You to Your Ideal Events.
                 </p>
 
-                <p className="text-sm sm:text-base text-gray-500 mb-6 text-center"
+                <p className="text-sm sm:text-base text-muted-foreground mb-6 text-center"
                    style={{...smallerTextStyle, ...widerTextStyle}}>
                     Our goal with this app is to connect people with like-minded individuals for activities that they
                     like to take part in.
