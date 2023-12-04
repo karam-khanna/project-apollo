@@ -98,7 +98,7 @@ export async function getInvitesForUser(userId: string, date: Date): Promise<Inv
     const weekStart = getWeekStartingDateAsString(date, true);
     const query = admin_db.collection('Invitations')
             .where('userId', '==', userId)
-            .where('date', '==', weekStart);
+            .where('date', '==', weekStart)
     const snapshot = await query.get();
     const invites: Invitation[] = [];
     snapshot.forEach((doc) => {
