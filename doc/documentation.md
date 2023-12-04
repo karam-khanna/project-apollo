@@ -4,8 +4,12 @@
 1. [Introduction](#1-introduction)
 2. [User Guide](#2-user-guide)
 3. [API Documentation](#3-api-documentation)
-   - [Match API](#match-api)
-   - [Match Slot API](#match-slot-api)
+   - [Match API](#1-match-api)
+   - [Match Slot API](#2-match-slot-api)
+   - [Increment API](#3-increment-api)
+   - [User Availability Update API](#4-user-availability-update-api)
+   - [Invitation Index API](#5-invitation-index-api)
+   - [Chat Add User API](#6-chat-add-user-api)
 4. [Developer Guide](#4-developer-guide)
    - [Running the Development Server](#running-the-development-server)
    - [Pages](#pages)
@@ -86,9 +90,11 @@ Here’s the link to the current deployment of the app: [Mutuals App](https://mu
 
 
 ## 3. API Documentation
-### Match API 
 
-Endpoint for matching available users for specific timeslots and interests. Uses the matchslot API. 
+The following are the API calls made in the project:
+### 1. Match API 
+
+Endpoint for matching available users for specific timeslots and interests. Uses the matchslot API to create every event.
 
 #### Request
 
@@ -144,9 +150,9 @@ Endpoint for matching available users for specific timeslots and interests. Uses
   ]
 }
 ```
-### Match Slot API
+### 2. Match Slot API
 
-Endpoint for finding available users for a specific timeslot and interest.
+Endpoint for finding available users for a specific timeslot and interest. Helps create a single event.
 
 #### Request
 
@@ -163,6 +169,88 @@ Endpoint for finding available users for a specific timeslot and interest.
   "interest": "Party"
 }
 ```
+### 3. Increment API
+
+Was made for the project showcase demo to automatically generate events after the user fills in the calendar page. 
+
+### 4. User Availability Update API
+
+Endpoint for updating user availability.
+
+#### Request
+
+- **URL:** `/api/updateAvailability?userId={userId}`
+- **Method:** `POST`
+- **Content-Type:** `application/json`
+
+#### Request Parameters
+
+- **userId**: The unique identifier of the user.
+
+#### Request Body
+
+```json
+{
+  "id": "availability123",
+  "userId": "user123",
+  "day": "Monday",
+  "timeslots": ["morning", "afternoon"]
+}
+```
+
+### 5. Invitation Index API 
+Endpoint for retrieving invitations for a specific user.
+
+#### Request
+
+- **URL:** `/api/getInvitesForUser?userId={userId}`
+- **Method:** `GET`
+
+#### Request Parameters
+
+- **userId**: The unique identifier of the user.
+
+### Response
+
+```json
+[
+  {
+ "date": "Mon Jan 01 2023",
+    "id": "invite123",
+    "interest": "Party",
+    "status": "notSent",
+    "timeslot": "morning",
+    "userId": "user123"
+  },
+  {
+    "date": "Tue Jan 02 2023",
+    "id": "invite456",
+    "interest": "Meeting",
+    "status": "sent",
+    "timeslot": "afternoon",
+    "userId": "user123"
+  }
+]
+```
+### 6. Chat Add User API
+
+Endpoint for adding a user to a chat on ChatEngine.
+
+#### Request
+
+- **URL:** `/api/addUserToChat`
+- **Method:** `POST`
+- **Content-Type:** `application/json`
+
+#### Request Body
+
+```json
+{
+  "chatid": "chat123",
+  "userid": "user456"
+}
+```
+
 
 ## 4. Developer Guide
 
