@@ -1,7 +1,7 @@
-import { NextApiRequest, NextApiResponse } from "next";
-import { getInvitesForUser, getUserFromDb, updateInviteStatus } from "@/utils/server_side/serverDbInterface";
-import { db } from "@/firebase/client_side/firebase_init";
-import { getDoc, doc, setDoc } from "firebase/firestore";
+import {NextApiRequest, NextApiResponse} from "next";
+import {getInvitesForUser, getUserFromDb, updateInviteStatus} from "@/utils/server_side/serverDbInterface";
+import {db} from "@/firebase/client_side/firebase_init";
+import {getDoc, doc, setDoc} from "firebase/firestore";
 import axios from "axios"
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -9,12 +9,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         // update invite status
         const userId = req.query.userId as string;
         const invitationId = req.query.invitationId as string;
-        if (req.body !== "accept" && req.body !== "decline") {
-            res.status(400).json({ error: 'Invalid body' });
+        if (req.body !== "accept" && req.body !== "decline" && req.body !== "sent") {
+            res.status(400).json({error: 'Invalid body'});
             return;
         }
         try {
-            await updateInviteStatus(invitationId, req.body as "accept" | "decline");
+            await updateInviteStatus(invitationId, req.body as "accept" | "decline" | "sent");
             if (req.body == 'accept') {
                 const inviteInfo = await getDoc(doc(db, "Invitations", invitationId))
                 const inviteData = inviteInfo.data()
@@ -26,17 +26,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 const chatData = chatInfo.data()
                 const chatId = chatData?.chatid
                 const response = await axios.post(
-                    `https://api.chatengine.io/chats/${chatId}/people/`,
-                    {
-                        "username": uname
-                    },
-                    {
-                        "headers": {
-                            "project-id": process.env.NEXT_PUBLIC_CHAT_PROJECT as string,
-                            "user-name": "Mutuals Admin",
-                            "user-secret": "z468vf3TWVMVOnLst4fB4b1z4T82"
+                        `https://api.chatengine.io/chats/${chatId}/people/`,
+                        {
+                            "username": uname
+                        },
+                        {
+                            "headers": {
+                                "project-id": process.env.NEXT_PUBLIC_CHAT_PROJECT as string,
+                                "user-name": "Mutuals Admin",
+                                "user-secret": "z468vf3TWVMVOnLst4fB4b1z4T82"
+                            }
                         }
-                    }
                 )
                 if (chatData && !chatData.users.includes(uname)) {
                     chatData.users.push(uname)
@@ -44,8 +44,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 await setDoc(chatRef, chatData)
 
             }
-        }
-        catch (error) {
+        } catch (error) {
             res.status(400).json(error)
             return;
         }
@@ -57,6 +56,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
 
     } else {
-        res.status(400).json({ error: 'Only takes POST' });
+        res.status(400).json({error: 'Only takes POST'});
     }
 }
