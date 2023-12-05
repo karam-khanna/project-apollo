@@ -4,6 +4,8 @@
 1. [Introduction](#1-introduction)
 2. [User Guide](#2-user-guide)
 3. [API Documentation](#3-api-documentation)
+   - [Match API](#match-api)
+   - [Match Slot API](#match-slot-api)
 4. [Developer Guide](#4-developer-guide)
    - [Running the Development Server](#running-the-development-server)
    - [Pages](#pages)
@@ -12,7 +14,7 @@
    - [Styles](#styles)
    - [Context](#context)
    - [Utils](#utils)
-6. [Contact Information](#5-contact-information)
+5. [Contact Information](#5-contact-information)
 
 
 ## 1. Introduction
@@ -84,7 +86,83 @@ Here’s the link to the current deployment of the app: [Mutuals App](https://mu
 
 
 ## 3. API Documentation
-...
+### Match API 
+
+Endpoint for matching available users for specific timeslots and interests. Uses the matchslot API. 
+
+#### Request
+
+- **URL:** `/api/matchSlot`
+- **Method:** `GET`
+
+#### Request Parameters
+
+- **shouldText** (optional): Boolean flag indicating whether to send text invitations. Default is `false`.
+- **date** (optional): The date for which the matching is performed. If not provided, the current week's Monday is used.
+- **limit** (optional): Limit the number of matches for each timeslot and interest. Default is `0` (no limit).
+
+#### Response
+
+```json
+{
+  "results": [
+    {
+      "date": "Mon Jan 01 2023",
+      "timeslot": "morning",
+      "interest": "Basketball",
+      "matches": [
+        {"id": "user123", "name": "John Doe"},
+        {"id": "user456", "name": "Jane Doe"}
+      ]
+    },
+    {
+      "date": "Mon Jan 01 2023",
+      "timeslot": "afternoon",
+      "interest": "Poker",
+      "matches": [
+        {"id": "user789", "name": "Bob Smith"}
+      ]
+    }
+  ],
+  "invitations": [
+    {
+      "date": "Mon Jan 01 2023",
+      "id": "invite123",
+      "interest": "Basketball",
+      "status": "notSent",
+      "timeslot": "morning",
+      "userId": "user123"
+    },
+    {
+      "date": "Mon Jan 01 2023",
+      "id": "invite456",
+      "interest": "Poker",
+      "status": "notSent",
+      "timeslot": "morning",
+      "userId": "user456"
+    }
+  ]
+}
+```
+### Match Slot API
+
+Endpoint for finding available users for a specific timeslot and interest.
+
+#### Request
+
+- **URL:** `/api/matchSlot`
+- **Method:** `GET`
+- **Content-Type:** `application/json`
+
+#### Request Body
+
+```json
+{
+  "timeslot": "morning",
+  "date": "2023-01-01",
+  "interest": "Party"
+}
+```
 
 ## 4. Developer Guide
 
@@ -176,8 +254,8 @@ Component handles user signup using email and password. Validates the email form
 #### 15.  File:`updateprofile.tsx`
 Component allows users to modify their profile information, including first name, last name, age, profile picture, and interests (Basketball and Poker). Provides an interface for users to update their details and save the changes. The modified information is then updated in the user context/state.
 
-#### 16.  File:`verify.tsx`
-Component manages user settings, specifically providing functionality for resetting the password. Users can choose between email and phone verification methods, and after entering the verification code, they can proceed to reset their password.
+#### 16.  File:`resetPassword.tsx`
+Component manages user settings, specifically providing functionality for resetting the password. Users can reset their password using an email they receive after inputting their email.
 
 
 ### Components 

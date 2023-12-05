@@ -16,6 +16,33 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         try {
             await updateInviteStatus(invitationId, req.body as "accept" | "decline" | "sent");
             if (req.body == 'accept') {
+                if (invitationId.includes("demo")) {
+                    console.log("its a demo")
+                    const chatname = "Everyone's Here!"
+                    const chatid = 217340
+                    const chatRef = doc(db, "chats", chatname)
+                    const chatInfo = await getDoc(chatRef)
+                    const chatData = chatInfo.data()
+                    const user = await getUserFromDb(userId)
+                    const uname = user?.firstName + " " + user?.lastName
+                    const response = await axios.post(
+                        `https://api.chatengine.io/chats/${chatid}/people/`,
+                        {
+                            "username": uname
+                        },
+                        {
+                            "headers": {
+                                "project-id": process.env.NEXT_PUBLIC_CHAT_PROJECT as string,
+                                "user-name": "Mutuals Admin",
+                                "user-secret": "z468vf3TWVMVOnLst4fB4b1z4T82"
+                            }
+                        }
+                    )
+                    if (chatData && !chatData.users.includes(uname)) {
+                        chatData.users.push(uname)
+                    }
+                    await setDoc(chatRef, chatData)
+                } else {
                 const inviteInfo = await getDoc(doc(db, "Invitations", invitationId))
                 const inviteData = inviteInfo.data()
                 const chatname = inviteData?.interest + "-" + inviteData?.timeslot

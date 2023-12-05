@@ -116,9 +116,9 @@ const ProfileModificationPage: React.FC = () => {
 
     return (
         <div className="flex flex-col items-center justify-center pt-16 gap-10">
+
             <div className="container mx-auto px-4 pt-16 w-2/3 mb-10">
                 <div className="rounded-lg p-8" style={{ backgroundColor: 'rgba(218, 150, 148, 0.5)' }}>
-
                     <h1 className="text-6xl font-bold text-center"> Mutuals.</h1>
 
                     <div className="flex flex-col items-center justify-center gap-2">

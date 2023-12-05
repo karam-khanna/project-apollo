@@ -146,7 +146,6 @@ export default function CheckboxReactHookFormMultiple() {
 
 
             console.log("availability", availability)
-            const results: any = []
             const uid: string = availability.userId
             const weekStart: string = availability.weekStart
             const interests: string[] = availability.interests
@@ -169,7 +168,12 @@ export default function CheckboxReactHookFormMultiple() {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify(results),
+                body: JSON.stringify({
+                    "timeslot": "fridayMorning",
+                    "interest": Interest.demo,
+                    "id": uid,
+                    "date": String(new Date())
+                }),
             })
             router.push("/")
         } else {
