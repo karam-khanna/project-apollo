@@ -164,7 +164,7 @@ export default function CheckboxReactHookFormMultiple() {
                     }
                 }
             }
-            const response = await fetch(`/api/algo/increment`, {
+            const response = await fetch(`/api/algo/everyone`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
