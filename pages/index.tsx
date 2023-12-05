@@ -81,7 +81,7 @@ function SignedScreen() {
                         </CardHeader>
                         <CardContent>
                             {invites?.filter(item => item.status != "accept").map((invite) => (
-                                    <InviteRow invite={invite}></InviteRow>
+                                    <InviteRow invite={invite} key={invite.id}></InviteRow>
                             ))}
                         </CardContent>
                     </Card>
@@ -91,7 +91,7 @@ function SignedScreen() {
                         </CardHeader>
                         <CardContent>
                             {invites?.filter(item => item.status == "accept").map((invite) => (
-                                    <ConfirmedEventRow invite={invite}></ConfirmedEventRow>
+                                    <ConfirmedEventRow invite={invite} key={invite.id}></ConfirmedEventRow>
                             ))}
                         </CardContent>
                     </Card>
