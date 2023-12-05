@@ -149,6 +149,7 @@ export default function CheckboxReactHookFormMultiple() {
             const uid: string = availability.userId
             const weekStart: string = availability.weekStart
             const interests: string[] = availability.interests
+            const results: any[] = []
             for (const key in availability) {
                 if (!['userId', 'id', 'weekStart', 'interests'].includes(key)) {
                     if ((availability as any)[key]) {
@@ -175,7 +176,7 @@ export default function CheckboxReactHookFormMultiple() {
                     "date": String(new Date())
                 }),
             })
-            router.push("/")
+            await router.push("/")
         } else {
             toast({
                 title: "Not logged in!",
