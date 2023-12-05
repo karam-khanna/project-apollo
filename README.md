@@ -76,3 +76,7 @@ bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+## Application Showcase
+
+https://www.loom.com/share/6dd68c27ba314f91ae76369e9d8a5b7f?sid=3f393e93-6f4d-4343-a3be-00cfc7583ec0 
