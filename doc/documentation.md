@@ -4,6 +4,19 @@
 1. [Introduction](#1-introduction)
 2. [User Guide](#2-user-guide)
 3. [API Documentation](#3-api-documentation)
+   - [Match API](#1-match-api)
+   - [Match Slot API](#2-match-slot-api)
+   - [Increment API](#3-increment-api)
+   - [User Availability Update API](#4-user-availability-update-api)
+   - [Invitation Index API](#5-invitation-index-api)
+   - [Chat Add User API](#6-chat-add-user-api)
+   - [Chat Make API](#7-chat-make-api)
+   - [Chat Takedown API](#8-chat-takedown-api)
+   - [Chat User Connection API](#9-chat-user-connection-api)
+   - [Demo API](#10-demo-api)
+   - [Send Text API](#11-send-text-api)
+   - [SMS API](#12-sms-api)
+   - [SMS Testing API](#13-sms-testing-api)
 4. [Developer Guide](#4-developer-guide)
    - [Running the Development Server](#running-the-development-server)
    - [Pages](#pages)
@@ -12,7 +25,7 @@
    - [Styles](#styles)
    - [Context](#context)
    - [Utils](#utils)
-6. [Contact Information](#5-contact-information)
+5. [Contact Information](#5-contact-information)
 
 
 ## 1. Introduction
@@ -84,7 +97,270 @@ Here’s the link to the current deployment of the app: [Mutuals App](https://mu
 
 
 ## 3. API Documentation
-...
+
+The following are the API calls made in the project:
+### 1. Match API 
+
+Endpoint for matching available users for specific timeslots and interests. Uses the matchslot API to create every event.
+
+#### Request
+
+- **URL:** `/api/matchSlot`
+- **Method:** `GET`
+
+#### Request Parameters
+
+- **shouldText** (optional): Boolean flag indicating whether to send text invitations. Default is `false`.
+- **date** (optional): The date for which the matching is performed. If not provided, the current week's Monday is used.
+- **limit** (optional): Limit the number of matches for each timeslot and interest. Default is `0` (no limit).
+
+#### Response
+
+```json
+{
+  "results": [
+    {
+      "date": "Mon Jan 01 2023",
+      "timeslot": "morning",
+      "interest": "Basketball",
+      "matches": [
+        {"id": "user123", "name": "John Doe"},
+        {"id": "user456", "name": "Jane Doe"}
+      ]
+    },
+    {
+      "date": "Mon Jan 01 2023",
+      "timeslot": "afternoon",
+      "interest": "Poker",
+      "matches": [
+        {"id": "user789", "name": "Bob Smith"}
+      ]
+    }
+  ],
+  "invitations": [
+    {
+      "date": "Fri Jan 05 2023",
+      "id": "invite123",
+      "interest": "Basketball",
+      "status": "notSent",
+      "timeslot": "morning",
+      "userId": "user123"
+    },
+    {
+      "date": "Fri Jan 05 2023",
+      "id": "invite456",
+      "interest": "Poker",
+      "status": "notSent",
+      "timeslot": "morning",
+      "userId": "user456"
+    }
+  ]
+}
+```
+### 2. Match Slot API
+
+Endpoint for finding available users for a specific timeslot and interest. Helps create a single event.
+
+#### Request
+
+- **URL:** `/api/matchSlot`
+- **Method:** `GET`
+- **Content-Type:** `application/json`
+
+#### Request Body
+
+```json
+{
+  "timeslot": "morning",
+  "date": "2023-01-01",
+  "interest": "Poker"
+}
+```
+### 3. Increment API
+
+Was made for the project showcase demo to automatically generate events after the user fills in the calendar page. 
+
+### 4. User Availability Update API
+
+Endpoint for updating user availability.
+
+#### Request
+
+- **URL:** `/api/updateAvailability?userId={userId}`
+- **Method:** `POST`
+- **Content-Type:** `application/json`
+
+#### Request Parameters
+
+- **userId**: The unique identifier of the user.
+
+#### Request Body
+
+```json
+{
+  "id": "availability123",
+  "userId": "user123",
+  "day": "Sunday",
+  "timeslots": ["morning", "afternoon"]
+}
+```
+
+### 5. Invitation Index API 
+Endpoint for retrieving invitations for a specific user.
+
+#### Request
+
+- **URL:** `/api/getInvitesForUser?userId={userId}`
+- **Method:** `GET`
+
+#### Request Parameters
+
+- **userId**: The unique identifier of the user.
+
+### Response
+
+```json
+[
+  {
+ "date": "Fri Jan 05 2023",
+    "id": "invite123",
+    "interest": "Poker",
+    "status": "notSent",
+    "timeslot": "morning",
+    "userId": "user123"
+  },
+  {
+    "date": "Sat Jan 06 2023",
+    "id": "invite456",
+    "interest": "Basketball",
+    "status": "sent",
+    "timeslot": "afternoon",
+    "userId": "user123"
+  }
+]
+```
+### 6. Chat Add User API
+
+Endpoint for adding a user to a chat on ChatEngine.
+
+#### Request
+
+- **URL:** `/api/addUserToChat`
+- **Method:** `POST`
+- **Content-Type:** `application/json`
+
+#### Request Body
+
+```json
+{
+  "chatid": "chat123",
+  "userid": "user456"
+}
+```
+### 7. Chat Make API
+Endpoint for creating a new chat on ChatEngine.
+
+#### Request
+
+- **URL:** `/api/createChat`
+- **Method:** `POST`
+- **Content-Type:** `application/json`
+
+##### Request Body
+
+```json
+{
+  "chatid": "chat123"
+}
+```
+
+### 8. Chat Takedown API
+Endpoint for deleting all chats on ChatEngine after the end of every week. 
+
+#### Request
+
+- **URL:** `/api/deleteChats`
+- **Method:** `DELETE`
+- **Headers:**
+  - `passkey`: Your passkey for authentication (must match `process.env.NEXT_PUBLIC_CHAT_PRIVATE`)
+- **Content-Type:** `application/json`
+
+#### Response
+
+```json
+{
+  "message": "Complete. Deleted 5 chats."
+}
+```
+### 9. Chat User Connection API
+Endpoint for connecting a user to ChatEngine.
+
+#### Request
+
+- **URL:** `/api/connectChatUser`
+- **Method:** `POST`
+- **Content-Type:** `application/json`
+- **Body:**
+  - `userid` (string): The unique identifier of the user in your system.
+
+#### Response
+
+```json
+{
+  "id": "chatengine_user_id",
+  "username": "User Full Name",
+  "created": true
+}
+```
+### 10. Demo API
+Was used to show the matching algorithm demo in class which cleaned, created and matched. 
+
+### 11. Send Text API
+Endpoint for sending SMS messages using Twilio.
+
+#### Request
+
+- **URL:** `/api/sendText`
+- **Method:** `POST`
+- **Content-Type:** `application/json`
+- **Body:**
+  - `to` (string): The recipient's phone number.
+  - `message` (string): The message to be sent.
+
+#### Response
+
+```json
+{
+  "message": "Text sent"
+}
+```
+### 12. SMS API
+Endpoint for receiving SMS messages using Twilio and responding to the sender.
+
+#### Request
+
+- **URL:** `/api/sms`
+- **Method:** `POST`
+- **Content-Type:** `application/x-www-form-urlencoded`
+- **Body:**
+  - `Body` (string): The text of the received SMS message.
+  - `From` (string): The sender's phone number.
+
+#### Response
+
+- **Content-Type:** `application/xml`
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<Response>
+  <Message>
+    <!-- Your response message here -->
+  </Message>
+</Response>
+```
+
+### 13. SMS Testing API
+Was used in class to demonstarte the working of the SMS feature.
 
 ## 4. Developer Guide
 

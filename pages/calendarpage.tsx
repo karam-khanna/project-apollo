@@ -18,9 +18,10 @@ import {
 import {toast} from "@/components/ui/use-toast"
 import {parseAvailability} from "@/utils/client_side/helpers";
 import {useContext, useEffect} from "react";
-import { useRouter } from "next/router"
+import {useRouter} from "next/router"
 import {UserContext} from "@/context/UserContext";
-import { Interest } from "@/interfaces"
+import {Interest} from "@/interfaces"
+import {Card} from "@/components/ui/card";
 
 //Creating labels for all time slots
 const items = [
@@ -88,12 +89,7 @@ export default function CheckboxReactHookFormMultiple() {
     const {user} = useContext(UserContext);
     const router = useRouter()
     console.log(user)
-    useEffect(() => {
-        if(user && user?.firstName == "") {
-            console.log("User onboarding not updated")
-            router.reload()
-        }
-    })
+
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
         defaultValues: {
@@ -101,9 +97,40 @@ export default function CheckboxReactHookFormMultiple() {
         },
     })
 
+    useEffect(() => {
+        // Redirect if user onboarding not updated
+        if (user && user?.firstName === "") {
+            console.log("User onboarding not updated");
+            router.reload();
+        }
+
+        // Fetch default items from API
+        const fetchDefaultItems = async () => {
+            try {
+                const res = await fetch(`/api/users/${user?.id}/availability`, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                });
+                const data = await res.json();
+                console.log("data zzz", data);
+
+                // Initialize form with fetched data
+                form.reset({items: data.items || []});
+            } catch (error) {
+                console.error("Failed to fetch default items", error);
+                // Handle error case, maybe set some default state or show error message
+            }
+        };
+
+        if (user) {
+            fetchDefaultItems();
+        }
+    }, [user, form, router]);
+
     //Storing user chosen slots to databse
     async function onSubmit(data: z.infer<typeof FormSchema>) {
-
         if (user) {
             let availability = parseAvailability(user, data.items)
             if (availability) {
@@ -119,14 +146,14 @@ export default function CheckboxReactHookFormMultiple() {
 
 
             console.log("availability", availability)
-            const results: any = []
             const uid: string = availability.userId
             const weekStart: string = availability.weekStart
             const interests: string[] = availability.interests
-            for(const key in availability){
-                if(!['userId', 'id', 'weekStart', 'interests'].includes(key)){
-                    if((availability as any)[key]){
-                        for(const i in interests){
+            const results: any[] = []
+            for (const key in availability) {
+                if (!['userId', 'id', 'weekStart', 'interests'].includes(key)) {
+                    if ((availability as any)[key]) {
+                        for (const i in interests) {
                             results.push({
                                 "timeslot": key,
                                 "interest": interests[i],
@@ -137,14 +164,19 @@ export default function CheckboxReactHookFormMultiple() {
                     }
                 }
             }
-            const response = await fetch(`/api/algo/increment`, {
+            const response = await fetch(`/api/algo/everyone`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify(results),
+                body: JSON.stringify({
+                    "timeslot": "fridayMorning",
+                    "interest": Interest.demo,
+                    "id": uid,
+                    "date": String(new Date())
+                }),
             })
-            router.push("/")
+            await router.push("/")
         } else {
             toast({
                 title: "Not logged in!",
@@ -154,146 +186,78 @@ export default function CheckboxReactHookFormMultiple() {
     }
 
     return (
-        <div className="flex flex-col items-center justify-center pt-16 gap-9">
+            <div className="container mx-auto px-4 md:px-10 lg:px-16 xl:px-60 py-6">
+                <h1 className="text-3xl font-bold mb-4">Select Your Availability</h1>
                 <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="items-center space-y-8">
-                        <FormField
-                                control={form.control}
-                                name="items"
-                                render={() => (
-                                        <FormItem>
-                                            <FormLabel
-                                                    className="text-2xl sm:text-5xl font-semibold pt-7 sm:pt-16">For
-                                                this weekend...</FormLabel>
-                                            <FormDescription className="">
-                                                {"Select the times this weekend that you're available."}
-                                            </FormDescription>
-                                            <div>
-                                                <ul className="list-disc p1-4">
-                                                    <li>Morning: 8 AM - 12 PM</li>
-                                                    <li>Afternoon: 12 PM - 5 PM</li>
-                                                    <li>Evening: 5 PM - 8 PM</li>
-                                                    <li>Night: 8 PM - 12 AM</li>
-                                                </ul>
-                                            </div>
-
-                                            <div className="flex flex-row items-center space-x-10 space-y-0">
-                                                {/* First set of items */}
-                                                <div className="flex flex-col items-left space-y-3">
-                                                    <div className="bg-pink p-2 rounded-md">
-                                                        <h1 className='text-white font-bold'>FRIDAY</h1>
-                                                    </div>
-                                                    {items.slice(0, 4).map((item) => (
-                                                            <FormField
-                                                                    key={item.id}
-                                                                    control={form.control}
-                                                                    name="items"
-                                                                    render={({field}) => (
-                                                                            <FormItem>
-                                                                                <FormControl>
-                                                                                    <Checkbox
-                                                                                            checked={field.value?.includes(item.id)}
-                                                                                            onCheckedChange={(checked) => {
-                                                                                                return checked
-                                                                                                        ? field.onChange([...field.value, item.id])
-                                                                                                        : field.onChange(
-                                                                                                                field.value?.filter(
-                                                                                                                        (value) => value !== item.id
-                                                                                                                )
-                                                                                                        );
-                                                                                            }}
-                                                                                    />
-                                                                                </FormControl>
-                                                                                <FormLabel
-                                                                                        className="text-sm font-normal ml-2">
-                                                                                    {item.label}
-                                                                                </FormLabel>
-                                                                            </FormItem>
-                                                                    )}
-                                                            />
-                                                    ))}
-                                                </div>
-
-                                                {/* Second set of items */}
-                                                <div className="flex flex-col items-start space-y-3">
-                                                    <div className="bg-pink p-2 rounded-md">
-                                                        <h1 className='text-white font-bold'>SATURDAY</h1>
-                                                    </div>
-                                                    {items.slice(4, 8).map((item) => (
-                                                            <FormField
-                                                                    key={item.id}
-                                                                    control={form.control}
-                                                                    name="items"
-                                                                    render={({field}) => (
-                                                                            <FormItem>
-                                                                                <FormControl>
-                                                                                    <Checkbox
-                                                                                            checked={field.value?.includes(item.id)}
-                                                                                            onCheckedChange={(checked) => {
-                                                                                                return checked
-                                                                                                        ? field.onChange([...field.value, item.id])
-                                                                                                        : field.onChange(
-                                                                                                                field.value?.filter(
-                                                                                                                        (value) => value !== item.id
-                                                                                                                )
-                                                                                                        );
-                                                                                            }}
-                                                                                    />
-                                                                                </FormControl>
-                                                                                <FormLabel
-                                                                                        className="text-sm font-normal ml-2">
-                                                                                    {item.label}
-                                                                                </FormLabel>
-                                                                            </FormItem>
-                                                                    )}
-                                                            />
-                                                    ))}
-                                                </div>
-
-                                                {/* Third set of items */}
-                                                <div className="flex flex-col items-start space-y-3">
-                                                    <div className="bg-pink p-2 rounded-md">
-                                                        <h1 className='text-white font-bold'>SUNDAY</h1>
-                                                    </div>
-                                                    {items.slice(8, 12).map((item) => (
-                                                            <FormField
-                                                                    key={item.id}
-                                                                    control={form.control}
-                                                                    name="items"
-                                                                    render={({field}) => (
-                                                                            <FormItem>
-                                                                                <FormControl>
-                                                                                    <Checkbox
-                                                                                            checked={field.value?.includes(item.id)}
-                                                                                            onCheckedChange={(checked) => {
-                                                                                                return checked
-                                                                                                        ? field.onChange([...field.value, item.id])
-                                                                                                        : field.onChange(
-                                                                                                                field.value?.filter(
-                                                                                                                        (value) => value !== item.id
-                                                                                                                )
-                                                                                                        );
-                                                                                            }}
-                                                                                    />
-                                                                                </FormControl>
-                                                                                <FormLabel
-                                                                                        className="text-sm font-normal ml-2">
-                                                                                    {item.label}
-                                                                                </FormLabel>
-                                                                            </FormItem>
-                                                                    )}
-                                                            />
-                                                    ))}
-                                                </div>
-                                            </div>
-
-                                            <FormMessage/>
-                                        </FormItem>
-                                )}
-                        />
-                        <Button type="submit" className="flex justify-center items-center">Submit</Button>
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-6">
+                        <DayCheckboxSet dayLabel="Friday" items={items.slice(0, 4)} formControl={form.control}/>
+                        <DayCheckboxSet dayLabel="Saturday" items={items.slice(4, 8)} formControl={form.control}/>
+                        <DayCheckboxSet dayLabel="Sunday" items={items.slice(8, 12)} formControl={form.control}/>
+                        <Button type="submit" className="mt-0">Submit</Button>
                     </form>
                 </Form>
             </div>
     );
 }
+
+
+interface SelectableButtonProps {
+    isSelected: boolean;
+    label: string;
+    onClick: () => void;
+}
+
+const SelectableButton: React.FC<SelectableButtonProps> = ({isSelected, label, onClick}) => {
+    return (
+            <Button
+                    type="button"
+                    onClick={onClick}
+                    variant={isSelected ? "default" : "outline"}
+                    className={`rounded-md p-2 w-full`}>
+                {label}
+            </Button>
+    );
+};
+
+
+interface Item {
+    id: string;
+    label: string;
+}
+
+interface DayCheckboxSetProps {
+    dayLabel: string;
+    items: Item[];
+    formControl: any; // Specify the correct type for formControl
+}
+
+const DayCheckboxSet = ({dayLabel, items, formControl}: DayCheckboxSetProps) => {
+    return (
+            <Card className="bg-background p-4 2xl:p-8 rounded-lg shadow">
+                <h2 className="text-lg font-semibold mb-3">{dayLabel}</h2>
+                <div className="grid grid-cols-2 gap-4">
+                    {items.map((item) => (
+                            <FormField
+                                    key={item.id}
+                                    control={formControl}
+                                    name="items"
+                                    render={({field}) => {
+                                        const isSelected = field.value?.includes(item.id);
+                                        return (
+                                                <SelectableButton
+                                                        label={item.label}
+                                                        isSelected={isSelected}
+                                                        onClick={() => {
+                                                            return isSelected
+                                                                    ? field.onChange(field.value.filter((value: string) => value !== item.id))
+                                                                    : field.onChange([...field.value, item.id]);
+                                                        }}
+                                                />
+                                        );
+                                    }}
+                            />
+                    ))}
+                </div>
+            </Card>
+    );
+};
